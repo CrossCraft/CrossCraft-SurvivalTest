@@ -27,14 +27,14 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make
           cd ..
-          mv build/CrossCraft-Classic CrossCraft-Classic
-          chmod +x ./CrossCraft-Classic
+          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
+          chmod +x ./CrossCraft-SurvivalTest
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: CrossCraft-Linux
           path: |
-            CrossCraft-Classic
+            CrossCraft-SurvivalTest
             texturepacks/
             LICENSE
             README.md
@@ -53,14 +53,14 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make
           cd ..
-          mv build/CrossCraft-Classic CrossCraft-Classic
-          chmod +x ./CrossCraft-Classic
+          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
+          chmod +x ./CrossCraft-SurvivalTest
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: CrossCraft-Mac
           path: |
-            CrossCraft-Classic
+            CrossCraft-SurvivalTest
             texturepacks/
             LICENSE
             README.md
@@ -78,14 +78,14 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -A x64 .
           copy ext/zconf.h ext/zlib/zconf.h
           cmake --build . --config Release
-          move Release\CrossCraft-Classic.exe CrossCraft-Classic.exe
+          move Release\CrossCraft-SurvivalTest.exe CrossCraft-SurvivalTest.exe
           move ZLib\Release\zlib.dll zlib.dll
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: CrossCraft-Windows
           path: |
-            CrossCraft-Classic.exe
+            CrossCraft-SurvivalTest.exe
             zlib.dll
             texturepacks\
             LICENSE
@@ -114,7 +114,7 @@ jobs:
           make
           cd ..
           mv build/EBOOT.PBP EBOOT.PBP
-          mv build/CrossCraft-Classic.prx CrossCraft-Classic.prx
+          mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
           mv texturepacks/default.zip default.zip
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
@@ -122,7 +122,7 @@ jobs:
           name: CrossCraft-PSP
           path: |
             EBOOT.PBP
-            CrossCraft-Classic.prx
+            CrossCraft-SurvivalTest.prx
             default.zip
             LICENSE
             README.md
@@ -160,13 +160,13 @@ jobs:
           cmake -DVITA=1 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake ..
           make
           cd ..
-          mv build/CrossCraft-Classic.vpk CrossCraft-Classic.vpk
+          mv build/CrossCraft-SurvivalTest.vpk CrossCraft-SurvivalTest.vpk
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: CrossCraft-Vita
           path: |
-            CrossCraft-Classic.vpk
+            CrossCraft-SurvivalTest.vpk
             LICENSE
             README.md
 
