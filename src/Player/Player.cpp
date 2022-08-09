@@ -91,8 +91,11 @@ Player::Player()
     client_ref = nullptr;
     chat_text = "";
     in_pause = false;
-
     hasDir = false;
+
+    HP = 20;
+    arrows = 255;
+    score = 0;
 
     background_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(
         Rendering::Rectangle{{126, 55}, {226, 167}},
@@ -207,48 +210,36 @@ void Player::test_collide(glm::vec3 testpos, World *wrld, float dt) {
     int zMin = (int)(pos.z - 0.3f);
     int zMax = (int)(pos.z + 0.3f);
 
-    if (vel.x < 0.0)
-    {
+    if (vel.x < 0.0) {
         x = (int)(pos.x - 0.3f + vel.x * dt);
         testX = true;
-    }
-    else if (vel.x > 0.0)
-    {
+    } else if (vel.x > 0.0) {
         x = (int)(pos.x + 0.3f + vel.x * dt);
         testX = true;
     }
 
-    if (vel.y < 0.0)
-    {
-        y = (int)(pos.y - 1.8f + vel.y * dt );
+    if (vel.y < 0.0) {
+        y = (int)(pos.y - 1.8f + vel.y * dt);
         testY = true;
-    }
-    else if (vel.y > 0.0)
-    {
+    } else if (vel.y > 0.0) {
         y = (int)(pos.y + vel.y * dt);
         testY = true;
     }
 
-    if (vel.z < 0.0)
-    {
+    if (vel.z < 0.0) {
         z = (int)(pos.z - 0.3f + vel.z * dt);
         testZ = true;
-    }
-    else if (vel.z > 0.0)
-    {
+    } else if (vel.z > 0.0) {
         z = (int)(pos.z + 0.3f + vel.z * dt);
         testZ = true;
     }
 
     glm::vec3 newPosition = pos;
 
-    if (testX)
-    {
+    if (testX) {
         bool collided = false;
-        for (int y = yMin; y <= yMax; y++)
-        {
-            for (int z = zMin; z <= zMax; z++)
-            {
+        for (int y = yMin; y <= yMax; y++) {
+            for (int z = zMin; z <= zMax; z++) {
                 glm::ivec3 pos = glm::ivec3(x, y, z);
                 if (test(pos, wrld)) {
                     collided = true;
@@ -258,14 +249,10 @@ void Player::test_collide(glm::vec3 testpos, World *wrld, float dt) {
         }
     }
 
-
-    if (testY)
-    {
+    if (testY) {
         bool collided = false;
-        for (int x = xMin; x <= xMax; x++)
-        {
-            for (int z = zMin; z <= zMax; z++)
-            {
+        for (int x = xMin; x <= xMax; x++) {
+            for (int z = zMin; z <= zMax; z++) {
                 glm::ivec3 pos = glm::ivec3(x, y, z);
                 if (test(pos, wrld)) {
                     collided = true;
@@ -276,13 +263,10 @@ void Player::test_collide(glm::vec3 testpos, World *wrld, float dt) {
         }
     }
 
-    if (testZ)
-    {
+    if (testZ) {
         bool collided = false;
-        for (int x = xMin; x <= xMax; x++)
-        {
-            for (int y = yMin; y <= yMax; y++)
-            {
+        for (int x = xMin; x <= xMax; x++) {
+            for (int y = yMin; y <= yMax; y++) {
                 glm::ivec3 pos = glm::ivec3(x, y, z);
                 if (test(pos, wrld)) {
                     collided = true;

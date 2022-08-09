@@ -157,6 +157,7 @@ class World {
     MP::Client *client;
 
     glm::vec3 world_size;
+    bool loaded;
 
   private:
     /**

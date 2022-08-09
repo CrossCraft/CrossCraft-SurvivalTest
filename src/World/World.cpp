@@ -31,7 +31,7 @@ World::World(std::shared_ptr<Player> p) {
     world_size = {256, 64, 256};
     hmap = nullptr;
     client = nullptr;
-
+    loaded = false;
     terrain_atlas = TexturePackManager::get().load_texture(
         "assets/terrain.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         true, false, true);
@@ -66,7 +66,10 @@ World::World(std::shared_ptr<Player> p) {
     chunk_generate_icd = 0.0f;
 }
 
-auto World::spawn() -> void { player->spawn(this); }
+auto World::spawn() -> void {
+    if (!loaded)
+        player->spawn(this);
+}
 template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 
 auto World::generate_meta() -> void {

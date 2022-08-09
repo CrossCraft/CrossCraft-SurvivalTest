@@ -16,6 +16,7 @@
 #include "AABB.hpp"
 #include "BlockRep.hpp"
 #include "Chat.hpp"
+#include "Entity.hpp"
 #include "Graphics/2D/FontRenderer.hpp"
 #include "PauseMenu.hpp"
 #include <Graphics/2D/Sprite.hpp>
@@ -35,7 +36,7 @@ class BlockRep;
  * @brief Player controller object
  *
  */
-class Player {
+class Player : public PlayerData {
   public:
     /**
      * @brief Construct a new Player object
@@ -137,9 +138,8 @@ class Player {
     World *wrldRef;
 
   private:
-
-      const float playerSpeed = 4.3f;
-      auto rotate(float dt, float sense) -> void;
+    const float playerSpeed = 4.3f;
+    auto rotate(float dt, float sense) -> void;
     auto test_collide(glm::vec3 pos, World *wrld, float dt) -> void;
 
     glm::vec3 vel;
