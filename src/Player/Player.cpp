@@ -493,6 +493,16 @@ auto Player::draw(World *wrld) -> void {
                              CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
                              CC_TEXT_ALIGN_TOP, 0, 0, false);
 
+    if (change)
+        playerHUD->draw_text("Score: " + std::to_string(score),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                             CC_TEXT_ALIGN_TOP, 0, -1, false);
+
+    if (change)
+        playerHUD->draw_text("Arrows: " + std::to_string(arrows),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                             CC_TEXT_ALIGN_CENTER, -29, -10, false);
+
     if (change) {
         int i = 9;
         for (int x = chat->data.size() - 1; x >= 0; x--) {

@@ -49,13 +49,13 @@ void character_callback(GLFWwindow *window, unsigned int codepoint) {
 #endif
 
 auto Player::tab_start(std::any d) -> void {
-    auto p = std::any_cast<Player *>(d);
-    if (!p->in_pause)
-        p->in_tab = true;
+    // auto p = std::any_cast<Player *>(d);
+    // if (!p->in_pause)
+    //     p->in_tab = true;
 }
 auto Player::tab_end(std::any d) -> void {
-    auto p = std::any_cast<Player *>(d);
-    p->in_tab = false;
+    // auto p = std::any_cast<Player *>(d);
+    // p->in_tab = false;
 }
 
 auto Player::enter_chat(std::any d) -> void {
@@ -147,17 +147,15 @@ auto Player::move_reset(std::any d) -> void {
 
 auto Player::move_forward(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
-    if (!p->in_inventory &&
-        !p->in_chat && !p->in_pause) {
-            p->vel.x += -sinf(DEGTORAD(-p->rot.y));
-            p->vel.z += -cosf(DEGTORAD(-p->rot.y));
+    if (!p->in_inventory && !p->in_chat && !p->in_pause) {
+        p->vel.x += -sinf(DEGTORAD(-p->rot.y));
+        p->vel.z += -cosf(DEGTORAD(-p->rot.y));
     }
 }
 
 auto Player::move_backward(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
-    if (!p->in_inventory &&
-        !p->in_chat && !p->in_pause) {
+    if (!p->in_inventory && !p->in_chat && !p->in_pause) {
 
         p->vel.x += sinf(DEGTORAD(-p->rot.y));
         p->vel.z += cosf(DEGTORAD(-p->rot.y));
@@ -174,19 +172,17 @@ auto Player::move_backward(std::any d) -> void {
 
 auto Player::move_left(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
-    if (!p->in_inventory &&
-        !p->in_chat && !p->in_pause) {
-            p->vel.x += -sinf(DEGTORAD(-p->rot.y + 90.f));
-            p->vel.z += -cosf(DEGTORAD(-p->rot.y + 90.f));
+    if (!p->in_inventory && !p->in_chat && !p->in_pause) {
+        p->vel.x += -sinf(DEGTORAD(-p->rot.y + 90.f));
+        p->vel.z += -cosf(DEGTORAD(-p->rot.y + 90.f));
     }
 }
 
 auto Player::move_right(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
-    if (!p->in_inventory &&
-        !p->in_chat && !p->in_pause) {
-            p->vel.x += sinf(DEGTORAD(-p->rot.y + 90.f));
-            p->vel.z += cosf(DEGTORAD(-p->rot.y + 90.f));
+    if (!p->in_inventory && !p->in_chat && !p->in_pause) {
+        p->vel.x += sinf(DEGTORAD(-p->rot.y + 90.f));
+        p->vel.z += cosf(DEGTORAD(-p->rot.y + 90.f));
     }
 }
 
@@ -196,7 +192,6 @@ auto Player::respawn(std::any d) -> void {
     if (!p.player->in_inventory && !p.player->in_chat && !p.wrld->client)
         p.player->spawn(p.wrld);
 }
-
 
 auto Player::move_up(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
@@ -326,21 +321,21 @@ auto Player::dec_selector(std::any d) -> void {
 }
 
 auto Player::toggle_inv(std::any d) -> void {
-    auto p = std::any_cast<Player *>(d);
-    if (!p->in_chat && !p->in_pause) {
-        p->in_inventory = !p->in_inventory;
-
-#if BUILD_PC
-        if (p->in_inventory)
-            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-                             GLFW_CURSOR_NORMAL);
-        else
-            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-                             GLFW_CURSOR_DISABLED);
-
-        Utilities::Input::set_cursor_center();
-#endif
-    }
+    //    auto p = std::any_cast<Player *>(d);
+    //    if (!p->in_chat && !p->in_pause) {
+    //        p->in_inventory = !p->in_inventory;
+    //
+    //#if BUILD_PC
+    //        if (p->in_inventory)
+    //            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
+    //                             GLFW_CURSOR_NORMAL);
+    //        else
+    //            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
+    //                             GLFW_CURSOR_DISABLED);
+    //
+    //        Utilities::Input::set_cursor_center();
+    //#endif
+    //}
 }
 
 auto Player::move_down(std::any d) -> void {
