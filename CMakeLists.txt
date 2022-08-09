@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(CrossCraft-Classic)
+project(CrossCraft-SurvivalTest)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -29,26 +29,26 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(MINIZIP_SRC ext/zlib/contrib/minizip/iowin32.c ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
 endif()
 
-add_executable(CrossCraft-Classic ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
-target_include_directories(CrossCraft-Classic PUBLIC ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/)
+add_executable(CrossCraft-SurvivalTest ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
+target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/)
 
 if(NOT VITA)
-    target_link_libraries(CrossCraft-Classic SC-Entry Stardust-Celeste zlib)
+    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlib)
 else()
-    target_link_libraries(CrossCraft-Classic SC-Entry Stardust-Celeste zlibstatic)
+    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic)
 endif()
 
 if(WIN32)
-    target_link_libraries(CrossCraft-Classic ws2_32.lib)
+    target_link_libraries(CrossCraft-SurvivalTest ws2_32.lib)
 else()
-    target_compile_options(CrossCraft-Classic PRIVATE -g)
+    target_compile_options(CrossCraft-SurvivalTest PRIVATE -g)
 endif()
 
 if(PSP)
-    target_compile_options(CrossCraft-Classic PRIVATE -g)
+    target_compile_options(CrossCraft-SurvivalTest PRIVATE -g)
     create_pbp_file(
-        TARGET CrossCraft-Classic
-        TITLE CrossCraft-Classic
+        TARGET CrossCraft-SurvivalTest
+        TITLE CrossCraft-SurvivalTest
         ICON_PATH ../src/assets/psp/ICON0.png
         BACKGROUND_PATH ../src/assets/psp/PIC1.png
         BUILD_PRX 1
@@ -82,12 +82,12 @@ if(VITA)
 
     include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
 
-    set(VITA_APP_NAME "CrossCraft Classic")
+    set(VITA_APP_NAME "CrossCraft SurvivalTest")
     set(VITA_TITLEID "CCC000110")
     set(VITA_VERSION "01.10")
 
-    target_include_directories(CrossCraft-Classic PUBLIC ext/Stardust-Celeste/include/)
-    target_link_libraries(CrossCraft-Classic SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub)
+    target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/include/)
+    target_link_libraries(CrossCraft-SurvivalTest SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub)
 
     vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
 
