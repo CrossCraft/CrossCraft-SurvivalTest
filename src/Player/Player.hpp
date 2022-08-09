@@ -153,7 +153,11 @@ class Player : public PlayerData {
     ScopePtr<Graphics::G2D::Sprite> crosshair;
     ScopePtr<Graphics::G2D::Sprite> water;
     ScopePtr<Graphics::G2D::Sprite> overlay;
-    uint32_t gui_texture, water_texture, overlay_texture, font_texture;
+    ScopePtr<Graphics::G2D::Sprite> heartBG;
+    ScopePtr<Graphics::G2D::Sprite> heartHalf;
+    ScopePtr<Graphics::G2D::Sprite> heartFull;
+    uint32_t gui_texture, icons_texture, water_texture, overlay_texture,
+        font_texture;
 
     ScopePtr<BlockRep> blockRep;
 

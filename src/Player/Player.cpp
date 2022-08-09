@@ -77,6 +77,9 @@ Player::Player()
     gui_texture = TexturePackManager::get().load_texture(
         "assets/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, true);
+    icons_texture = TexturePackManager::get().load_texture(
+        "assets/gui/icons.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+        true, true);
     water_texture = TexturePackManager::get().load_texture(
         "assets/water.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
         true);
@@ -93,7 +96,7 @@ Player::Player()
     in_pause = false;
     hasDir = false;
 
-    HP = 20;
+    HP = 17;
     arrows = 255;
     score = 0;
 
@@ -122,6 +125,24 @@ Player::Player()
             {(256.0f - 16.0f) / 256.0f, (256.0f - 16.0f) / 256.0f},
             {16.0f / 256.0f, 16.0f / 256.0f}});
     crosshair->set_layer(-1);
+
+    heartBG = create_scopeptr<Graphics::G2D::Sprite>(
+        icons_texture, Rendering::Rectangle{{148, 28}, {9, 9}},
+        Rendering::Rectangle{{16.0f / 256.0f, (256.0f - 9.0f) / 256.0f},
+                             {9.0f / 256.0f, 9.0f / 256.0f}});
+    heartBG->set_layer(-1);
+
+    heartFull = create_scopeptr<Graphics::G2D::Sprite>(
+        icons_texture, Rendering::Rectangle{{149, 29}, {7, 7}},
+        Rendering::Rectangle{{53.0f / 256.0f, (256.0f - 8.0f) / 256.0f},
+                             {7.0f / 256.0f, 7.0f / 256.0f}});
+    heartFull->set_layer(-2);
+
+    heartHalf = create_scopeptr<Graphics::G2D::Sprite>(
+        icons_texture, Rendering::Rectangle{{147, 29}, {7, 7}},
+        Rendering::Rectangle{{60.0f / 256.0f, (256.0f - 8.0f) / 256.0f},
+                             {7.0f / 256.0f, 7.0f / 256.0f}});
+    heartHalf->set_layer(-2);
 
     water = create_scopeptr<Graphics::G2D::Sprite>(
         water_texture, Rendering::Rectangle{{0, 0}, {480, 272}});
@@ -278,7 +299,6 @@ void Player::test_collide(glm::vec3 testpos, World *wrld, float dt) {
 }
 
 void Player::update(float dt, World *wrld) {
-
     if (wrld->client != nullptr && wrld->client->disconnected)
         return;
 
@@ -439,7 +459,7 @@ auto Player::draw(World *wrld) -> void {
             playerHUD->draw_text(
                 playerHUD->get_block_name(itemSelections[selectorIDX]),
                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
-                0, 3, CC_TEXT_BG_NONE);
+                0, 4, CC_TEXT_BG_NONE);
         }
 
         selector_block_prev = selectedBlock;
@@ -494,9 +514,9 @@ auto Player::draw(World *wrld) -> void {
                              CC_TEXT_ALIGN_TOP, 0, 0, false);
 
     if (change)
-        playerHUD->draw_text("Score: " + std::to_string(score),
+        playerHUD->draw_text("&fScore: &e" + std::to_string(score),
                              CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                             CC_TEXT_ALIGN_TOP, 0, -1, false);
+                             CC_TEXT_ALIGN_TOP, 5, -1, false);
 
     if (change)
         playerHUD->draw_text("Arrows: " + std::to_string(arrows),
@@ -528,6 +548,22 @@ auto Player::draw(World *wrld) -> void {
 
     if (change)
         playerHUD->rebuild();
+
+    for (int i = 0; i < 10; i++) {
+        heartBG->draw();
+        if (HP - i * 2 > 0) {
+            auto diff = HP - i * 2;
+            if (diff > 1 || diff == 0) {
+                heartFull->draw();
+            } else {
+                heartHalf->draw();
+            }
+        }
+        Rendering::RenderContext::get().matrix_translate({9.0f, 0.0f, 0.0f});
+    }
+    Rendering::RenderContext::get().matrix_clear();
+
+    Rendering::RenderContext::get().matrix_clear();
 
     playerHUD->end2D();
 
