@@ -1,8 +1,16 @@
 #pragma once
 #include <cstdint>
+#include <glm.hpp>
 
-struct PlayerData {
-    uint8_t HP;
-    uint8_t arrows;
-    uint16_t score;
+namespace CrossCraft {
+class World;
+struct Entity {
+    glm::vec3 pos;
+    glm::vec2 rot;
+    glm::vec3 vel;
+
+  protected:
+    bool is_falling;
+    void test_collide(glm::vec3 testpos, World *wrld, float dt);
 };
+} // namespace CrossCraft

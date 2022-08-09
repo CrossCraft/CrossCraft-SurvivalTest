@@ -32,11 +32,18 @@ namespace CrossCraft {
 class World;
 class BlockRep;
 
+class PlayerEntity : public Entity {
+  public:
+    uint8_t HP;
+    uint8_t arrows;
+    uint16_t score;
+};
+
 /**
  * @brief Player controller object
  *
  */
-class Player : public PlayerData {
+class Player : public PlayerEntity {
   public:
     /**
      * @brief Construct a new Player object
@@ -123,8 +130,6 @@ class Player : public PlayerData {
     int in_cursor_x;
     int in_cursor_y;
     bool in_tab;
-    glm::vec3 pos;
-    glm::vec2 rot;
     ScopePtr<Chat> chat;
     MP::Client *client_ref;
 
@@ -140,9 +145,6 @@ class Player : public PlayerData {
   private:
     const float playerSpeed = 4.3f;
     auto rotate(float dt, float sense) -> void;
-    auto test_collide(glm::vec3 pos, World *wrld, float dt) -> void;
-
-    glm::vec3 vel;
 
     float jump_icd;
     float view_bob, view_timer;
@@ -164,7 +166,7 @@ class Player : public PlayerData {
     bool hasDir;
     AABB model;
 
-    bool is_falling, is_underwater, is_head_water, water_cutoff;
+    bool is_underwater, is_head_water, water_cutoff;
     bool on_ground, jumping;
 
     ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;

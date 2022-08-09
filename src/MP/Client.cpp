@@ -4,9 +4,9 @@
 #include "OutPackets.hpp"
 
 #include "../TexturePackManager.hpp"
+#include <string>
 #include <thread>
 #include <zlib.h>
-#include <string>
 
 namespace CrossCraft::MP {
 
@@ -436,7 +436,7 @@ void Client::process_packet(RefPtr<Network::ByteBuffer> packet) {
     }
 
     case Incoming::eSetBlock: {
-        auto data2 = reinterpret_cast<Incoming::SetBlock*>(data.get());
+        auto data2 = reinterpret_cast<Incoming::SetBlock *>(data.get());
 
         wrld->worldData[wrld->getIdx(data2->X, data2->Y, data2->Z)] =
             data2->BlockType;
@@ -456,37 +456,35 @@ void Client::process_packet(RefPtr<Network::ByteBuffer> packet) {
     }
 
     case Incoming::eSpawnPlayer: {
-        auto data2 = reinterpret_cast<Incoming::SpawnPlayer*>(data.get());
+        auto data2 = reinterpret_cast<Incoming::SpawnPlayer *>(data.get());
 
         if (data2->PlayerID == -1) {
-            wrld->player->pos = { (float)data2->X / 32.0f,
+            wrld->player->pos = {(float)data2->X / 32.0f,
                                  (float)data2->Y / 32.0f,
-                                 (float)data2->Z / 32.0f };
-            wrld->player->rot = { (float)data2->Pitch / 256.0f * 360.0f,
-                                 (float)data2->Yaw / 256.0f * 360.0f };
-        }
-        else {
-            std::string user = std::string((char*)data2->PlayerName.contents);
+                                 (float)data2->Z / 32.0f};
+            wrld->player->rot = {(float)data2->Pitch / 256.0f * 360.0f,
+                                 (float)data2->Yaw / 256.0f * 360.0f};
+        } else {
+            std::string user = std::string((char *)data2->PlayerName.contents);
             user = user.substr(0, user.find_first_of(0x20));
             player_rep.emplace(data2->PlayerID,
-                PlayerInfo{ user, data2->X, data2->Y, data2->Z,
-                           data2->Yaw, data2->Pitch });
+                               PlayerInfo{user, data2->X, data2->Y, data2->Z,
+                                          data2->Yaw, data2->Pitch});
         }
 
         break;
     }
 
     case Incoming::ePlayerTeleport: {
-        auto data2 = reinterpret_cast<Incoming::PlayerTeleport*>(data.get());
+        auto data2 = reinterpret_cast<Incoming::PlayerTeleport *>(data.get());
 
         if (data2->PlayerID == -1) {
-            wrld->player->pos = { (float)data2->X / 32.0f,
+            wrld->player->pos = {(float)data2->X / 32.0f,
                                  (float)data2->Y / 32.0f,
-                                 (float)data2->Z / 32.0f };
-            wrld->player->rot = { (float)data2->Pitch / 256.0f * 360.0f,
-                                 (float)data2->Yaw / 256.0f * 360.0f };
-        }
-        else {
+                                 (float)data2->Z / 32.0f};
+            wrld->player->rot = {(float)data2->Pitch / 256.0f * 360.0f,
+                                 (float)data2->Yaw / 256.0f * 360.0f};
+        } else {
             if (player_rep.find(data2->PlayerID) != player_rep.end()) {
                 player_rep[data2->PlayerID].X = data2->X;
                 player_rep[data2->PlayerID].Y = data2->Y;
@@ -501,21 +499,21 @@ void Client::process_packet(RefPtr<Network::ByteBuffer> packet) {
 
     case Incoming::ePlayerUpdate: {
 
-        auto data2 = reinterpret_cast<Incoming::PlayerUpdate*>(data.get());
+        auto data2 = reinterpret_cast<Incoming::PlayerUpdate *>(data.get());
         if (player_rep.find(data2->PlayerID) != player_rep.end()) {
-             player_rep[data2->PlayerID].X += data2->DX;
-             player_rep[data2->PlayerID].Y += data2->DY;
-             player_rep[data2->PlayerID].Z += data2->DZ;
-             player_rep[data2->PlayerID].Yaw = data2->Yaw;
-             player_rep[data2->PlayerID].Pitch = data2->Pitch;
-         }
+            player_rep[data2->PlayerID].X += data2->DX;
+            player_rep[data2->PlayerID].Y += data2->DY;
+            player_rep[data2->PlayerID].Z += data2->DZ;
+            player_rep[data2->PlayerID].Yaw = data2->Yaw;
+            player_rep[data2->PlayerID].Pitch = data2->Pitch;
+        }
 
         break;
     }
 
     case Incoming::ePositionUpdate: {
 
-        auto data2 = reinterpret_cast<Incoming::PositionUpdate*>(data.get());
+        auto data2 = reinterpret_cast<Incoming::PositionUpdate *>(data.get());
         if (player_rep.find(data2->PlayerID) != player_rep.end()) {
             player_rep[data2->PlayerID].X += data2->DX;
             player_rep[data2->PlayerID].Y += data2->DY;
@@ -527,7 +525,8 @@ void Client::process_packet(RefPtr<Network::ByteBuffer> packet) {
 
     case Incoming::eOrientationUpdate: {
 
-        auto data2 = reinterpret_cast<Incoming::OrientationUpdate*>(data.get());
+        auto data2 =
+            reinterpret_cast<Incoming::OrientationUpdate *>(data.get());
         if (player_rep.find(data2->PlayerID) != player_rep.end()) {
             player_rep[data2->PlayerID].Yaw = data2->Yaw;
             player_rep[data2->PlayerID].Pitch = data2->Pitch;
@@ -554,11 +553,10 @@ void Client::process_packet(RefPtr<Network::ByteBuffer> packet) {
         break;
     }
 
-
     case Incoming::eDisconnect: {
-        auto data2 = reinterpret_cast<Incoming::Disconnect*>(data.get());
+        auto data2 = reinterpret_cast<Incoming::Disconnect *>(data.get());
         disconnected = true;
-        disconnectReason = std::string((char*)data2->Reason.contents);
+        disconnectReason = std::string((char *)data2->Reason.contents);
 
         std::size_t found = disconnectReason.find("  ");
         disconnectReason = disconnectReason.substr(0, found);
@@ -602,7 +600,6 @@ void Client::update(double dt) {
         send();
 }
 
-
 template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 
 void Client::draw() {
@@ -619,7 +616,8 @@ void Client::draw() {
         Rendering::RenderContext::get().matrix_translate(entitypos);
 
         Rendering::RenderContext::get().matrix_scale({0.6, 1.8, 0.6});
-        Rendering::RenderContext::get().matrix_rotate({ 0.0f, -wrld->player->rot.y, 0.0f });
+        Rendering::RenderContext::get().matrix_rotate(
+            {0.0f, -wrld->player->rot.y, 0.0f});
 
 #if PSP
         sceGuDisable(GU_TEXTURE_2D);
@@ -641,10 +639,14 @@ void Client::draw() {
 #else
         glDisable(GL_CULL_FACE);
 #endif
-        Rendering::RenderContext::get().matrix_scale({ 1.0f / 0.6, 1.0f / 1.8, 1.0f / 0.6 });
-        Rendering::RenderContext::get().matrix_scale({ 0.05f, 0.05f, 0.05f });
+        Rendering::RenderContext::get().matrix_scale(
+            {1.0f / 0.6, 1.0f / 1.8, 1.0f / 0.6});
+        Rendering::RenderContext::get().matrix_scale({0.05f, 0.05f, 0.05f});
         fontRenderer->clear();
-            fontRenderer->add_text(pinfo.name, { -fontRenderer->calculate_size(pinfo.name) / 2.0f + 8.0f, 40.0f }, Rendering::Color{ 255, 255, 255, 255 }, 1);
+        fontRenderer->add_text(
+            pinfo.name,
+            {-fontRenderer->calculate_size(pinfo.name) / 2.0f + 8.0f, 40.0f},
+            Rendering::Color{255, 255, 255, 255}, 1);
         fontRenderer->rebuild();
         fontRenderer->draw();
 

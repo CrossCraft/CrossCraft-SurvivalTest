@@ -64,10 +64,8 @@ extern std::string chat_text;
 extern Player *player_ptr;
 
 Player::Player()
-    : pos(0.f, 64.0f, 0.f), rot(0.f, 180.f), vel(0.f, 0.f, 0.f),
-      cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
+    : cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
           255.0f),
-      is_falling(true),
       model(pos, {0.6, 1.8, 0.6}), itemSelections{-1, -1, -1, -1,        -1,
                                                   -1, -1, -1, Block::TNT},
       inventorySelection{1,  4,  45, 3,  5,  17, 18, 20, 44, 48, 6,
@@ -211,92 +209,6 @@ auto Player::spawn(World *wrld) -> void {
 }
 
 const float GRAVITY_ACCELERATION = 28.0f;
-
-auto test(glm::vec3 pos, World *wrld) -> bool {
-    auto blk = wrld->worldData[wrld->getIdx(pos.x, pos.y, pos.z)];
-    return blk != 0 && blk != 8 && blk != 6 && blk != 37 && blk != 38 &&
-           blk != 39 && blk != 40 && blk != 10;
-}
-
-void Player::test_collide(glm::vec3 testpos, World *wrld, float dt) {
-    int x, y, z;
-    bool testX = false;
-    bool testY = false;
-    bool testZ = false;
-
-    int xMin = (int)(pos.x - 0.3f);
-    int xMax = (int)(pos.x + 0.3f);
-    int yMin = (int)(pos.y - 1.8f);
-    int yMax = (int)(pos.y);
-    int zMin = (int)(pos.z - 0.3f);
-    int zMax = (int)(pos.z + 0.3f);
-
-    if (vel.x < 0.0) {
-        x = (int)(pos.x - 0.3f + vel.x * dt);
-        testX = true;
-    } else if (vel.x > 0.0) {
-        x = (int)(pos.x + 0.3f + vel.x * dt);
-        testX = true;
-    }
-
-    if (vel.y < 0.0) {
-        y = (int)(pos.y - 1.8f + vel.y * dt);
-        testY = true;
-    } else if (vel.y > 0.0) {
-        y = (int)(pos.y + vel.y * dt);
-        testY = true;
-    }
-
-    if (vel.z < 0.0) {
-        z = (int)(pos.z - 0.3f + vel.z * dt);
-        testZ = true;
-    } else if (vel.z > 0.0) {
-        z = (int)(pos.z + 0.3f + vel.z * dt);
-        testZ = true;
-    }
-
-    glm::vec3 newPosition = pos;
-
-    if (testX) {
-        bool collided = false;
-        for (int y = yMin; y <= yMax; y++) {
-            for (int z = zMin; z <= zMax; z++) {
-                glm::ivec3 pos = glm::ivec3(x, y, z);
-                if (test(pos, wrld)) {
-                    collided = true;
-                    vel.x = 0;
-                }
-            }
-        }
-    }
-
-    if (testY) {
-        bool collided = false;
-        for (int x = xMin; x <= xMax; x++) {
-            for (int z = zMin; z <= zMax; z++) {
-                glm::ivec3 pos = glm::ivec3(x, y, z);
-                if (test(pos, wrld)) {
-                    collided = true;
-                    vel.y = 0;
-                    is_falling = false;
-                }
-            }
-        }
-    }
-
-    if (testZ) {
-        bool collided = false;
-        for (int x = xMin; x <= xMax; x++) {
-            for (int y = yMin; y <= yMax; y++) {
-                glm::ivec3 pos = glm::ivec3(x, y, z);
-                if (test(pos, wrld)) {
-                    collided = true;
-                    vel.z = 0;
-                }
-            }
-        }
-    }
-}
 
 void Player::update(float dt, World *wrld) {
     if (wrld->client != nullptr && wrld->client->disconnected)
