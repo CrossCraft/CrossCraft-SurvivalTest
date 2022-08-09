@@ -343,7 +343,7 @@ void World::draw() {
     sbox->draw();
 
     clouds->draw();
-    psystem->draw();
+    psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     player->draw(this);
 }
