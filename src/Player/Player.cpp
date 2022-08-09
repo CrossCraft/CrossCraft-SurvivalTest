@@ -68,8 +68,8 @@ Player::Player()
       cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
           255.0f),
       is_falling(true),
-      model(pos, {0.6, 1.8, 0.6}), itemSelections{1,  4,  45, 3, 5,
-                                                  17, 18, 20, 44},
+      model(pos, {0.6, 1.8, 0.6}), itemSelections{-1, -1, -1, -1,        -1,
+                                                  -1, -1, -1, Block::TNT},
       inventorySelection{1,  4,  45, 3,  5,  17, 18, 20, 44, 48, 6,
                          37, 38, 39, 40, 12, 13, 19, 21, 22, 23, 24,
                          25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
@@ -96,7 +96,7 @@ Player::Player()
     in_pause = false;
     hasDir = false;
 
-    HP = 17;
+    HP = 20;
     arrows = 255;
     score = 0;
 
@@ -451,16 +451,13 @@ auto Player::draw(World *wrld) -> void {
             playerHUD->draw_text("Select block", CC_TEXT_COLOR_WHITE,
                                  CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0,
                                  7, CC_TEXT_BG_NONE);
-            playerHUD->draw_text(
-                playerHUD->get_block_name(inventorySelection[selectedBlock]),
-                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
-                0, 6, CC_TEXT_BG_NONE);
-        } else {
+        }
+
+        if (itemSelections[selectorIDX] >= 0)
             playerHUD->draw_text(
                 playerHUD->get_block_name(itemSelections[selectorIDX]),
                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
                 0, 4, CC_TEXT_BG_NONE);
-        }
 
         selector_block_prev = selectedBlock;
         selector_idx_prev = selectorIDX;

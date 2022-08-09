@@ -112,7 +112,7 @@ class Player : public PlayerData {
     static auto pause(std::any p) -> void;
 
     int32_t selectorIDX;
-    uint8_t itemSelections[9];
+    int8_t itemSelections[9];
 
     uint32_t terrain_atlas;
     bool in_inventory;

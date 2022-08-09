@@ -19,8 +19,8 @@ class BlockRep {
     BlockRep();
     ~BlockRep();
 
-    auto drawBlk(uint8_t type, int x, int y, int y_offset, float scale) -> void;
-    auto drawBlkHand(uint8_t type, World *wrld, double cube_bob) -> void;
+    auto drawBlk(int8_t type, int x, int y, int y_offset, float scale) -> void;
+    auto drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void;
 
     uint32_t terrain_atlas;
 
