@@ -48,7 +48,7 @@ Core::Application *CreateNewSCApp()
     Core::AppConfig config;
     config.headless = false;
     config.networking = true;
-    config.render_settings.title = "CrossCraft-Classic";
+    config.render_settings.title = "CrossCraft Survival Test 1";
     config.render_settings.width = 960;
     config.render_settings.height = 544;
 
