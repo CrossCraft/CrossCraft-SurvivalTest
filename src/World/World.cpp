@@ -329,6 +329,7 @@ void World::draw() {
     sceGuEnable(GU_BLEND);
     sceGuEnable(GU_ALPHA_TEST);
 #endif
+    drops->draw();
 
     // Set up texture
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
@@ -347,8 +348,6 @@ void World::draw() {
 #endif
 
     sbox->draw();
-
-    drops->draw();
 
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
