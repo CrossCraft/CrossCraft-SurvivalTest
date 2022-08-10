@@ -105,6 +105,14 @@ auto DigAction::dig(std::any d) -> void {
         // We found a working block -- create break particles
         w->psystem->initialize(blk, cast_pos);
 
+        DropData d;
+        memset(&d, 0, sizeof(DropData));
+        d.pos = cast_pos;
+        d.type = 1;
+        d.quantity = 1;
+
+        w->drops->add_drop(d);
+
         uint16_t x = ivec.x / 16;
         uint16_t y = ivec.z / 16;
         uint32_t id = x << 16 | (y & 0x00FF);

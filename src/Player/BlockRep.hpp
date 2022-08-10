@@ -5,7 +5,7 @@
 #include "../World/World.hpp"
 #include "AABB.hpp"
 #include "Chat.hpp"
-#include "Graphics/2D/FontRenderer.hpp"
+#include <Graphics/2D/FontRenderer.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Rendering/Camera.hpp>
 #include <Rendering/Primitive/Rectangle.hpp>
@@ -13,8 +13,10 @@
 #include <glm.hpp>
 using namespace Stardust_Celeste;
 
-namespace CrossCraft {
-class BlockRep {
+namespace CrossCraft
+{
+  class BlockRep
+  {
   public:
     BlockRep();
     ~BlockRep();
@@ -37,5 +39,5 @@ class BlockRep {
     std::vector<Rendering::Vertex> m_verts[50];
     std::vector<uint16_t> m_index[50];
     Rendering::Mesh blockMesh[50];
-};
+  };
 } // namespace CrossCraft

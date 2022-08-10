@@ -22,6 +22,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <vector>
+#include "../Player/Drops.hpp"
+
 namespace CrossCraft {
 
 struct LayerMeta {
@@ -45,6 +47,7 @@ class Player;
 class SelectionBox;
 typedef uint8_t block_t;
 class ChunkStack;
+class Drops;
 
 /**
  * @brief The world
@@ -171,6 +174,7 @@ class World {
 
     ScopePtr<SelectionBox> sbox;
     ScopePtr<ParticleSystem> psystem;
+    ScopePtr<Drops> drops;
 
     unsigned int terrain_atlas;
     float *hmap;

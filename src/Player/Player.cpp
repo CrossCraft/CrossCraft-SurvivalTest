@@ -173,6 +173,10 @@ Player::Player()
     fps_timer = 0.0f;
     fps_display = 0;
 
+    pos = { 0, 0, 0 };
+    rot = { 0, 0 };
+    vel = { 0, 0, 0 };
+
 #if BUILD_PC
     glfwSetCharCallback(Stardust_Celeste::Rendering::window,
                         character_callback);
@@ -230,8 +234,11 @@ void Player::update(float dt, World *wrld) {
     jump_icd -= dt;
 
     // Update position
-    vel.x *= playerSpeed;
-    vel.z *= playerSpeed;
+    float mag = (vel.x * vel.x + vel.z * vel.z);
+    if (mag > 0.0f) {
+        vel.x *= playerSpeed / mag;
+        vel.z *= playerSpeed / mag;
+    }
 
     if (!is_underwater)
         vel.y -= GRAVITY_ACCELERATION * dt;

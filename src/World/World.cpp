@@ -60,6 +60,8 @@ World::World(std::shared_ptr<Player> p) {
     chunks.clear();
 
     sbox = create_scopeptr<SelectionBox>();
+    drops = create_scopeptr<Drops>();
+    drops->terrain_atlas = terrain_atlas;
 
     place_icd = 0.0f;
     break_icd = 0.0f;
@@ -183,6 +185,7 @@ void World::update(double dt) {
     sbox->update_position(this);
     clouds->update(dt);
     psystem->update(dt);
+    drops->update(dt, player.get());
 
     tick_counter += dt;
 
@@ -344,6 +347,8 @@ void World::draw() {
 #endif
 
     sbox->draw();
+
+    drops->draw();
 
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
