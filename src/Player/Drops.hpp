@@ -39,6 +39,7 @@ namespace CrossCraft
         uint32_t terrain_atlas;
 
     private:
+        int try_pickup(DropData& d, Player* p);
         std::vector<DropData> drops;
 
         auto setup_model(uint8_t type) -> void;

@@ -164,7 +164,7 @@ auto get_color(char c) -> uint8_t {
 
 auto UserInterface::draw_text(std::string text, unsigned char color,
                               unsigned char x_align, unsigned char y_align,
-                              short x_line, short y_line, short bg_mode)
+                              short x_line, short y_line, short bg_mode, int pXoff, int pYoff)
     -> void {
 
     short x_position = 0;
@@ -203,6 +203,9 @@ auto UserInterface::draw_text(std::string text, unsigned char color,
 
     if (y_line != 0)
         y_position += (10 * y_line);
+
+    x_position += pXoff;
+    y_position += pYoff;
 
     bool color_change = false;
     int position = 0;

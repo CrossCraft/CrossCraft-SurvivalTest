@@ -39,6 +39,11 @@ class PlayerEntity : public Entity {
     uint16_t score;
 };
 
+
+struct SlotInfo {
+    int16_t type;
+    uint8_t quantity;
+};
 /**
  * @brief Player controller object
  *
@@ -119,14 +124,12 @@ class Player : public PlayerEntity {
     static auto pause(std::any p) -> void;
 
     int32_t selectorIDX;
-    int8_t itemSelections[9];
+    SlotInfo itemSelections[9];
 
     uint32_t terrain_atlas;
     bool in_inventory;
     bool in_chat;
-
-    uint8_t inventorySelection[45];
-
+    bool countChange;
     int in_cursor_x;
     int in_cursor_y;
     bool in_tab;

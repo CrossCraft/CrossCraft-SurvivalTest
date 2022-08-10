@@ -66,12 +66,8 @@ extern Player *player_ptr;
 Player::Player()
     : cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
           255.0f),
-      model(pos, {0.6, 1.8, 0.6}), itemSelections{-1, -1, -1, -1,        -1,
-                                                  -1, -1, -1, Block::TNT},
-      inventorySelection{1,  4,  45, 3,  5,  17, 18, 20, 44, 48, 6,
-                         37, 38, 39, 40, 12, 13, 19, 21, 22, 23, 24,
-                         25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-                         36, 14, 15, 16, 42, 41, 47, 46, 49} {
+    model(pos, { 0.6, 1.8, 0.6 }), itemSelections{ SlotInfo{-1, 0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{-1,0},
+                                                  SlotInfo{-1, 0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{Block::TNT, 10} } {
     gui_texture = TexturePackManager::get().load_texture(
         "assets/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, true);
@@ -178,6 +174,8 @@ Player::Player()
     pos = { 0, 0, 0 };
     rot = { 0, 0 };
     vel = { 0, 0, 0 };
+
+    countChange = true;
 
 #if BUILD_PC
     glfwSetCharCallback(Stardust_Celeste::Rendering::window,
@@ -334,7 +332,7 @@ auto Player::draw(World *wrld) -> void {
     blockRep->terrain_atlas = terrain_atlas;
 
     if (wrld->client == nullptr || !wrld->client->disconnected)
-        blockRep->drawBlkHand(itemSelections[selectorIDX], wrld, cube_bob);
+        blockRep->drawBlkHand(itemSelections[selectorIDX].type, wrld, cube_bob);
 
     playerHUD->begin2D();
 
@@ -347,7 +345,7 @@ auto Player::draw(World *wrld) -> void {
                   selector_block_prev != selectedBlock ||
                   selector_idx_prev != selectorIDX ||
                   chat_text_size != chat_text.size() || in_tab ||
-                  (wrld->client != nullptr && wrld->client->disconnected);
+                  (wrld->client != nullptr && wrld->client->disconnected) || countChange;
 
     if (change)
         playerHUD->clear();
@@ -374,9 +372,9 @@ auto Player::draw(World *wrld) -> void {
                                  7, CC_TEXT_BG_NONE);
         }
 
-        if (itemSelections[selectorIDX] >= 0)
+        if (itemSelections[selectorIDX].type >= 0)
             playerHUD->draw_text(
-                playerHUD->get_block_name(itemSelections[selectorIDX]),
+                playerHUD->get_block_name(itemSelections[selectorIDX].type),
                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
                 0, 4, CC_TEXT_BG_NONE);
 
@@ -464,6 +462,18 @@ auto Player::draw(World *wrld) -> void {
     chat_text_size = chat_text.size();
     in_chat_delta = in_chat;
 
+    if (change) {
+        for (int i = 0; i < 9; i++) {
+            int count = (int)itemSelections[i].quantity;
+            if (count > 1) {
+                playerHUD->draw_text(std::to_string(count),
+                    CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER,
+                    CC_TEXT_ALIGN_CENTER, i * 4 - 16, -12, false, 2 + ((19-i) / 6), -4);
+            }
+        }
+    }
+
+
     if (change)
         playerHUD->rebuild();
 
@@ -480,24 +490,11 @@ auto Player::draw(World *wrld) -> void {
         Rendering::RenderContext::get().matrix_translate({9.0f, 0.0f, 0.0f});
     }
     Rendering::RenderContext::get().matrix_clear();
-
-    Rendering::RenderContext::get().matrix_clear();
-
     playerHUD->end2D();
 
     if (wrld->client == nullptr || !wrld->client->disconnected) {
         for (int i = 0; i < 9; i++)
-            blockRep->drawBlk(itemSelections[i], i, 0, 4, 9.0f);
-        if (in_inventory) {
-            for (int i = 0; i < 42; i++) {
-                if (i == selectedBlock)
-                    blockRep->drawBlk(inventorySelection[i], i % 9, 7 - i / 9,
-                                      0, 13.0f);
-                else
-                    blockRep->drawBlk(inventorySelection[i], i % 9, 7 - i / 9,
-                                      0, 9.0f);
-            }
-        }
+            blockRep->drawBlk(itemSelections[i].type, i, 0, 4, 9.0f);
     }
 
     if (in_pause) {

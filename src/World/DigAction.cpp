@@ -10,39 +10,6 @@ namespace CrossCraft
     template <typename T>
     constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 
-    auto DigAction::doInventory(World *w) -> void
-    {
-        using namespace Stardust_Celeste::Utilities;
-        auto cX = (Input::get_axis("Mouse", "X") + 1.0f) / 2.0f;
-        auto cY = (Input::get_axis("Mouse", "Y") + 1.0f) / 2.0f;
-
-        if (cX > 0.3125f && cX < 0.675f)
-            cX = (cX - 0.3125f) / .04f;
-        else
-            return;
-
-        if (cY > 0.3125f && cY < 0.7188f)
-            cY = (cY - 0.3125f) / .08f;
-        else
-            return;
-
-        int iX = cX;
-        int iY = cY;
-
-        int idx = iY * 9 + iX;
-
-        if (idx > 41)
-            return;
-
-#if PSP || BUILD_PLAT == BUILD_VITA
-        idx = (w->player->in_cursor_x) + (w->player->in_cursor_y * 9);
-#endif
-
-        w->player->itemSelections[w->player->selectorIDX] =
-            w->player->inventorySelection[idx];
-
-        return;
-    }
 
     auto DigAction::dig(std::any d) -> void
     {
@@ -53,13 +20,6 @@ namespace CrossCraft
             w->break_icd = 0.2f;
         else
             return;
-
-        // If we're in inventory, handle that click
-        if (w->player->in_inventory)
-        {
-            doInventory(w);
-            return;
-        }
 
 #if BUILD_PC
         if (w->player->in_pause)
@@ -148,12 +108,6 @@ namespace CrossCraft
 
             w->chunksMeta[mIdx].is_full = false;
 
-            // Send client info if multiplayer
-            if (w->client != nullptr)
-            {
-                w->set_block(ivec.x, ivec.y, ivec.z, 0,
-                             w->player->itemSelections[w->player->selectorIDX]);
-            }
 
             // Update surrounding blocks on a larger radius for water filling
             if (was_sponge)

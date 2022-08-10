@@ -66,13 +66,79 @@ namespace CrossCraft
         drops.push_back(data);
     }
 
+    int Drops::try_pickup(DropData& d, Player* p) {
+        int idx = -1;
+
+        for (int i = 0; i < 9; i++) {
+            if (p->itemSelections[i].type == d.type) {
+                idx = i;
+                break;
+            }
+        }
+
+        if (idx < 0) {
+            //Check empty slots
+
+            for (int i = 0; i < 9; i++) {
+                if (p->itemSelections[i].type == -1) {
+                    p->itemSelections[i].type = d.type;
+                    idx = i;
+                    break;
+                }
+            }
+
+            if (idx < 0) {
+                return 0;
+            }
+        }
+
+        auto count = p->itemSelections[idx].quantity;
+        
+        if (count >= 99)
+            return 0;
+
+        auto newSum = count + d.quantity;
+
+        if (newSum <= 99) {
+            p->itemSelections[idx].quantity = newSum;
+            p->countChange = true;
+            return 1;
+        }
+        else {
+            auto excess = newSum - 99;
+            auto diff = d.quantity - excess;
+            d.quantity -= diff;
+            p->itemSelections[idx].quantity += diff;
+            p->countChange = true;
+            return 2;
+        }
+
+        return 0;
+    }
+
     void Drops::update(float dt, Player *p, World* w)
     {
-        for (auto &d : drops)
+        int toRemove = -1;
+        for (int i = 0; i < drops.size(); i++)
         {
+            auto& d = drops[i];
+
             d.animTime += dt;
             d.rot = glm::vec2(0, d.animTime * 30.0f);
             d.doPhysics(dt, w);
+
+            auto diff = p->pos - d.pos;
+            auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+
+            if (len < 2.5f && toRemove < 0) {
+                if (try_pickup(d, p) == 1) {
+                    toRemove = i;
+                }
+            }
+        }
+
+        if (toRemove >= 0) {
+            drops.erase(drops.begin() + toRemove);
         }
     }
     void Drops::draw()

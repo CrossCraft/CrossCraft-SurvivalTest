@@ -30,7 +30,7 @@ class UserInterface {
 
     auto draw_text(std::string text, unsigned char color, unsigned char x_align,
                    unsigned char y_align, short x_line, short y_line,
-                   short bg_mode) -> void;
+                   short bg_mode, int pXoff = 0, int pYoff = 0) -> void;
 
     auto get_block_name(uint8_t id) -> std::string;
 

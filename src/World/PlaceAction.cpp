@@ -65,7 +65,7 @@ auto PlaceAction::place(std::any d) -> void {
         auto copy_ivec = ivec;
 
         // Check your feet
-        auto bk = w->player->itemSelections[w->player->selectorIDX];
+        auto bk = w->player->itemSelections[w->player->selectorIDX].type;
         float xm = -0.3f;
         for (int i = 0; i < 2; i++) {
             float ym = -0.3f;
@@ -108,7 +108,7 @@ auto PlaceAction::place(std::any d) -> void {
         idx = w->getIdx(ivec.x, ivec.y, ivec.z);
 
         auto idx2 = w->getIdx(ivec.x, ivec.y - 1, ivec.z);
-        blk = w->player->itemSelections[w->player->selectorIDX];
+        blk = w->player->itemSelections[w->player->selectorIDX].type;
 
         auto blk2 = w->worldData[idx2];
 
@@ -155,12 +155,6 @@ auto PlaceAction::place(std::any d) -> void {
                    ivec.z / 16 * w->world_size.x / 16 + ivec.x / 16;
 
         w->chunksMeta[mIdx].is_empty = false;
-
-        // Update client if necessary
-        if (w->client != nullptr) {
-            w->set_block(ivec.x, ivec.y, ivec.z, 1,
-                         w->player->itemSelections[w->player->selectorIDX]);
-        }
 
         uint16_t x = ivec.x / 16;
         uint16_t y = ivec.z / 16;
