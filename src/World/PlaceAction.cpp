@@ -126,7 +126,7 @@ auto PlaceAction::place(std::any d) -> void {
         if ((blk == Block::Mushroom1 || blk == Block::Mushroom2) &&
             (blk2 != Block::Stone && blk2 != Block::Cobblestone &&
              blk2 != Block::Gravel))
-            return;
+            goto consume;
 
         w->worldData[idx] = blk;
 
@@ -179,6 +179,30 @@ auto PlaceAction::place(std::any d) -> void {
 
         return;
     }
+
+consume:
+    auto type = w->player->itemSelections[w->player->selectorIDX].type;
+
+    if ((type == Block::Mushroom1 || type == Block::Mushroom2) && w->player->itemSelections[w->player->selectorIDX].quantity > 0) {
+
+        if (type == Block::Mushroom1) {
+            w->player->HP += 5;
+        }
+        else {
+            w->player->HP -= 3;
+        }
+
+        if (w->player->HP > 20) {
+            w->player->HP = 20;
+        }
+
+        w->player->itemSelections[w->player->selectorIDX].quantity--;
+        if (w->player->itemSelections[w->player->selectorIDX].quantity == 0) {
+            w->player->itemSelections[w->player->selectorIDX].type = -1;
+        }
+    }
+
+    return;
 }
 
 } // namespace CrossCraft
