@@ -21,7 +21,7 @@ namespace CrossCraft
         uint8_t type;
         uint8_t quantity;
         float animTime;
-
+        bool inRange;
         void doPhysics(float dt, World* w);
     };
 

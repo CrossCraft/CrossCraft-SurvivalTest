@@ -130,10 +130,17 @@ namespace CrossCraft
             auto diff = p->pos - d.pos;
             auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-            if (len < 2.5f && toRemove < 0) {
+            if (len < 4.0f && toRemove < 0) {
                 if (try_pickup(d, p) == 1) {
                     toRemove = i;
                 }
+            }
+
+            if (len < 24.0f * 24.0f) {
+                d.inRange = true;
+            }
+            else {
+                d.inRange = false;
             }
         }
 
@@ -154,7 +161,8 @@ namespace CrossCraft
             // Set up texture
             Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
-            blockMesh[d.type].draw();
+            if(d.inRange)
+                blockMesh[d.type].draw();
 
             Rendering::RenderContext::get().matrix_clear();
         }
