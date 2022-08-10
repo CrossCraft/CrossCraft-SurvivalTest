@@ -15,12 +15,12 @@ void Entity::test_collide(glm::vec3 testpos, World *wrld, float dt) {
     bool testY = false;
     bool testZ = false;
 
-    int xMin = (int)(pos.x - 0.3f);
-    int xMax = (int)(pos.x + 0.3f);
-    int yMin = (int)(pos.y - 1.8f);
+    int xMin = (int)(pos.x - size.x / 2.0f);
+    int xMax = (int)(pos.x + size.x / 2.0f);
+    int yMin = (int)(pos.y - size.y);
     int yMax = (int)(pos.y);
-    int zMin = (int)(pos.z - 0.3f);
-    int zMax = (int)(pos.z + 0.3f);
+    int zMin = (int)(pos.z - size.z / 2.0f);
+    int zMax = (int)(pos.z + size.z / 2.0f);
 
     if (vel.x < 0.0) {
         x = (int)(pos.x - 0.3f + vel.x * dt);

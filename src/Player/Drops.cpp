@@ -2,6 +2,19 @@
 
 namespace CrossCraft
 {
+    void DropData::doPhysics(float dt, World* w) {
+        glm::vec3 testpos = pos + vel * dt;
+
+        pos.y += 1.5f;
+        test_collide(testpos, w, dt);
+        pos += vel * dt;
+        pos.y -= 1.5f;
+
+        vel.x *= 0.95f;
+        vel.z *= 0.95f;
+        vel.y -= 16.0f * dt;
+    }
+
     Drops::Drops()
     {
         for (int i = 0; i < 50; i++)
@@ -53,12 +66,13 @@ namespace CrossCraft
         drops.push_back(data);
     }
 
-    void Drops::update(float dt, Player *p)
+    void Drops::update(float dt, Player *p, World* w)
     {
         for (auto &d : drops)
         {
             d.animTime += dt;
             d.rot = glm::vec2(0, d.animTime * 30.0f);
+            d.doPhysics(dt, w);
         }
     }
     void Drops::draw()

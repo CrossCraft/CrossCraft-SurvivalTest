@@ -94,6 +94,8 @@ Player::Player()
     in_pause = false;
     hasDir = false;
 
+    size = { 0.6f, 1.8f, 0.6f };
+
     HP = 20;
     arrows = 255;
     score = 0;

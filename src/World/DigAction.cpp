@@ -110,7 +110,8 @@ auto DigAction::dig(std::any d) -> void {
         d.pos = cast_pos;
         d.type = 1;
         d.quantity = 1;
-
+        d.size = { 0.25f, 0.25f, 0.25f };
+        d.vel = { (float)(rand() % 26 - 13) * 2.0f, 2.0f, (float)(rand() % 26 -13) * 2.0f};
         w->drops->add_drop(d);
 
         uint16_t x = ivec.x / 16;

@@ -185,7 +185,7 @@ void World::update(double dt) {
     sbox->update_position(this);
     clouds->update(dt);
     psystem->update(dt);
-    drops->update(dt, player.get());
+    drops->update(dt, player.get(), this);
 
     tick_counter += dt;
 

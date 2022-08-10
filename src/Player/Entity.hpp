@@ -8,6 +8,7 @@ struct Entity {
     glm::vec3 pos;
     glm::vec2 rot;
     glm::vec3 vel;
+    glm::vec3 size;
 
   protected:
     bool is_falling;

@@ -8,6 +8,7 @@
 #include <any>
 #include <glm.hpp>
 #include "Player.hpp"
+#include "../World/World.hpp"
 
 namespace CrossCraft
 {
@@ -20,6 +21,8 @@ namespace CrossCraft
         uint8_t type;
         uint8_t quantity;
         float animTime;
+
+        void doPhysics(float dt, World* w);
     };
 
     class Drops
@@ -30,7 +33,7 @@ namespace CrossCraft
 
         void add_drop(DropData data);
 
-        void update(float dt, Player *p);
+        void update(float dt, Player *p, World* w);
         void draw();
 
         uint32_t terrain_atlas;
