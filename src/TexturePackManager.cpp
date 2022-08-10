@@ -11,7 +11,28 @@ using namespace Stardust_Celeste;
 TexturePackManager::TexturePackManager() {
     path_names.clear();
     layers.push_back("default");
+
+    std::ifstream fs(PLATFORM_FILE_PREFIX + "texturepacks.txt");
+    if (fs.is_open()) {
+        std::string line;
+        while (std::getline(fs, line)) {
+            layers.push_back(line.substr(0, line.find_first_of('\n')));
+        }
+    }
+    fs.close();
 }
+
+
+auto TexturePackManager::write_config() -> void {
+    std::ofstream file(PLATFORM_FILE_PREFIX + "texturepacks.txt");
+
+    for (auto& l : layers) {
+        file << l << "\n";
+    }
+
+    file.close();
+}
+
 TexturePackManager::~TexturePackManager() {}
 auto TexturePackManager::load_texture(std::string filename, u32 magFilter,
                                       u32 minFilter, bool repeat, bool flip,

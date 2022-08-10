@@ -507,10 +507,13 @@ void MenuState::trigger(std::any m) {
                 mstate->fontRenderer->texture = mstate->font_texture;
                 mstate->splashRenderer->texture = mstate->font_texture;
 
-            } else {
+            } 
+            else {
                 if (name != "default")
                     vec.erase(std::find(vec.begin(), vec.end(), name));
             }
+
+            TexturePackManager::get().write_config();
         }
     }
 }

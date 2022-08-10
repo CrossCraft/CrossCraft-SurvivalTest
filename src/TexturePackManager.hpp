@@ -12,6 +12,8 @@ class TexturePackManager {
     TexturePackManager();
     ~TexturePackManager();
 
+    auto write_config() -> void;
+
     auto scan_folder(std::string path) -> void;
     auto load_texture(std::string filename, u32 magFilter, u32 minFilter,
                       bool repeat, bool flip = false, bool vram = false) -> u32;
