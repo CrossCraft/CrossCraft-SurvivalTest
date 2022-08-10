@@ -110,6 +110,9 @@ auto PlaceAction::place(std::any d) -> void {
         auto idx2 = w->getIdx(ivec.x, ivec.y - 1, ivec.z);
         blk = w->player->itemSelections[w->player->selectorIDX].type;
 
+        if (w->player->itemSelections[w->player->selectorIDX].type < 0 || w->player->itemSelections[w->player->selectorIDX].quantity < 1)
+            return;
+
         auto blk2 = w->worldData[idx2];
 
         if ((blk == Block::Flower1 || blk == Block::Flower2) &&
@@ -126,6 +129,11 @@ auto PlaceAction::place(std::any d) -> void {
             return;
 
         w->worldData[idx] = blk;
+
+        w->player->itemSelections[w->player->selectorIDX].quantity--;
+        if (w->player->itemSelections[w->player->selectorIDX].quantity == 0) {
+            w->player->itemSelections[w->player->selectorIDX].type = -1;
+        }
 
         // Drain water in a surrounding 5x5x5 area if a sponge was placed.
 
