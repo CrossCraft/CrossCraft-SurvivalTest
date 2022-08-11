@@ -3,7 +3,6 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtx/rotate_vector.hpp>
 
-
 namespace CrossCraft {
 ChunkStack::ChunkStack(int x, int z) : cX(x), cZ(z) {
     // Create new meshes
@@ -217,7 +216,7 @@ void ChunkStack::generate_border() {
     border = true;
 }
 
-bool ChunkStack::check_visible(World* wrld, glm::vec3 posCheck, int cY) {
+bool ChunkStack::check_visible(World *wrld, glm::vec3 posCheck, int cY) {
     auto pos = wrld->player->get_pos();
     pos.y -= (1.80f - 1.5965f);
 
@@ -230,8 +229,8 @@ bool ChunkStack::check_visible(World* wrld, glm::vec3 posCheck, int cY) {
         auto cast_pos = pos + (default_vec * static_cast<float>(c));
 
         auto ivec = glm::ivec3(static_cast<s32>(cast_pos.x),
-            static_cast<s32>(cast_pos.y),
-            static_cast<s32>(cast_pos.z));
+                               static_cast<s32>(cast_pos.y),
+                               static_cast<s32>(cast_pos.z));
 
         u32 idx = wrld->getIdx(ivec.x, ivec.y, ivec.z);
         if (idx < 0)
@@ -239,8 +238,8 @@ bool ChunkStack::check_visible(World* wrld, glm::vec3 posCheck, int cY) {
 
         auto blk = wrld->worldData[idx];
 
-        if (blk == Block::Air || blk == Block::Water ||
-            blk == Block::Leaves || blk == Block::Glass)
+        if (blk == Block::Air || blk == Block::Water || blk == Block::Leaves ||
+            blk == Block::Glass)
             continue;
 
         if (ivec.x < 0 || ivec.x > wrld->world_size.x || ivec.y < 0 ||
@@ -259,43 +258,77 @@ bool ChunkStack::check_visible(World* wrld, glm::vec3 posCheck, int cY) {
     return true;
 }
 
-void ChunkStack::draw(World* wrld) {
+void ChunkStack::draw(World *wrld) {
     // Draw meshes
     for (int i = 0; i < 4; i++) {
-
-        glm::vec2 relative_chunk_pos = glm::vec2(
-            cX * 16.0f, cZ * 16.0f);
-        auto diff =
-            glm::vec2(wrld->player->pos.x, wrld->player->pos.z) - relative_chunk_pos;
+        wasRendered[i] = false;
+        glm::vec2 relative_chunk_pos = glm::vec2(cX * 16.0f, cZ * 16.0f);
+        auto diff = glm::vec2(wrld->player->pos.x, wrld->player->pos.z) -
+                    relative_chunk_pos;
         auto len = fabsf(sqrtf(diff.x * diff.x + diff.y * diff.y));
 
         glm::vec4 centerpos =
             glm::vec4(cX * 16 + 8.0f, i * 16, cZ * 16 + 8.0f, 1.0f);
 
-        glm::vec4 res = wrld->player->projmat * wrld->player->viewmat * centerpos;
+        glm::vec4 res =
+            wrld->player->projmat * wrld->player->viewmat * centerpos;
 
         if (res.w >= 0 || len <= 24.0f) {
 
 #if BUILD_PLAT == BUILD_PSP || BUILD_PLAT == BUILD_VITA
             bool visible = false;
 
-            visible = visible || check_visible(wrld, glm::vec3(centerpos.x, centerpos.y + 8.0f, centerpos.z), i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld,
+                    glm::vec3(centerpos.x, centerpos.y + 8.0f, centerpos.z), i);
 
-            visible = visible || check_visible(wrld, glm::vec3((cX + 0) * 16, i * 16, (cZ + 0) * 16), i);
-            visible = visible || check_visible(wrld, glm::vec3((cX + 1) * 16, i * 16, (cZ + 0) * 16), i);
-            visible = visible || check_visible(wrld, glm::vec3((cX + 1) * 16, i * 16, (cZ + 1) * 16), i);
-            visible = visible || check_visible(wrld, glm::vec3((cX + 0) * 16, i * 16, (cZ + 1) * 16), i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 0) * 16, i * 16, (cZ + 0) * 16), i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 1) * 16, i * 16, (cZ + 0) * 16), i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 1) * 16, i * 16, (cZ + 1) * 16), i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 0) * 16, i * 16, (cZ + 1) * 16), i);
 
-            visible = visible || check_visible(wrld, glm::vec3((cX + 0) * 16, (i + 1) * 16, (cZ + 0) * 16), i);
-            visible = visible || check_visible(wrld, glm::vec3((cX + 1) * 16, (i + 1) * 16, (cZ + 0) * 16), i);
-            visible = visible || check_visible(wrld, glm::vec3((cX + 1) * 16, (i + 1) * 16, (cZ + 1) * 16), i);
-            visible = visible || check_visible(wrld, glm::vec3((cX + 0) * 16, (i + 1) * 16, (cZ + 1) * 16), i);
-#else 
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 0) * 16, (i + 1) * 16, (cZ + 0) * 16),
+                    i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 1) * 16, (i + 1) * 16, (cZ + 0) * 16),
+                    i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 1) * 16, (i + 1) * 16, (cZ + 1) * 16),
+                    i);
+            visible =
+                visible ||
+                check_visible(
+                    wrld, glm::vec3((cX + 0) * 16, (i + 1) * 16, (cZ + 1) * 16),
+                    i);
+#else
             bool visible = true;
 #endif
 
-            if(visible || len <= 33.0f)
+            if (visible || len <= 33.0f) {
                 stack[i]->draw(ChunkMeshSelection::Opaque);
+                wasRendered[i] = true;
+            }
         }
     }
 }
@@ -303,14 +336,16 @@ void ChunkStack::draw(World* wrld) {
 void ChunkStack::draw_transparent() {
     // Draw transparent meshes
     for (int i = 0; i < 4; i++) {
-        stack[i]->draw(ChunkMeshSelection::Transparent);
+        if (wasRendered[i])
+            stack[i]->draw(ChunkMeshSelection::Transparent);
     }
 }
 
 void ChunkStack::draw_flora() {
     // Draw transparent meshes
     for (int i = 0; i < 4; i++) {
-        stack[i]->draw(ChunkMeshSelection::Flora);
+        if (wasRendered[i])
+            stack[i]->draw(ChunkMeshSelection::Flora);
     }
 }
 

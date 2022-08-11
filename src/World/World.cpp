@@ -144,7 +144,7 @@ const auto CHUNKS_PER_SECOND = 96.0f;
 #endif
 
 #if PSP
-const auto RENDER_DISTANCE_DIAMETER = 5.0f;
+const auto RENDER_DISTANCE_DIAMETER = 6.0f;
 #elif BUILD_PLAT == BUILD_VITA
 const auto RENDER_DISTANCE_DIAMETER = 8.0f;
 #else

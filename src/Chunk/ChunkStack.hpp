@@ -72,7 +72,7 @@ class ChunkStack {
      * @brief Draw the chunk stack
      *
      */
-    void draw(World* wrld);
+    void draw(World *wrld);
 
     /**
      * @brief Draw the transparent chunks
@@ -93,9 +93,11 @@ class ChunkStack {
     bool border;
 
   private:
-    bool check_visible(World* wrld, glm::vec3 posCheck, int cY);
+    bool check_visible(World *wrld, glm::vec3 posCheck, int cY);
     auto update_check(World *wrld, int blkr, glm::ivec3 chk) -> void;
     std::vector<glm::ivec3> updated;
+
+    bool wasRendered[4];
 
     std::array<ChunkMesh *, 4> stack;
     int cX, cZ;
