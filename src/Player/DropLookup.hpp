@@ -56,6 +56,12 @@ namespace CrossCraft
             break;
         }
 
+        case Block::Obsidian: {
+            d.type = Block::Cobblestone;
+            d.quantity = 1;
+            break;
+        }
+
         default:
         {
             d.type = broken;

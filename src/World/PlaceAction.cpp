@@ -30,7 +30,7 @@ auto PlaceAction::place(std::any d) -> void {
     default_vec *= REACH_DISTANCE;
 
     // Iterate over vector to check for placement
-    const u32 NUM_STEPS = 50;
+    const u32 NUM_STEPS = 100;
     for (u32 i = 0; i < NUM_STEPS; i++) {
         float percentage =
             static_cast<float>(i) / static_cast<float>(NUM_STEPS);
