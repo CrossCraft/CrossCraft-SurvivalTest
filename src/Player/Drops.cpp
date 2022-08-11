@@ -119,6 +119,7 @@ namespace CrossCraft
     void Drops::update(float dt, Player *p, World* w)
     {
         int toRemove = -1;
+        start:
         for (int i = 0; i < drops.size(); i++)
         {
             auto& d = drops[i];
@@ -130,9 +131,28 @@ namespace CrossCraft
             auto diff = p->pos - d.pos;
             auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-            if (len < 4.0f && toRemove < 0) {
-                if (try_pickup(d, p) == 1) {
-                    toRemove = i;
+            if (len < 4.0f && toRemove < 0 && try_pickup(d, p) == 1) {
+                toRemove = i;
+            }
+            else {
+                //Merge check
+                int mergeList = -1;
+                for (int c = 0; c < drops.size(); c++) {
+                    if (c != i) {
+                        auto diff = d.pos - drops[c].pos;
+                        auto newLen = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+
+                        if (newLen < 1.0f && drops[c].type == d.type) {
+                            mergeList = c;
+                            break;
+                        }
+                    }
+                }
+
+                if (mergeList >= 0) {
+                    d.quantity += drops[mergeList].quantity;
+                    drops.erase(drops.begin() + mergeList);
+                    goto start;
                 }
             }
 
