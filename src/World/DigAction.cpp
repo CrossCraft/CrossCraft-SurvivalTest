@@ -16,10 +16,10 @@ namespace CrossCraft
         auto w = std::any_cast<World *>(d);
 
         // Check that we can break
-        if (w->break_icd < 0)
-            w->break_icd = 0.2f;
-        else
-            return;
+        //if (w->break_icd < 0)
+        //    w->break_icd = 0.2f;
+        //else
+        //    return;
 
 #if BUILD_PC
         if (w->player->in_pause)
@@ -75,65 +75,86 @@ namespace CrossCraft
                 blk == Block::Lava)
                 continue;
 
-            // We found a working block -- create break particles
-            w->psystem->initialize(blk, cast_pos);
-
-            DropData d;
-            memset(&d, 0, sizeof(DropData));
-            d.pos = cast_pos;
-            d.size = {0.25f, 0.25f, 0.25f};
-            d.vel = {0.0f, 2.0f, 0.0f};
-            lookup(blk, d);
-
-            if(d.quantity > 0)
-            w->drops->add_drop(d);
-
-            uint16_t x = ivec.x / 16;
-            uint16_t y = ivec.z / 16;
-            uint32_t id = x << 16 | (y & 0x00FF);
-
-            // Check if it's a sponge
-            bool was_sponge = false;
-            if (w->worldData[idx] == Block::Sponge)
-            {
-                was_sponge = true;
+            if (!w->isBreaking) {
+                w->isBreaking = true;
+                w->timeLeftToBreak = 1.0f;
+                w->breaking = ivec;
             }
+            else {
+                if (ivec != w->breaking) {
+                    w->isBreaking = true;
+                    w->timeLeftToBreak = 1.0f;
+                    w->breaking = ivec;
+                }
+                else {
+                    //Ivec is breaking
+                    if (w->timeLeftToBreak < 0) {
+                        // We found a working block -- create break particles
+                        w->psystem->initialize(blk, cast_pos);
 
-            // Set to air
-            w->worldData[idx] = Block::Air;
+                        DropData d;
+                        memset(&d, 0, sizeof(DropData));
+                        d.pos = cast_pos;
+                        d.size = { 0.25f, 0.25f, 0.25f };
+                        d.vel = { 0.0f, 2.0f, 0.0f };
+                        lookup(blk, d);
 
-            // Update metadata
-            int mIdx = ivec.y / 16 * w->world_size.z / 16 * w->world_size.x / 16 +
-                       ivec.z / 16 * w->world_size.x / 16 + ivec.x / 16;
+                        if (d.quantity > 0)
+                            w->drops->add_drop(d);
 
-            w->chunksMeta[mIdx].is_full = false;
+                        uint16_t x = ivec.x / 16;
+                        uint16_t y = ivec.z / 16;
+                        uint32_t id = x << 16 | (y & 0x00FF);
+
+                        // Check if it's a sponge
+                        bool was_sponge = false;
+                        if (w->worldData[idx] == Block::Sponge)
+                        {
+                            was_sponge = true;
+                        }
+
+                        // Set to air
+                        w->worldData[idx] = Block::Air;
+
+                        // Update metadata
+                        int mIdx = ivec.y / 16 * w->world_size.z / 16 * w->world_size.x / 16 +
+                            ivec.z / 16 * w->world_size.x / 16 + ivec.x / 16;
+
+                        w->chunksMeta[mIdx].is_full = false;
 
 
-            // Update surrounding blocks on a larger radius for water filling
-            if (was_sponge)
-            {
-                for (auto i = ivec.x - 3; i <= ivec.x + 3; i++)
-                {
-                    for (auto j = ivec.z - 3; j <= ivec.z + 3; j++)
-                    {
-                        w->add_update({i, ivec.y, j});
-                        w->add_update({i, ivec.y + 1, j});
-                        w->add_update({i, ivec.y - 1, j});
-                        w->add_update({i, ivec.y + 2, j});
-                        w->add_update({i, ivec.y - 2, j});
+                        // Update surrounding blocks on a larger radius for water filling
+                        if (was_sponge)
+                        {
+                            for (auto i = ivec.x - 3; i <= ivec.x + 3; i++)
+                            {
+                                for (auto j = ivec.z - 3; j <= ivec.z + 3; j++)
+                                {
+                                    w->add_update({ i, ivec.y, j });
+                                    w->add_update({ i, ivec.y + 1, j });
+                                    w->add_update({ i, ivec.y - 1, j });
+                                    w->add_update({ i, ivec.y + 2, j });
+                                    w->add_update({ i, ivec.y - 2, j });
+                                }
+                            }
+                        }
+
+                        // Update Lighting
+                        w->update_lighting(ivec.x, ivec.z);
+
+                        if (w->chunks.find(id) != w->chunks.end())
+                            w->chunks[id]->generate(w);
+
+                        w->update_surroundings(ivec.x, ivec.z);
+                        w->update_nearby_blocks(ivec);
+
+                        w->isBreaking = false;
+                    }
+                    else {
+                        w->timeLeftToBreak -= w->stored_dt;
                     }
                 }
             }
-
-            // Update Lighting
-            w->update_lighting(ivec.x, ivec.z);
-
-            if (w->chunks.find(id) != w->chunks.end())
-                w->chunks[id]->generate(w);
-
-            w->update_surroundings(ivec.x, ivec.z);
-            w->update_nearby_blocks(ivec);
-
             break;
         }
     }

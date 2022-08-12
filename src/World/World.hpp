@@ -162,6 +162,11 @@ class World {
     glm::vec3 world_size;
     bool loaded;
 
+    bool isBreaking;
+    float timeLeftToBreak;
+    glm::ivec3 breaking;
+    float stored_dt;
+
   private:
     /**
      * @brief Get the needed chunks

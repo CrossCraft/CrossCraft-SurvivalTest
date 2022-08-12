@@ -66,6 +66,11 @@ World::World(std::shared_ptr<Player> p) {
     place_icd = 0.0f;
     break_icd = 0.0f;
     chunk_generate_icd = 0.0f;
+
+
+    isBreaking = false;
+    timeLeftToBreak = -1.0f;
+    breaking = { -1, -1, -1 };
 }
 
 auto World::spawn() -> void {
@@ -188,6 +193,7 @@ void World::update(double dt) {
     drops->update(dt, player.get(), this);
 
     tick_counter += dt;
+    stored_dt = dt;
 
     break_icd -= dt;
     place_icd -= dt;

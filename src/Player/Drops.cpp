@@ -131,8 +131,11 @@ namespace CrossCraft
             auto diff = p->pos - d.pos;
             auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-            if (len < 4.0f && toRemove < 0 && try_pickup(d, p) == 1) {
+            if (len < 2.0f && toRemove < 0 && try_pickup(d, p) == 1) {
                 toRemove = i;
+            }
+            else if (len < 4.0f) {
+                d.pos += diff * dt * 2.0f;
             }
             else {
                 //Merge check
