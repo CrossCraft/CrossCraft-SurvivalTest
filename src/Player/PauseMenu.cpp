@@ -61,8 +61,8 @@ auto PauseMenu::enter() -> void {
 }
 auto PauseMenu::exit() -> void {
 #if BUILD_PC
-        glfwSetInputMode(Rendering::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        Utilities::Input::set_cursor_center();
+    glfwSetInputMode(Rendering::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    Utilities::Input::set_cursor_center();
 #endif
 
     selIdx = 0;
@@ -160,22 +160,30 @@ auto PauseMenu::draw() -> void {
 
     if (selIdx != 2) {
         fontRenderer->add_text(
-            "Quit Game", {240 - fontRenderer->calculate_size("Quit Game") / 2, 64},
+            "Quit Game",
+            {240 - fontRenderer->calculate_size("Quit Game") / 2, 64},
             {255, 255, 255, 255}, -11);
         fontRenderer->add_text(
-            "Quit Game", {241 - fontRenderer->calculate_size("Quit Game") / 2, 63},
+            "Quit Game",
+            {241 - fontRenderer->calculate_size("Quit Game") / 2, 63},
             {63, 63, 63, 255}, -10);
     } else {
         fontRenderer->add_text(
-            "Quit Game", {240 - fontRenderer->calculate_size("Quit Game") / 2, 64},
+            "Quit Game",
+            {240 - fontRenderer->calculate_size("Quit Game") / 2, 64},
             CC_TEXT_COLOR_SELECT_FRONT, -11);
         fontRenderer->add_text(
-            "Quit Game", {241 - fontRenderer->calculate_size("Quit Game") / 2, 63},
+            "Quit Game",
+            {241 - fontRenderer->calculate_size("Quit Game") / 2, 63},
             CC_TEXT_COLOR_SELECT_BACK, -10);
     }
 
-
     fontRenderer->rebuild();
+
+#if PSP
+    sceKernelDcacheWritebackInvalidateAll();
+#endif // PSP
+
     fontRenderer->draw();
 }
 auto PauseMenu::update() -> void {

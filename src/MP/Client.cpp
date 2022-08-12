@@ -647,6 +647,11 @@ void Client::draw() {
             pinfo.name,
             {-fontRenderer->calculate_size(pinfo.name) / 2.0f + 8.0f, 40.0f},
             Rendering::Color{255, 255, 255, 255}, 1);
+
+#if PSP
+        sceKernelDcacheWritebackInvalidateAll();
+#endif // PSP
+
         fontRenderer->rebuild();
         fontRenderer->draw();
 
