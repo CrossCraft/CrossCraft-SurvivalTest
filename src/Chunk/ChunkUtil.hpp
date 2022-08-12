@@ -269,8 +269,14 @@ inline std::array<float, 8> getTexCoord(uint8_t idx, uint32_t lv) {
     case 96:
         return getTexture(vec, 80);
 
-    default:
-        return getTexture(vec, idx - 21 + 64, true);
+    default: {
+        if (idx < 128) {
+            return getTexture(vec, idx - 21 + 64, true);
+        }
+        else {
+            return getTexture(vec, idx, false);
+        }
+    }
     }
 }
 

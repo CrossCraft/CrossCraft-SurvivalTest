@@ -352,12 +352,13 @@ void World::draw() {
 #if BUILD_PLAT == BUILD_PSP
     sceGuDisable(GU_FOG);
 #endif
-
-    sbox->draw();
-
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
+    sbox->draw();
+
+    Rendering::TextureManager::get().bind_texture(terrain_atlas);
+    sbox->draw_break(this);
     player->draw(this);
 }
 
