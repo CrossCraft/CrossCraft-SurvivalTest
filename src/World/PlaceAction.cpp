@@ -19,6 +19,9 @@ auto PlaceAction::place(std::any d) -> void {
     if (w->player->in_inventory)
         return;
 
+    if (w->player->in_pause)
+        return;
+
     // Setup default camera pointing vector
     auto default_vec = glm::vec3(0, 0, 1);
     default_vec = glm::rotateX(default_vec, DEGTORAD(w->player->get_rot().x));
@@ -110,7 +113,8 @@ auto PlaceAction::place(std::any d) -> void {
         auto idx2 = w->getIdx(ivec.x, ivec.y - 1, ivec.z);
         blk = w->player->itemSelections[w->player->selectorIDX].type;
 
-        if (w->player->itemSelections[w->player->selectorIDX].type < 0 || w->player->itemSelections[w->player->selectorIDX].quantity < 1)
+        if (w->player->itemSelections[w->player->selectorIDX].type < 0 ||
+            w->player->itemSelections[w->player->selectorIDX].quantity < 1)
             return;
 
         auto blk2 = w->worldData[idx2];
@@ -183,12 +187,12 @@ auto PlaceAction::place(std::any d) -> void {
 consume:
     auto type = w->player->itemSelections[w->player->selectorIDX].type;
 
-    if ((type == Block::Mushroom1 || type == Block::Mushroom2) && w->player->itemSelections[w->player->selectorIDX].quantity > 0) {
+    if ((type == Block::Mushroom1 || type == Block::Mushroom2) &&
+        w->player->itemSelections[w->player->selectorIDX].quantity > 0) {
 
         if (type == Block::Mushroom1) {
             w->player->HP += 5;
-        }
-        else {
+        } else {
             w->player->HP -= 3;
         }
 
