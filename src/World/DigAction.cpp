@@ -26,6 +26,7 @@ auto DigAction::dig(std::any d) -> void {
     if (w->player->in_pause) {
         if (w->player->pauseMenu->selIdx == 0) {
             w->player->in_pause = false;
+            w->player->pauseMenu->exit();
         } else if (w->player->pauseMenu->selIdx == 1) {
             SaveData::save(w);
         } else if (w->player->pauseMenu->selIdx == 2) {
