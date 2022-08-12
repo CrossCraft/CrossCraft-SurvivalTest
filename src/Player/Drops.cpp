@@ -135,7 +135,7 @@ namespace CrossCraft
                 toRemove = i;
             }
             else if (len < 4.0f) {
-                d.pos += diff * dt * 2.0f;
+                d.pos += diff * dt * 3.0f;
             }
             else {
                 //Merge check
