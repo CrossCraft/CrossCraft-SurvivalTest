@@ -116,12 +116,18 @@ void GameState::bind_controls() {
     // PSP Triggers: Press/Hold
     //
     psp_controller->add_command(
+        {(int)Input::PSPButtons::RTrigger, KeyFlag::Release},
+        {DigAction::dig_release, world.get()});
+    psp_controller->add_command(
         {(int)Input::PSPButtons::RTrigger, KeyFlag::Press | KeyFlag::Held},
         {DigAction::dig, world.get()});
     psp_controller->add_command(
         {(int)Input::PSPButtons::LTrigger, KeyFlag::Press | KeyFlag::Held},
         {PlaceAction::place, world.get()});
 
+    vita_controller->add_command(
+        {(int)Input::VitaButtons::RTrigger, KeyFlag::Release},
+        {DigAction::dig_release, world.get()});
     vita_controller->add_command(
         {(int)Input::VitaButtons::RTrigger, KeyFlag::Press | KeyFlag::Held},
         {DigAction::dig, world.get()});
@@ -177,6 +183,9 @@ void GameState::bind_controls() {
     key_controller->add_command({(int)Input::Keys::Backspace, KeyFlag::Press},
                                 {Player::delete_chat, world->player.get()});
 
+    mouse_controller->add_command(
+        {(int)Input::MouseButtons::Left, KeyFlag::Release},
+        {DigAction::dig_release, world.get()});
     mouse_controller->add_command(
         {(int)Input::MouseButtons::Left, KeyFlag::Press | KeyFlag::Held},
         {DigAction::dig, world.get()});
