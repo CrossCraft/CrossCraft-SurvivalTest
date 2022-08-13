@@ -35,7 +35,8 @@ void MenuState::on_start() {
     TexturePackManager::get().scan_folder(PLATFORM_FILE_PREFIX +
                                           "texturepacks/");
 
-    clip = create_scopeptr<Audio::Clip>(PLATFORM_FILE_PREFIX + "audio/step/grass1.wav");
+    clip = create_scopeptr<Audio::Clip>(PLATFORM_APP_FILE_PREFIX +
+                                        "audio/step/grass1.wav");
     textureMenu = false;
 
     // Make new controllers
@@ -511,8 +512,7 @@ void MenuState::trigger(std::any m) {
                 mstate->fontRenderer->texture = mstate->font_texture;
                 mstate->splashRenderer->texture = mstate->font_texture;
 
-            } 
-            else {
+            } else {
                 if (name != "default")
                     vec.erase(std::find(vec.begin(), vec.end(), name));
             }

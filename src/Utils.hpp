@@ -6,8 +6,10 @@
 
 #if BUILD_PLAT != BUILD_VITA
 #define PLATFORM_FILE_PREFIX std::string("")
+#define PLATFORM_APP_FILE_PREFIX std::string("")
 #else
 #define PLATFORM_FILE_PREFIX std::string("ux0:/data/CrossCraft-Classic/")
+#define PLATFORM_APP_FILE_PREFIX std::string("app0:/")
 #endif
 
 #if PSP

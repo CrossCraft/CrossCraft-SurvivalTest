@@ -87,7 +87,7 @@ if(VITA)
     set(VITA_VERSION "01.10")
 
     target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/include/)
-    target_link_libraries(CrossCraft-SurvivalTest SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub)
+    target_link_libraries(CrossCraft-SurvivalTest SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub openal pthread SceAudioIn_stub SceAudio_stub)
 
     vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
 
@@ -99,5 +99,40 @@ if(VITA)
         FILE src/assets/vita/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
         FILE src/assets/vita/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
         FILE texturepacks/default.zip texturepacks/default.zip
+        FILE audio/dig/glass1.wav audio/dig/glass1.wav
+        FILE audio/dig/glass2.wav audio/dig/glass2.wav
+        FILE audio/dig/glass3.wav audio/dig/glass3.wav
+        FILE audio/dig/grass1.wav audio/dig/grass1.wav
+        FILE audio/dig/grass2.wav audio/dig/grass2.wav
+        FILE audio/dig/grass3.wav audio/dig/grass3.wav
+        FILE audio/dig/grass4.wav audio/dig/grass4.wav
+        FILE audio/dig/gravel1.wav audio/dig/gravel1.wav
+        FILE audio/dig/gravel2.wav audio/dig/gravel2.wav
+        FILE audio/dig/gravel3.wav audio/dig/gravel3.wav
+        FILE audio/dig/gravel4.wav audio/dig/gravel4.wav
+        FILE audio/dig/stone1.wav audio/dig/stone1.wav
+        FILE audio/dig/stone2.wav audio/dig/stone2.wav
+        FILE audio/dig/stone3.wav audio/dig/stone3.wav
+        FILE audio/dig/stone4.wav audio/dig/stone4.wav
+        FILE audio/dig/wood1.wav audio/dig/wood1.wav
+        FILE audio/dig/wood2.wav audio/dig/wood2.wav
+        FILE audio/dig/wood3.wav audio/dig/wood3.wav
+        FILE audio/dig/wood4.wav audio/dig/wood4.wav
+        FILE audio/step/grass1.wav audio/step/grass1.wav
+        FILE audio/step/grass2.wav audio/step/grass2.wav
+        FILE audio/step/grass3.wav audio/step/grass3.wav
+        FILE audio/step/grass4.wav audio/step/grass4.wav
+        FILE audio/step/gravel1.wav audio/step/gravel1.wav
+        FILE audio/step/gravel2.wav audio/step/gravel2.wav
+        FILE audio/step/gravel3.wav audio/step/gravel3.wav
+        FILE audio/step/gravel4.wav audio/step/gravel4.wav
+        FILE audio/step/stone1.wav audio/step/stone1.wav
+        FILE audio/step/stone2.wav audio/step/stone2.wav
+        FILE audio/step/stone3.wav audio/step/stone3.wav
+        FILE audio/step/stone4.wav audio/step/stone4.wav
+        FILE audio/step/wood1.wav audio/step/wood1.wav
+        FILE audio/step/wood2.wav audio/step/wood2.wav
+        FILE audio/step/wood3.wav audio/step/wood3.wav
+        FILE audio/step/wood4.wav audio/step/wood4.wav
     )
 endif()
