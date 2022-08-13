@@ -134,6 +134,8 @@ auto PlaceAction::place(std::any d) -> void {
 
         w->worldData[idx] = blk;
 
+        w->sound_manager->play(blk, cast_pos, true);
+
         w->player->itemSelections[w->player->selectorIDX].quantity--;
         if (w->player->itemSelections[w->player->selectorIDX].quantity == 0) {
             w->player->itemSelections[w->player->selectorIDX].type = -1;

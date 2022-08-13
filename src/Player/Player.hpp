@@ -35,7 +35,7 @@ class BlockRep;
 
 class PlayerEntity : public Entity {
   public:
-    uint8_t HP;
+    int8_t HP;
     uint8_t arrows;
     uint16_t score;
 };
@@ -153,6 +153,7 @@ class Player : public PlayerEntity {
     float jump_icd;
     float view_bob, view_timer;
     float cube_bob;
+    float sound_icd;
     ScopePtr<Audio::Listener> listener;
 
     ScopePtr<Graphics::G2D::Sprite> item_box;

@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <vector>
 #include "../Player/Drops.hpp"
+#include "../Sound/SoundManager.hpp"
 
 namespace CrossCraft {
 
@@ -164,9 +165,11 @@ class World {
 
     bool isBreaking;
     float timeLeftToBreak;
+    float totalTimeBreak;
     glm::ivec3 breaking;
     float stored_dt;
 
+    ScopePtr<SoundManager> sound_manager;
   private:
     /**
      * @brief Get the needed chunks

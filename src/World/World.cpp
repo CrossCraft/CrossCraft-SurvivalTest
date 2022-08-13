@@ -63,6 +63,8 @@ World::World(std::shared_ptr<Player> p) {
     drops = create_scopeptr<Drops>();
     drops->terrain_atlas = terrain_atlas;
 
+    sound_manager = create_scopeptr<SoundManager>();
+
     place_icd = 0.0f;
     break_icd = 0.0f;
     chunk_generate_icd = 0.0f;

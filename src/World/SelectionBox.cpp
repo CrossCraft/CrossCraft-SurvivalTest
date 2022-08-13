@@ -157,7 +157,7 @@ auto SelectionBox::draw_break(World* wrld) -> void {
         ctx->matrix_translate(glm::vec3(-0.5f, -0.5f, -0.5f));
         
 
-        int i = (1.0f - wrld->timeLeftToBreak) / 0.1f;
+        int i = (wrld->totalTimeBreak - wrld->timeLeftToBreak) / (wrld->totalTimeBreak / 10.0f);
         if (i >= 0 && i < 10) {
 #if BUILD_PLAT == BUILD_PSP
             sceGuBlendFunc(GU_ADD, GU_DST_COLOR, GU_SRC_COLOR, 0, 0);

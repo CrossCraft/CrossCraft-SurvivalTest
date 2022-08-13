@@ -96,6 +96,8 @@ Player::Player()
     arrows = 255;
     score = 0;
 
+    sound_icd = 0;
+
     background_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(
         Rendering::Rectangle{{126, 55}, {226, 167}},
         Rendering::Color{0, 0, 0, 128}, 2);
@@ -227,11 +229,10 @@ void Player::update(float dt, World *wrld) {
         fps_count = 0;
     }
 
-    glm::vec3 look = { 0, 0, 1 };
-    look = glm::rotateX(look, rot.x);
-    look = glm::rotateY(look, rot.y);
+    glm::vec3 look = { 0, 0, -1 };
+    look = glm::rotateY(look, DEGTORAD(rot.y));
 
-    listener->update(pos, vel, look, { 0, 1, 0 });
+    //listener->update(pos, vel, look, { 0, 1, 0 });
     chat->update(dt);
 
     hasDir = false;
@@ -277,6 +278,12 @@ void Player::update(float dt, World *wrld) {
     else
         is_underwater = false;
 
+    sound_icd -= dt;
+    if (sound_icd < 0 && vel.x != 0 && vel.z != 0 && blk != 8 && blk != 10) {
+        wrld->sound_manager->play(blk, pos, true);
+        sound_icd = 0.33f;
+    }
+
     blk = wrld->worldData[wrld->getIdx(testpos.x, testpos.y - 1.2f, testpos.z)];
     if (blk == 8 || blk == 10)
         water_cutoff = true;
@@ -308,8 +315,8 @@ void Player::update(float dt, World *wrld) {
     } else {
         view_timer = 0;
     }
-    view_bob = sinf(view_timer * 3.14159 * 2.5f) / 18.0f;
-    cube_bob = cosf(view_timer * 3.14159 * 4.8f) / 44.0f;
+    view_bob = sinf(view_timer * 3.14159 * 3.0f) / 18.0f;
+    cube_bob = cosf(view_timer * 3.14159 * 3.0f) / 44.0f;
 
     // Update camera
     cam.pos = pos;

@@ -13,14 +13,43 @@ auto DigAction::dig_release(std::any d) -> void {
     w->isBreaking = false;
 }
 
+int last = 0;
+
+auto get_break_time(uint8_t blk) -> float {
+    switch (blk) {
+    case Block::Flower1:
+    case Block::Flower2:
+    case Block::Mushroom1:
+    case Block::Mushroom2:
+    case Block::TNT:
+    case Block::Sapling:
+        return 0.0f;
+
+    case Block::Grass:
+    case Block::Gravel:
+    case Block::Sand:
+    case Block::Glass:
+    case Block::Leaves:
+        return 0.6f;
+
+    case Block::Iron_Ore:
+    case Block::Iron:
+    case Block::Gold_Ore:
+    case Block::Gold:
+    case Block::Obsidian:
+    case Block::Logs:
+    case Block::Coal_Ore:
+    case Block::Wood:
+    case Block::Bookshelf:
+        return 3.0f;
+
+    default:
+        return 1.0f;
+    }
+}
+
 auto DigAction::dig(std::any d) -> void {
     auto w = std::any_cast<World *>(d);
-
-    // Check that we can break
-    // if (w->break_icd < 0)
-    //    w->break_icd = 0.2f;
-    // else
-    //    return;
 
 #if BUILD_PC
     if (w->player->in_pause) {
@@ -73,12 +102,14 @@ auto DigAction::dig(std::any d) -> void {
 
         if (!w->isBreaking) {
             w->isBreaking = true;
-            w->timeLeftToBreak = 1.0f;
+            w->totalTimeBreak = get_break_time(blk);
+            w->timeLeftToBreak = w->totalTimeBreak;
             w->breaking = ivec;
         } else {
             if (ivec != w->breaking) {
                 w->isBreaking = true;
-                w->timeLeftToBreak = 1.0f;
+                w->totalTimeBreak = get_break_time(blk);
+                w->timeLeftToBreak = w->totalTimeBreak;
                 w->breaking = ivec;
             } else {
                 // Ivec is breaking
@@ -105,6 +136,8 @@ auto DigAction::dig(std::any d) -> void {
                     if (w->worldData[idx] == Block::Sponge) {
                         was_sponge = true;
                     }
+
+                    w->sound_manager->play(blk, cast_pos);
 
                     // Set to air
                     w->worldData[idx] = Block::Air;
@@ -142,6 +175,13 @@ auto DigAction::dig(std::any d) -> void {
                     w->isBreaking = false;
                 } else {
                     w->timeLeftToBreak -= w->stored_dt;
+
+                    //int newL = w->timeLeftToBreak / 0.33f;
+                    //
+                    //if (newL != last) {
+                    //    w->sound_manager->play(blk, cast_pos);
+                    //    last = newL;
+                    //}
                 }
             }
         }
