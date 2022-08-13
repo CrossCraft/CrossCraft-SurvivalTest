@@ -281,7 +281,7 @@ void Player::update(float dt, World *wrld) {
     sound_icd -= dt;
     if (sound_icd < 0 && vel.x != 0 && vel.z != 0 && blk != 8 && blk != 10) {
         wrld->sound_manager->play(blk, pos, true);
-        sound_icd = 0.33f;
+        sound_icd = 0.38f;
     }
 
     blk = wrld->worldData[wrld->getIdx(testpos.x, testpos.y - 1.2f, testpos.z)];
@@ -316,7 +316,7 @@ void Player::update(float dt, World *wrld) {
         view_timer = 0;
     }
     view_bob = sinf(view_timer * 3.14159 * 3.0f) / 18.0f;
-    cube_bob = cosf(view_timer * 3.14159 * 3.0f) / 44.0f;
+    cube_bob = cosf(view_timer * 3.14159 * 5.0f) / 44.0f;
 
     // Update camera
     cam.pos = pos;
