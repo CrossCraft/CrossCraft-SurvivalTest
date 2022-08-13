@@ -8,6 +8,7 @@ if(WIN32)
 elseif(PSP)
     add_compile_definitions(BUILD_PLAT=2)
     add_compile_definitions(IOAPI_NO_64)
+
 elseif(VITA)
     add_compile_definitions(BUILD_PLAT=3)
     add_compile_definitions(IOAPI_NO_64)
