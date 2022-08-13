@@ -23,6 +23,7 @@
 #include <Rendering/Camera.hpp>
 #include <Rendering/Primitive/Rectangle.hpp>
 #include <any>
+#include <Audio/AudioListener.hpp>
 #include <glm.hpp>
 
 using namespace Stardust_Celeste;
@@ -152,6 +153,7 @@ class Player : public PlayerEntity {
     float jump_icd;
     float view_bob, view_timer;
     float cube_bob;
+    ScopePtr<Audio::Listener> listener;
 
     ScopePtr<Graphics::G2D::Sprite> item_box;
     ScopePtr<Graphics::G2D::Sprite> selector;
