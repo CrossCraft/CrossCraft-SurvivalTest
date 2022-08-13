@@ -2,11 +2,11 @@
 
 ---
 
-CrossCraft-SurvivalTest is a project that aims to recreate Minecraft Java Edition: Classic Survival Test without looking at any of the source code of the original application and without using the original copyrighted assets. All knowledge is figured out with an understanding of in-game mechanics and is approximated to be as close as possible to the original.
+CrossCraft-SurvivalTest is a project that aims to implement Minecraft Java Edition: Classic Survival Test without looking at any of the source code of the original application and without using the original copyrighted assets. All knowledge is figured out with an understanding of in-game mechanics and is approximated to be as close as possible to the original. This is an implementation of Survival Test, not a clone.
 
 Textures are a combination of handmade and adaptations from [Unity Pack](https://www.curseforge.com/minecraft/texture-packs/unity) under CC0
 
-CrossCraft's goal is to be platform-independent and work across all PC platforms and many major game consoles. CrossCraft supports Windows, Mac, Linux, and PSP support. Further support will be added over time as systems change and upgrade.
+CrossCraft's goal is to be platform-independent and work across all PC platforms and many major game consoles. CrossCraft supports Windows, Mac, Linux, PSP, and PS Vita. Further support will be added over time as systems change and upgrade. The next planned platform is the PS2.
 
 <br>
 <div align=center><img src=./branding/Screenshot.png></div>
@@ -14,7 +14,9 @@ CrossCraft's goal is to be platform-independent and work across all PC platforms
 
 ## Version Compatibility
 
-Survival Test is not intended to be 100% compliant to each of the 4 survival test versions. It is a rapid development phase to reach 0.27.
+Each individual Survival Test update is not meant to be reflective of every step of the 4 main Survival Test phases. It is a rapid development phase to reach 0.28 Survival Test.
+
+CrossCraft Classic world imports are not yet supported, but will be in the future.
 
 ## Download
 

@@ -292,10 +292,10 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
 
-        fontRenderer->add_text("CrossCraft Survival Test 1 (0.27)",
+        fontRenderer->add_text("CrossCraft Survival Test 1 (0.28)",
                                {3, 272 - 11}, Rendering::Color{21, 21, 21, 255},
                                -19);
-        fontRenderer->add_text("CrossCraft Survival Test 1 (0.27)",
+        fontRenderer->add_text("CrossCraft Survival Test 1 (0.28)",
                                {2, 272 - 10}, Rendering::Color{85, 85, 85, 255},
                                -20);
 
