@@ -12,10 +12,14 @@ SelectionBox::SelectionBox() {
     m_index[0].shrink_to_fit();
     blockMesh[0].delete_data();
 
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
 
     m_index[0].push_back(0);
     m_index[0].push_back(1);
@@ -23,10 +27,14 @@ SelectionBox::SelectionBox() {
     m_index[0].push_back(3);
     m_index[0].push_back(0);
 
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 0, 0, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 0, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 0, 1 });
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
 
     m_index[0].push_back(4);
     m_index[0].push_back(5);
@@ -34,10 +42,14 @@ SelectionBox::SelectionBox() {
     m_index[0].push_back(7);
     m_index[0].push_back(4);
 
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 0, 0, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 0, 1, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 0, 1, 1 });
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
 
     m_index[0].push_back(8);
     m_index[0].push_back(9);
@@ -45,10 +57,14 @@ SelectionBox::SelectionBox() {
     m_index[0].push_back(11);
     m_index[0].push_back(8);
 
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 0, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 1, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 1, 1 });
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
 
     m_index[0].push_back(12);
     m_index[0].push_back(13);
@@ -56,10 +72,14 @@ SelectionBox::SelectionBox() {
     m_index[0].push_back(15);
     m_index[0].push_back(12);
 
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 0, 0, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 0, 0 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 1, 0 });
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
 
     m_index[0].push_back(16);
     m_index[0].push_back(17);
@@ -67,10 +87,14 @@ SelectionBox::SelectionBox() {
     m_index[0].push_back(19);
     m_index[0].push_back(16);
 
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 0, 0, 1 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 0, 1 });
-    m_verts[0].push_back(Rendering::Vertex{ 0, 0, {255, 255, 255, 255}, 1, 1, 1 });
-    m_verts[0].push_back(Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
+    m_verts[0].push_back(
+        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
 
     m_index[0].push_back(20);
     m_index[0].push_back(21);
@@ -78,9 +102,8 @@ SelectionBox::SelectionBox() {
     m_index[0].push_back(23);
     m_index[0].push_back(20);
 
-    blockMesh[0].add_data(m_verts[0].data(), m_verts[0].size(), m_index[0].data(),
-                       m_index[0].size());
-
+    blockMesh[0].add_data(m_verts[0].data(), m_verts[0].size(),
+                          m_index[0].data(), m_index[0].size());
 
     for (int i = 1; i < 11; i++) {
         idx_counter[i] = 0;
@@ -93,29 +116,26 @@ SelectionBox::SelectionBox() {
         auto p = glm::vec3(0, 0, 0);
 
         add_face_to_mesh(topFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP, p,
-            i);
-        add_face_to_mesh(bottomFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP, p,
-            i);
+                         i);
+        add_face_to_mesh(bottomFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
+                         p, i);
         add_face_to_mesh(leftFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-            p, i);
+                         p, i);
         add_face_to_mesh(rightFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-            p, i);
-        add_face_to_mesh(frontFace, getTexCoord(239 + i, LIGHT_TOP),
-            LIGHT_TOP, p, i);
-        add_face_to_mesh(backFace, getTexCoord(239 + i, LIGHT_TOP),
-            LIGHT_TOP, p, i);
-
+                         p, i);
+        add_face_to_mesh(frontFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
+                         p, i);
+        add_face_to_mesh(backFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
+                         p, i);
 
         blockMesh[i].add_data(m_verts[i].data(), m_verts[i].size(),
-            m_index[i].data(), m_index[i].size());
+                              m_index[i].data(), m_index[i].size());
     }
-
 };
 
-
 auto SelectionBox::add_face_to_mesh(std::array<float, 12> data,
-    std::array<float, 8> uv, uint32_t lightVal,
-    glm::vec3 mypos, uint8_t type)
+                                    std::array<float, 8> uv, uint32_t lightVal,
+                                    glm::vec3 mypos, uint8_t type)
     -> void { // Create color
     Rendering::Color c;
     c.color = lightVal;
@@ -145,7 +165,7 @@ auto SelectionBox::add_face_to_mesh(std::array<float, 12> data,
     idx_counter[type] += 4;
 }
 
-auto SelectionBox::draw_break(World* wrld) -> void {
+auto SelectionBox::draw_break(World *wrld) -> void {
     if (wrld->isBreaking) {
 
         auto ctx = &Rendering::RenderContext::get();
@@ -153,11 +173,14 @@ auto SelectionBox::draw_break(World* wrld) -> void {
         auto pos = wrld->breaking;
         ctx->matrix_translate(glm::vec3(pos.x, pos.y, pos.z));
         ctx->matrix_translate(glm::vec3(0.505f, 0.505f, 0.505f));
-        ctx->matrix_scale({ 1.02f, 1.02f, 1.02f });
+        ctx->matrix_scale({1.02f, 1.02f, 1.02f});
         ctx->matrix_translate(glm::vec3(-0.5f, -0.5f, -0.5f));
-        
 
-        int i = (wrld->totalTimeBreak - wrld->timeLeftToBreak) / (wrld->totalTimeBreak / 10.0f);
+        if (wrld->totalTimeBreak == 0.0f)
+            return;
+
+        int i = (wrld->totalTimeBreak - wrld->timeLeftToBreak) /
+                (wrld->totalTimeBreak / 10.0f);
         if (i >= 0 && i < 10) {
 #if BUILD_PLAT == BUILD_PSP
             sceGuBlendFunc(GU_ADD, GU_DST_COLOR, GU_SRC_COLOR, 0, 0);
