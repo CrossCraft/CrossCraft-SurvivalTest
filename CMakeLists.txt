@@ -84,8 +84,8 @@ if(VITA)
     include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
 
     set(VITA_APP_NAME "CrossCraft SurvivalTest")
-    set(VITA_TITLEID "CCC000110")
-    set(VITA_VERSION "01.10")
+    set(VITA_TITLEID "CCST00100")
+    set(VITA_VERSION "01.00")
 
     target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/include/)
     target_link_libraries(CrossCraft-SurvivalTest SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub openal pthread SceAudioIn_stub SceAudio_stub)
