@@ -5,6 +5,7 @@
 #include <Graphics/2D/Sprite.hpp>
 #include <Stardust-Celeste.hpp>
 #include <Utilities/Input.hpp>
+#include <Audio/Clip.hpp>
 
 using namespace Stardust_Celeste;
 
@@ -57,6 +58,7 @@ namespace CrossCraft
 
     ScopePtr<Graphics::G2D::FontRenderer> fontRenderer;
     ScopePtr<Graphics::G2D::FontRenderer> splashRenderer;
+    ScopePtr<Audio::Clip> clip;
 
     float scaleFactor;
     float scaleTimer;

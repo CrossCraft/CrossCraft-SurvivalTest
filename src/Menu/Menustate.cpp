@@ -34,6 +34,8 @@ void MenuState::on_start() {
     createDirs();
     TexturePackManager::get().scan_folder(PLATFORM_FILE_PREFIX +
                                           "texturepacks/");
+
+    clip = create_scopeptr<Audio::Clip>(PLATFORM_FILE_PREFIX + "audio/step/grass1.wav");
     textureMenu = false;
 
     // Make new controllers
@@ -105,6 +107,8 @@ void MenuState::on_start() {
     sceKernelDcacheWritebackInvalidateAll();
     selIdx = 0;
 #endif
+
+    clip->play();
 }
 
 void MenuState::on_cleanup() {

@@ -81,7 +81,12 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "filesystem": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "bitset": "cpp",
+        "complex": "cpp",
+        "csignal": "cpp",
+        "future": "cpp",
+        "shared_mutex": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureOnOpen": false,
