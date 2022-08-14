@@ -101,13 +101,13 @@ void GameState::bind_controls() {
     //
     psp_controller->add_command(
         {(int)Input::PSPButtons::Select, KeyFlag::Press},
-        {Player::toggle_inv, world->player.get()});
+        {Player::tab_start, world->player.get()});
     psp_controller->add_command({(int)Input::PSPButtons::Start, KeyFlag::Press},
                                 {Player::pause, world->player.get()});
 
     vita_controller->add_command(
         {(int)Input::VitaButtons::Select, KeyFlag::Press},
-        {Player::toggle_inv, world->player.get()});
+        {Player::tab_start, world->player.get()});
     vita_controller->add_command(
         {(int)Input::VitaButtons::Start, KeyFlag::Press},
         {Player::pause, world->player.get()});
