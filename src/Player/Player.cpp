@@ -89,6 +89,7 @@ Player::Player()
     chat_text = "";
     in_pause = false;
     hasDir = false;
+    is_firing = false;
 
     size = { 0.6f, 1.8f, 0.6f };
 
@@ -230,7 +231,22 @@ void Player::update(float dt, World *wrld) {
     }
 
     glm::vec3 look = { 0, 0, -1 };
-    look = glm::rotateY(look, DEGTORAD(rot.y));
+    look = glm::rotateX(look, DEGTORAD(-rot.x));
+    look = glm::rotateY(look, DEGTORAD(-rot.y));
+
+    if (is_firing && arrows != 0) {
+        ArrowData data;
+        data.pos = pos;
+        data.pos.y -= (1.80f - 1.5965f);
+        data.vel = look * 24.0f;
+        data.rot = glm::vec2(rot.x, rot.y);
+        data.size = { 0.1f, 0.0f, 0.1f };
+        data.lifeTime = 10.0f;
+
+        wrld->arrow->add_arrow(data);
+        is_firing = false;
+        arrows--;
+    }
 
     //listener->update(pos, vel, look, { 0, 1, 0 });
     chat->update(dt);
@@ -290,7 +306,7 @@ void Player::update(float dt, World *wrld) {
     else
         water_cutoff = false;
 
-    test_collide(testpos, wrld, dt);
+    test_collide(wrld, dt);
 
     if (is_falling && !fallDamaging) {
         fallDamaging = true;

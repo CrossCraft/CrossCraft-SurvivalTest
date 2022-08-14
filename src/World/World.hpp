@@ -22,7 +22,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <vector>
-#include "../Player/Drops.hpp"
+#include "../Entity/Drops.hpp"
+#include "../Entity/Arrow.hpp"
 #include "../Sound/SoundManager.hpp"
 
 namespace CrossCraft {
@@ -49,6 +50,7 @@ class SelectionBox;
 typedef uint8_t block_t;
 class ChunkStack;
 class Drops;
+class Arrow;
 
 /**
  * @brief The world
@@ -170,6 +172,7 @@ class World {
     float stored_dt;
 
     ScopePtr<SoundManager> sound_manager;
+    ScopePtr<Arrow> arrow;
   private:
     /**
      * @brief Get the needed chunks

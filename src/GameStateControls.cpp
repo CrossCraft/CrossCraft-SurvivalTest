@@ -101,13 +101,13 @@ void GameState::bind_controls() {
     //
     psp_controller->add_command(
         {(int)Input::PSPButtons::Select, KeyFlag::Press},
-        {Player::toggle_inv, world->player.get()});
+        {Player::tab_start, world->player.get()});
     psp_controller->add_command({(int)Input::PSPButtons::Start, KeyFlag::Press},
                                 {Player::pause, world->player.get()});
 
     vita_controller->add_command(
         {(int)Input::VitaButtons::Select, KeyFlag::Press},
-        {Player::toggle_inv, world->player.get()});
+        {Player::tab_start, world->player.get()});
     vita_controller->add_command(
         {(int)Input::VitaButtons::Start, KeyFlag::Press},
         {Player::pause, world->player.get()});
@@ -239,10 +239,8 @@ void GameState::bind_controls() {
     key_controller->add_command({(int)Input::Keys::KeyPad6, KeyFlag::Press},
                                 {Player::press_right, world->player.get()});
 
-    key_controller->add_command({(int)Input::Keys::Tab, KeyFlag::Release},
-                                {Player::tab_end, world->player.get()});
     key_controller->add_command(
-        {(int)Input::Keys::Tab, KeyFlag::Press | KeyFlag::Held},
+        {(int)Input::Keys::Tab, KeyFlag::Press},
         {Player::tab_start, world->player.get()});
 
     Input::add_controller(psp_controller);

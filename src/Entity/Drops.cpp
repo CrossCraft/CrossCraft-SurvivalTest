@@ -3,10 +3,8 @@
 namespace CrossCraft
 {
     void DropData::doPhysics(float dt, World* w) {
-        glm::vec3 testpos = pos + vel * dt;
-
         pos.y += 1.5f;
-        test_collide(testpos, w, dt);
+        test_collide(w, dt);
         pos += vel * dt;
         pos.y -= 1.5f;
 

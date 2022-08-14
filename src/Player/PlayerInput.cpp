@@ -49,7 +49,8 @@ void character_callback(GLFWwindow *window, unsigned int codepoint) {
 #endif
 
 auto Player::tab_start(std::any d) -> void {
-    // auto p = std::any_cast<Player *>(d);
+    auto p = std::any_cast<Player *>(d);
+    p->is_firing = true;
     // if (!p->in_pause)
     //     p->in_tab = true;
 }

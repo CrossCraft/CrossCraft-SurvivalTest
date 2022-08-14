@@ -61,6 +61,7 @@ World::World(std::shared_ptr<Player> p) {
 
     sbox = create_scopeptr<SelectionBox>();
     drops = create_scopeptr<Drops>();
+    arrow = create_scopeptr<Arrow>();
     drops->terrain_atlas = terrain_atlas;
 
     sound_manager = create_scopeptr<SoundManager>();
@@ -193,6 +194,7 @@ void World::update(double dt) {
     clouds->update(dt);
     psystem->update(dt);
     drops->update(dt, player.get(), this);
+    arrow->update(dt, player.get(), this);
 
     tick_counter += dt;
     stored_dt = dt;
@@ -338,6 +340,7 @@ void World::draw() {
     sceGuEnable(GU_ALPHA_TEST);
 #endif
     drops->draw();
+    arrow->draw();
 
     // Set up texture
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
