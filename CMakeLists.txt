@@ -99,7 +99,7 @@ if(VITA)
         FILE src/assets/vita/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
         FILE src/assets/vita/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
         FILE src/assets/vita/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
-        FILE texturepacks/default.zip texturepacks/default.zip
+        FILE resourcepacks/default.zip resourcepacks/default.zip
         FILE audio/dig/glass1.wav audio/dig/glass1.wav
         FILE audio/dig/glass2.wav audio/dig/glass2.wav
         FILE audio/dig/glass3.wav audio/dig/glass3.wav
