@@ -320,7 +320,7 @@ void Player::update(float dt, World *wrld) {
         if (totalFall >= 0.0f) {
             int tF = totalFall - 3;
 
-            if(tF > 0)
+            if(tF > 0 && !water_cutoff)
                 HP -= tF;
         }
     }
