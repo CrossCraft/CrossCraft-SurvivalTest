@@ -154,6 +154,10 @@ class Player : public PlayerEntity {
     float view_bob, view_timer;
     float cube_bob;
     float sound_icd;
+
+    bool fallDamaging;
+    float startY;
+
     ScopePtr<Audio::Listener> listener;
 
     ScopePtr<Graphics::G2D::Sprite> item_box;

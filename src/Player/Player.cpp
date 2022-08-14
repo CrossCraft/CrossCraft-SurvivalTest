@@ -292,6 +292,23 @@ void Player::update(float dt, World *wrld) {
 
     test_collide(testpos, wrld, dt);
 
+    if (is_falling && !fallDamaging) {
+        fallDamaging = true;
+        startY = pos.y;
+    }
+
+    if (fallDamaging && !is_falling) {
+        fallDamaging = false;
+        float totalFall = std::roundf(startY - pos.y);
+
+        if (totalFall >= 0.0f) {
+            int tF = totalFall - 3;
+
+            if(tF > 0)
+                HP -= tF;
+        }
+    }
+
     auto vel2 = vel;
     if (is_underwater || is_head_water || water_cutoff) {
         vel.x *= 0.5f;
