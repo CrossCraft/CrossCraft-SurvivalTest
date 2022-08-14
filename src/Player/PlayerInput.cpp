@@ -1,7 +1,7 @@
 #include "../BlockConst.hpp"
 #include "../Chunk/ChunkUtil.hpp"
 #include "../MP/OutPackets.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include "../World/SaveData.hpp"
 #include "Player.hpp"
 #include <Platform/Platform.hpp>

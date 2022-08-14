@@ -1,12 +1,12 @@
 #include "Clouds.hpp"
 #include <array>
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 namespace CrossCraft {
 
 Clouds::Clouds() {
 
-    texture = TexturePackManager::get().load_texture(
-        "./assets/clouds.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    texture = ResourcePackManager::get().load_texture(
+        "./assets/minecraft/textures/clouds.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         true);
     idx_counter = 0;
     scroll = 0.0f;

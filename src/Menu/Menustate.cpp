@@ -32,11 +32,12 @@ MenuState::~MenuState() { on_cleanup(); }
 
 void MenuState::on_start() {
     createDirs();
-    TexturePackManager::get().scan_folder(PLATFORM_FILE_PREFIX +
-                                          "texturepacks/");
 
-    clip = create_scopeptr<Audio::Clip>(PLATFORM_APP_FILE_PREFIX +
-                                        "audio/step/grass1.wav");
+    ResourcePackManager::get().convert_old_resourcepacks();
+
+    ResourcePackManager::get().scan_folder(PLATFORM_FILE_PREFIX +
+                                          "resourcepacks/");
+
     textureMenu = false;
 
     // Make new controllers
@@ -52,20 +53,20 @@ void MenuState::on_start() {
     Rendering::RenderContext::get().matrix_ortho(0, 480, 0, 272, -30, 30);
     Rendering::RenderContext::get().set_mode_2D();
 
-    bg_texture = TexturePackManager::get().load_texture(
-        "assets/dirt.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
+    bg_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/dirt.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
         true);
 
-    logo_texture = TexturePackManager::get().load_texture(
-        "assets/menu/logo.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    logo_texture = ResourcePackManager::get().load_texture(
+        "assets/crosscraft/textures/menu/logo.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, true);
 
-    gui_tex = TexturePackManager::get().load_texture(
-        "assets/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    gui_tex = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, true);
 
-    font_texture = TexturePackManager::get().load_texture(
-        "assets/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    font_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, false);
 
     bg_tile = create_scopeptr<Graphics::G2D::Sprite>(
@@ -108,8 +109,6 @@ void MenuState::on_start() {
     sceKernelDcacheWritebackInvalidateAll();
     selIdx = 0;
 #endif
-
-    clip->play();
 }
 
 void MenuState::on_cleanup() {
@@ -242,27 +241,27 @@ void MenuState::on_draw(Core::Application *app, double dt) {
             {240 - fontRenderer->calculate_size("Multiplayer") / 2, 135 - 24},
             white, -20);
 
-        // Texture Packs
+        // Resource Packs
         if (selIdx != 2) {
             fontRenderer->add_text(
-                "Texture Packs",
-                {241 - fontRenderer->calculate_size("Texture Packs") / 2,
+                "Resource Packs",
+                {241 - fontRenderer->calculate_size("Resource Packs") / 2,
                  134 - 24 * 2},
                 shadow, -19);
             fontRenderer->add_text(
-                "Texture Packs",
-                {240 - fontRenderer->calculate_size("Texture Packs") / 2,
+                "Resource Packs",
+                {240 - fontRenderer->calculate_size("Resource Packs") / 2,
                  135 - 24 * 2},
                 white, -20);
         } else {
             fontRenderer->add_text(
-                "Texture Packs",
-                {241 - fontRenderer->calculate_size("Texture Packs") / 2,
+                "Resource Packs",
+                {241 - fontRenderer->calculate_size("Resource Packs") / 2,
                  134 - 24 * 2},
                 CC_TEXT_COLOR_SELECT_BACK, -19);
             fontRenderer->add_text(
-                "Texture Packs",
-                {240 - fontRenderer->calculate_size("Texture Packs") / 2,
+                "Resource Packs",
+                {240 - fontRenderer->calculate_size("Resource Packs") / 2,
                  135 - 24 * 2},
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
@@ -345,24 +344,24 @@ void MenuState::on_draw(Core::Application *app, double dt) {
         Rendering::RenderContext::get().matrix_clear();
 
         fontRenderer->add_text(
-            "Texture Packs:",
-            {241 - fontRenderer->calculate_size("Texture Packs:") / 2, 240},
+            "Resource Packs:",
+            {241 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
             shadow, -19);
 
         fontRenderer->add_text(
-            "Texture Packs:",
-            {240 - fontRenderer->calculate_size("Texture Packs:") / 2, 240},
+            "Resource Packs:",
+            {240 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
             white, -20);
 
         for (int i = 0; i < 6; i++) {
             bool do_not_select;
-            if (TexturePackManager::get().path_names.size() > i) {
-                auto name = TexturePackManager::get().path_names[i];
+            if (ResourcePackManager::get().path_names.size() > i) {
+                auto name = ResourcePackManager::get().path_names[i];
 
                 Rendering::RenderContext::get().matrix_translate(
                     {0, -i * 24 + 50, 0});
 
-                auto vec = TexturePackManager::get().layers;
+                auto vec = ResourcePackManager::get().layers;
                 if (std::find(vec.begin(), vec.end(), name) != vec.end()) {
                     Rendering::RenderContext::get().matrix_translate(
                         {0, -50, 0});
@@ -473,8 +472,8 @@ void MenuState::trigger(std::any m) {
             mstate->textureMenu = false;
         } else if (mstate->selIdx != -1) {
             auto name =
-                TexturePackManager::get().path_names[mstate->selIdx - 1];
-            auto &vec = TexturePackManager::get().layers;
+                ResourcePackManager::get().path_names[mstate->selIdx - 1];
+            auto &vec = ResourcePackManager::get().layers;
             if (std::find(vec.begin(), vec.end(), name) == vec.end()) {
                 vec.push_back(name);
 
@@ -487,20 +486,20 @@ void MenuState::trigger(std::any m) {
                 Rendering::TextureManager::get().delete_texture(
                     mstate->font_texture);
 
-                mstate->bg_texture = TexturePackManager::get().load_texture(
-                    "assets/dirt.png", SC_TEX_FILTER_NEAREST,
+                mstate->bg_texture = ResourcePackManager::get().load_texture(
+                    "assets/minecraft/textures/dirt.png", SC_TEX_FILTER_NEAREST,
                     SC_TEX_FILTER_NEAREST, false, true);
 
-                mstate->logo_texture = TexturePackManager::get().load_texture(
-                    "assets/menu/logo.png", SC_TEX_FILTER_NEAREST,
+                mstate->logo_texture = ResourcePackManager::get().load_texture(
+                    "assets/crosscraft/textures/menu/logo.png", SC_TEX_FILTER_NEAREST,
                     SC_TEX_FILTER_NEAREST, false, true);
 
-                mstate->gui_tex = TexturePackManager::get().load_texture(
-                    "assets/gui/gui.png", SC_TEX_FILTER_NEAREST,
+                mstate->gui_tex = ResourcePackManager::get().load_texture(
+                    "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST,
                     SC_TEX_FILTER_NEAREST, false, true);
 
-                mstate->font_texture = TexturePackManager::get().load_texture(
-                    "assets/default.png", SC_TEX_FILTER_NEAREST,
+                mstate->font_texture = ResourcePackManager::get().load_texture(
+                    "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
                     SC_TEX_FILTER_NEAREST, false, false);
 
                 mstate->bg_tile->texture = mstate->bg_texture;
@@ -517,7 +516,7 @@ void MenuState::trigger(std::any m) {
                     vec.erase(std::find(vec.begin(), vec.end(), name));
             }
 
-            TexturePackManager::get().write_config();
+            ResourcePackManager::get().write_config();
         }
     }
 }
@@ -538,7 +537,7 @@ void MenuState::down(std::any m) {
     } else {
 
         mstate->selIdx++;
-        int total_idx = TexturePackManager::get().path_names.size();
+        int total_idx = ResourcePackManager::get().path_names.size();
         if (total_idx > 6)
             total_idx = 6;
 

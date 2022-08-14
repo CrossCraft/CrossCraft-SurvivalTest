@@ -1,5 +1,5 @@
 #include "Arrow.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 
 namespace CrossCraft
 {
@@ -34,8 +34,8 @@ namespace CrossCraft
 
     Arrow::Arrow()
     {
-        texture = TexturePackManager::get().load_texture(
-            "./assets/item/arrows.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+        texture = ResourcePackManager::get().load_texture(
+            "./assets/minecraft/textures/item/arrows.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
             true);
         arrows.clear();
 

@@ -1,5 +1,5 @@
 #include "../Config.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include <Core/Application.hpp>
 #include <Graphics/2D/FontRenderer.hpp>
 #include <Graphics/2D/Sprite.hpp>
@@ -58,7 +58,6 @@ namespace CrossCraft
 
     ScopePtr<Graphics::G2D::FontRenderer> fontRenderer;
     ScopePtr<Graphics::G2D::FontRenderer> splashRenderer;
-    ScopePtr<Audio::Clip> clip;
 
     float scaleFactor;
     float scaleTimer;
