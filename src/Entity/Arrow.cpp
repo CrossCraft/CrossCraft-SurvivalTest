@@ -100,6 +100,14 @@ namespace CrossCraft
             auto diff = p->pos - d.pos;
             auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
+            if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f) {
+                p->arrows++;
+                toRemove = i;
+            }
+            else if (len < 4.0f) {
+                d.pos += diff * dt * 3.0f;
+            }
+
             if (len < 24.0f * 24.0f)
             {
                 d.inRange = true;
