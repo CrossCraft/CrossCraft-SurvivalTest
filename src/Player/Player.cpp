@@ -168,6 +168,9 @@ Player::Player()
 
     chat = create_scopeptr<Chat>();
     blockRep = create_scopeptr<BlockRep>();
+    blockRep->player_tex = TexturePackManager::get().load_texture(
+        "assets/char.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+        false, false);
     pauseMenu = create_scopeptr<PauseMenu>();
     listener = create_scopeptr<Audio::Listener>();
 

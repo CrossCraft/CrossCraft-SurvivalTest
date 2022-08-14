@@ -9,6 +9,81 @@ namespace CrossCraft
         {
             setup_model(i);
         }
+
+        idx_counter[50] = 0;
+        m_verts[50].clear();
+        m_verts[50].shrink_to_fit();
+        m_index[50].clear();
+        m_index[50].shrink_to_fit();
+        blockMesh[50].delete_data();
+
+        glm::vec3 p = {0, 0, 0};
+
+        Rendering::Color c;
+        c.color = LIGHT_TOP;
+
+        m_verts[50].push_back(Rendering::Vertex{ 40.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 40.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.0f });
+
+        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.25f });
+
+        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.25f });
+
+        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 56.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 56.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.0f });
+
+        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 16.0f / 64.0f, c,   0.0f, 0.75f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.75f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.75f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 16.0f / 64.0f, c,   0.25f, 0.75f, 0.0f });
+
+        m_index[50].push_back(0);
+        m_index[50].push_back(1);
+        m_index[50].push_back(2);
+        m_index[50].push_back(2);
+        m_index[50].push_back(3);
+        m_index[50].push_back(0);
+
+        m_index[50].push_back(4);
+        m_index[50].push_back(5);
+        m_index[50].push_back(6);
+        m_index[50].push_back(6);
+        m_index[50].push_back(7);
+        m_index[50].push_back(4);
+
+        m_index[50].push_back(8);
+        m_index[50].push_back(9);
+        m_index[50].push_back(10);
+        m_index[50].push_back(10);
+        m_index[50].push_back(11);
+        m_index[50].push_back(8);
+
+        m_index[50].push_back(12);
+        m_index[50].push_back(13);
+        m_index[50].push_back(14);
+        m_index[50].push_back(14);
+        m_index[50].push_back(15);
+        m_index[50].push_back(12);
+
+        m_index[50].push_back(16);
+        m_index[50].push_back(17);
+        m_index[50].push_back(18);
+        m_index[50].push_back(18);
+        m_index[50].push_back(19);
+        m_index[50].push_back(16);
+
+        blockMesh[50].add_data(m_verts[50].data(), m_verts[50].size(),
+                               m_index[50].data(), m_index[50].size());
     }
     BlockRep::~BlockRep() {}
 
@@ -127,19 +202,27 @@ namespace CrossCraft
     auto BlockRep::drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void
     {
         if (type < 0)
-            return;
+            type = 50;
 
         auto ctx = &Rendering::RenderContext::get();
 
-        ctx->matrix_view(glm::mat4(1.0f));
-        ctx->matrix_translate(glm::vec3(0.280f, -0.7225f + cube_bob, -0.725f));
-        if (type == 6 || type == 37 || type == 38 || type == 39 || type == 40 ||
-            type == 44)
-        {
-            ctx->matrix_translate({0.0f, 0.175f, 0.0f});
+        if (type != 50) {
+            ctx->matrix_view(glm::mat4(1.0f));
+            ctx->matrix_translate(glm::vec3(0.280f, -0.7225f + cube_bob, -0.725f));
+            if (type == 6 || type == 37 || type == 38 || type == 39 || type == 40 ||
+                type == 44)
+            {
+                ctx->matrix_translate({ 0.0f, 0.175f, 0.0f });
+            }
+            ctx->matrix_rotate({ 0, 45.0f, 0 });
+            ctx->matrix_scale({ 0.40f, 0.40f, 0.40f });
         }
-        ctx->matrix_rotate({0, 45.0f, 0});
-        ctx->matrix_scale({0.40f, 0.40f, 0.40f});
+        else {
+            ctx->matrix_view(glm::mat4(1.0f));
+            ctx->matrix_translate(glm::vec3(0.75f, -1.0f + cube_bob, -0.6f));
+            ctx->matrix_rotate({ -60.0f, 45.0f, 0 });
+            ctx->matrix_scale({ 1.0f, 1.25f, 1.0f });
+        }
 
         // DISABLE CULL
 #if BUILD_PC || BUILD_PLAT == BUILD_VITA
@@ -179,6 +262,9 @@ namespace CrossCraft
 #else
         sceGuDisable(GU_CULL_FACE);
 #endif
+
+        if(type == 50)
+            Rendering::TextureManager::get().bind_texture(player_tex);
 
         blockMesh[type].draw();
 
