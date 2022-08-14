@@ -28,7 +28,7 @@ auto UserInterface::get_block_name(uint8_t id) -> std::string {
         return "Cobblestone";
         break;
     case Block::Wood:
-        return "Wood";
+        return "Wooden Planks";
         break;
     case Block::Sapling:
         return "Sapling";
@@ -60,7 +60,7 @@ auto UserInterface::get_block_name(uint8_t id) -> std::string {
         return "Coal Ore";
         break;
     case Block::Logs:
-        return "Wood Log";
+        return "Wood";
         break;
     case Block::Leaves:
         return "Leaves";
@@ -72,18 +72,20 @@ auto UserInterface::get_block_name(uint8_t id) -> std::string {
         return "Glass";
         break;
     case Block::Flower1:
-    case Block::Flower2:
         return "Flower";
+        break;
+    case Block::Flower2:
+        return "Rose";
         break;
     case Block::Mushroom1:
     case Block::Mushroom2:
         return "Mushroom";
         break;
     case Block::Gold:
-        return "Gold Block";
+        return "Block of Gold";
         break;
     case Block::Iron:
-        return "Iron Block";
+        return "Block of Iron";
         break;
     case Block::Slab:
         return "Stone Slab";
@@ -98,7 +100,7 @@ auto UserInterface::get_block_name(uint8_t id) -> std::string {
         return "Bookshelf";
         break;
     case Block::Mossy_Rocks:
-        return "Mossy Cobblestone";
+        return "Moss Stone";
         break;
     case Block::Obsidian:
         return "Obsidian";
