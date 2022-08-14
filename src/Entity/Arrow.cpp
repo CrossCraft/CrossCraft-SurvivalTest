@@ -35,7 +35,7 @@ namespace CrossCraft
     Arrow::Arrow()
     {
         texture = TexturePackManager::get().load_texture(
-            "./assets/arrow.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+            "./assets/item/arrows.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
             true);
         arrows.clear();
 
@@ -44,14 +44,14 @@ namespace CrossCraft
 
         idx_counter = 0;
 
-        m_verts.push_back(Rendering::Vertex{1.0f, 0.0f, c, xFace1[0], xFace1[1], xFace1[2]});
-        m_verts.push_back(Rendering::Vertex{1.0f, 1.0f, c, xFace1[3], xFace1[4], xFace1[5]});
-        m_verts.push_back(Rendering::Vertex{0.0f, 1.0f, c, xFace1[6], xFace1[7], xFace1[8]});
+        m_verts.push_back(Rendering::Vertex{0.5f, 0.0f, c, xFace1[0], xFace1[1], xFace1[2]});
+        m_verts.push_back(Rendering::Vertex{0.5f, 5.0f / 32.0f, c, xFace1[3], xFace1[4], xFace1[5]});
+        m_verts.push_back(Rendering::Vertex{0.0f, 5.0f / 32.0f, c, xFace1[6], xFace1[7], xFace1[8]});
         m_verts.push_back(Rendering::Vertex{0.0f, 0.0f, c, xFace1[9], xFace1[10], xFace1[11]});
 
-        m_verts.push_back(Rendering::Vertex{1.0f, 0.0f, c, xFace2[0], xFace2[1], xFace2[2]});
-        m_verts.push_back(Rendering::Vertex{1.0f, 1.0f, c, xFace2[3], xFace2[4], xFace2[5]});
-        m_verts.push_back(Rendering::Vertex{0.0f, 1.0f, c, xFace2[6], xFace2[7], xFace2[8]});
+        m_verts.push_back(Rendering::Vertex{0.5f, 0.0f, c, xFace2[0], xFace2[1], xFace2[2]});
+        m_verts.push_back(Rendering::Vertex{0.5f, 5.0f / 32.0f, c, xFace2[3], xFace2[4], xFace2[5] });
+        m_verts.push_back(Rendering::Vertex{0.0f, 5.0f / 32.0f, c, xFace2[6], xFace2[7], xFace2[8]});
         m_verts.push_back(Rendering::Vertex{0.0f, 0.0f, c, xFace2[9], xFace2[10], xFace2[11]});
 
         // Push Back Indices
@@ -131,8 +131,9 @@ namespace CrossCraft
             Rendering::RenderContext::get().matrix_translate(
                 { a.pos.x, a.pos.y, a.pos.z });
 
-            Rendering::RenderContext::get().matrix_rotate(glm::vec3(270.0f, 0.0f, -a.rot.y));
-
+            Rendering::RenderContext::get().matrix_rotate(glm::vec3(270.0f, 0.0f, 180.0f-a.rot.y));
+            Rendering::RenderContext::get().matrix_scale(glm::vec3(5.0f / 16.0f, 1.0f, 5.0f / 16.0f));
+            Rendering::RenderContext::get().matrix_scale(glm::vec3(0.5f, 1.0f, 0.5f));
             Rendering::RenderContext::get().matrix_translate(glm::vec3(-0.5f, -0.5f, -0.5f));
 
             if (a.inRange)
