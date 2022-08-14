@@ -4,7 +4,7 @@
 
 namespace CrossCraft
 {
-    auto SaveData::load_world(World *wrld) -> bool
+    auto SaveData::load_world(World* wrld) -> bool
     {
         gzFile save_file =
             gzopen((PLATFORM_FILE_PREFIX + "save.ccc").c_str(), "rb");
@@ -17,7 +17,7 @@ namespace CrossCraft
 
         if (version == 1)
         {
-            uint8_t *temp = (uint8_t *)malloc(256 * 64 * 256);
+            uint8_t* temp = (uint8_t*)malloc(256 * 64 * 256);
             gzread(save_file, temp, 256 * 64 * 256);
             gzclose(save_file);
 
@@ -41,23 +41,23 @@ namespace CrossCraft
         {
             gzread(save_file, &wrld->world_size, sizeof(wrld->world_size));
 
-            wrld->worldData = (block_t *)realloc(
+            wrld->worldData = (block_t*)realloc(
                 wrld->worldData,
                 wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
-            wrld->lightData = (uint16_t *)realloc(
+            wrld->lightData = (uint16_t*)realloc(
                 wrld->lightData, wrld->world_size.x *
-                                     (wrld->world_size.y / 16 + 1) *
-                                     wrld->world_size.z * sizeof(uint16_t));
-            wrld->chunksMeta = (ChunkMeta *)realloc(
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z * sizeof(uint16_t));
+            wrld->chunksMeta = (ChunkMeta*)realloc(
                 wrld->chunksMeta, wrld->world_size.x / 16 *
-                                      (wrld->world_size.y / 16 + 1) *
-                                      wrld->world_size.z / 16 * sizeof(ChunkMeta));
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z / 16 * sizeof(ChunkMeta));
 
-            uint8_t *temp = (uint8_t *)malloc(
+            uint8_t* temp = (uint8_t*)malloc(
                 wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
 
             gzread(save_file, temp,
-                   wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
+                wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
             gzclose(save_file);
 
             for (auto x = 0; x < wrld->world_size.x; x++)
@@ -80,46 +80,79 @@ namespace CrossCraft
         {
             gzread(save_file, &wrld->world_size, sizeof(wrld->world_size));
 
-            wrld->worldData = (block_t *)realloc(
+            wrld->worldData = (block_t*)realloc(
                 wrld->worldData,
                 wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
-            wrld->lightData = (uint16_t *)realloc(
+            wrld->lightData = (uint16_t*)realloc(
                 wrld->lightData, wrld->world_size.x *
-                                     (wrld->world_size.y / 16 + 1) *
-                                     wrld->world_size.z * sizeof(uint16_t));
-            wrld->chunksMeta = (ChunkMeta *)realloc(
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z * sizeof(uint16_t));
+            wrld->chunksMeta = (ChunkMeta*)realloc(
                 wrld->chunksMeta, wrld->world_size.x / 16 *
-                                      (wrld->world_size.y / 16 + 1) *
-                                      wrld->world_size.z / 16 * sizeof(ChunkMeta));
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z / 16 * sizeof(ChunkMeta));
 
             gzread(save_file, wrld->worldData,
-                   wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
+                wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
             gzclose(save_file);
         }
         else if (version == 4)
         {
             gzread(save_file, &wrld->world_size, sizeof(wrld->world_size));
 
-            wrld->worldData = (block_t *)realloc(
+            wrld->worldData = (block_t*)realloc(
                 wrld->worldData,
                 wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
-            wrld->lightData = (uint16_t *)realloc(
+            wrld->lightData = (uint16_t*)realloc(
                 wrld->lightData, wrld->world_size.x *
-                                     (wrld->world_size.y / 16 + 1) *
-                                     wrld->world_size.z * sizeof(uint16_t));
-            wrld->chunksMeta = (ChunkMeta *)realloc(
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z * sizeof(uint16_t));
+            wrld->chunksMeta = (ChunkMeta*)realloc(
                 wrld->chunksMeta, wrld->world_size.x / 16 *
-                                      (wrld->world_size.y / 16 + 1) *
-                                      wrld->world_size.z / 16 * sizeof(ChunkMeta));
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z / 16 * sizeof(ChunkMeta));
 
             gzread(save_file, wrld->worldData,
-                   wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
+                wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
 
             // PLAYER DATA
             gzread(save_file, &wrld->player->pos, sizeof(glm::vec3));
             gzread(save_file, &wrld->player->HP, sizeof(uint8_t));
             gzread(save_file, &wrld->player->arrows, sizeof(uint8_t));
             gzread(save_file, &wrld->player->score, sizeof(uint16_t));
+
+            gzclose(save_file);
+
+            wrld->loaded = true;
+        }
+        else if (version == 5) {
+            gzread(save_file, &wrld->world_size, sizeof(wrld->world_size));
+
+            wrld->worldData = (block_t*)realloc(
+                wrld->worldData,
+                wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
+            wrld->lightData = (uint16_t*)realloc(
+                wrld->lightData, wrld->world_size.x *
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z * sizeof(uint16_t));
+            wrld->chunksMeta = (ChunkMeta*)realloc(
+                wrld->chunksMeta, wrld->world_size.x / 16 *
+                (wrld->world_size.y / 16 + 1) *
+                wrld->world_size.z / 16 * sizeof(ChunkMeta));
+
+            gzread(save_file, wrld->worldData,
+                wrld->world_size.x * wrld->world_size.y * wrld->world_size.z);
+
+            // PLAYER DATA
+            gzread(save_file, &wrld->player->pos, sizeof(glm::vec3));
+            gzread(save_file, &wrld->player->HP, sizeof(uint8_t));
+            gzread(save_file, &wrld->player->arrows, sizeof(uint8_t));
+            gzread(save_file, &wrld->player->score, sizeof(uint16_t));
+
+
+            for (int i = 0; i < 9; i++) {
+                gzread(save_file, &wrld->player->itemSelections[i], sizeof(SlotInfo));
+            }
 
             gzclose(save_file);
 
@@ -143,7 +176,7 @@ namespace CrossCraft
 
     auto SaveData::save(std::any p) -> void
     {
-        auto wrld = std::any_cast<World *>(p);
+        auto wrld = std::any_cast<World*>(p);
         if (wrld->client == nullptr)
         {
             SC_APP_DEBUG("SAVING!");
@@ -153,7 +186,7 @@ namespace CrossCraft
 
             if (save_file != nullptr)
             {
-                const int save_version = 4;
+                const int save_version = 5;
                 gzwrite(save_file, &save_version, 1 * sizeof(int));
                 gzwrite(save_file, &wrld->world_size, sizeof(wrld->world_size));
                 gzwrite(save_file, wrld->worldData, 256 * 64 * 256);
@@ -163,6 +196,10 @@ namespace CrossCraft
                 gzwrite(save_file, &wrld->player->HP, sizeof(uint8_t));
                 gzwrite(save_file, &wrld->player->arrows, sizeof(uint8_t));
                 gzwrite(save_file, &wrld->player->score, sizeof(uint16_t));
+
+                for (int i = 0; i < 9; i++) {
+                    gzwrite(save_file, &wrld->player->itemSelections[i], sizeof(SlotInfo));
+                }
 
                 gzclose(save_file);
             }
