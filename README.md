@@ -16,13 +16,25 @@ CrossCraft's goal is to be platform-independent and work across all PC platforms
 
 Each individual Survival Test update is not meant to be reflective of every step of the 4 main Survival Test phases. It is a rapid development phase to reach 0.28 Survival Test.
 
-CrossCraft Classic world imports are not yet supported, but will be in the future.
-
 ## Download
 
 Check the [releases panel](https://github.com/CrossCraft/CrossCraft-SurvivalTest/releases) on the side or use the link.
 
 The most up-to-date version (potentially containing more bugs or half-implemented features) will be in the latest Actions build. You can find these in the [actions tab](https://github.com/CrossCraft/CrossCraft-SurvivalTest/actions). At the bottom of each action run is the published artifacts for download.
+
+## How to Build
+
+Ubuntu/Debian Linux:
+
+`git clone https://github.com/CrossCraft/CrossCraft-SurvivalTest.git --recursive`
+`sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libasound2-dev libjack-jackd2-dev libsdl2-dev oss4-dev libpulse-dev`
+`cd CrossCraft-SurvivalTest`
+`mkdir -p build`
+`cd build`
+`cmake ..`
+`make`
+
+Also copy your audio and texturepacks folder into the build directory.
 
 ## License
 
