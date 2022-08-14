@@ -29,11 +29,17 @@ The most up-to-date version (potentially containing more bugs or half-implemente
 Ubuntu/Debian Linux:
 
 `git clone https://github.com/CrossCraft/CrossCraft-SurvivalTest.git --recursive`
+
 `sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libasound2-dev libjack-jackd2-dev libsdl2-dev oss4-dev libpulse-dev`
+
 `cd CrossCraft-SurvivalTest`
+
 `mkdir -p build`
+
 `cd build`
+
 `cmake ..`
+
 `make`
 
 Also copy your audio and texturepacks folder into the build directory.
