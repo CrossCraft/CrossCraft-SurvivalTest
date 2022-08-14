@@ -12,6 +12,6 @@ struct Entity {
 
   protected:
     bool is_falling;
-    void test_collide(glm::vec3 testpos, World *wrld, float dt);
+    void test_collide(World *wrld, float dt);
 };
 } // namespace CrossCraft

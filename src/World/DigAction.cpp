@@ -1,5 +1,5 @@
 #include "DigAction.hpp"
-#include "../Player/DropLookup.hpp"
+#include "../Entity/DropLookup.hpp"
 #include "SaveData.hpp"
 #include <Utilities/Input.hpp>
 #include <gtx/rotate_vector.hpp>

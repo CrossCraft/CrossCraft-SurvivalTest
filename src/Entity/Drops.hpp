@@ -7,7 +7,7 @@
 #include <Rendering/Primitive/Rectangle.hpp>
 #include <any>
 #include <glm.hpp>
-#include "Player.hpp"
+#include "../Player/Player.hpp"
 #include "../World/World.hpp"
 
 namespace CrossCraft

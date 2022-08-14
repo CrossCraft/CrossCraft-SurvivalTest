@@ -16,7 +16,7 @@
 #include "AABB.hpp"
 #include "BlockRep.hpp"
 #include "Chat.hpp"
-#include "Entity.hpp"
+#include "../Entity/Entity.hpp"
 #include "Graphics/2D/FontRenderer.hpp"
 #include "PauseMenu.hpp"
 #include <Graphics/2D/Sprite.hpp>
@@ -136,6 +136,8 @@ class Player : public PlayerEntity {
     bool in_tab;
     ScopePtr<Chat> chat;
     MP::Client *client_ref;
+
+    bool is_firing;
 
     Rendering::Camera cam;
 

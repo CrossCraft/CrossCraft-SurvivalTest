@@ -9,7 +9,7 @@ auto test(glm::vec3 pos, World *wrld) -> bool {
            blk != 39 && blk != 40 && blk != 10;
 }
 
-void Entity::test_collide(glm::vec3 testpos, World *wrld, float dt) {
+void Entity::test_collide(World *wrld, float dt) {
     int x, y, z;
     bool testX = false;
     bool testY = false;
