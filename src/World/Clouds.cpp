@@ -90,8 +90,8 @@ void Clouds::update(double dt) {
 }
 
 void Clouds::draw() {
-    Rendering::RenderContext::get().matrix_translate({0, 80, 0});
-
+    Rendering::RenderContext::get().matrix_translate({ -512.0f, 72, -512.0f });
+    Rendering::RenderContext::get().matrix_scale({ 4.0f, 1.0f, 4.0f });
     Rendering::TextureManager::get().bind_texture(texture);
     mesh.bind();
 
@@ -99,12 +99,21 @@ void Clouds::draw() {
     auto progID = Rendering::ShaderManager::get().get_current_shader().programID;
     auto location = glGetUniformLocation(progID, "scroll");
     glUniform1f(location, scroll / 4096.0f);
+
+    auto location2 = glGetUniformLocation(progID, "drawSky");
+    glUniform1i(location2, 1);
 #else
     sceGuTextureOffset(scroll / 256.0f);
 #endif
     mesh.draw();
 
+#if BUILD_PLAT != BUILD_PSP
+    glUniform1i(location2, 0);
+#endif
 
+    Rendering::RenderContext::get().matrix_clear();
+    Rendering::RenderContext::get().matrix_translate({ 0, 66, 0 });
+    mesh.draw();
 #if BUILD_PLAT != BUILD_PSP
     glUniform1f(location, 0.0f);
 #else

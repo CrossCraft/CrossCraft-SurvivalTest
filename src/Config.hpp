@@ -13,6 +13,7 @@ struct Config {
     std::string username;
     u16 port;
     std::string key;
+    bool oldSky;
 
     inline static auto loadConfig() -> Config { // Store default values
         Config config;
@@ -21,6 +22,7 @@ struct Config {
         config.ip = "classic.crosscraft.wtf";
         config.port = 25565;
         config.username = "TestName2";
+        config.oldSky = false;
 
         std::ifstream file(PLATFORM_FILE_PREFIX + "config.cfg");
 
@@ -60,6 +62,12 @@ struct Config {
 
                     str >> config.key;
                 }
+                else if (line == "oldSky") {
+                    std::getline(file, line);
+                    std::stringstream str(line);
+
+                    str >> config.oldSky;
+                }
             }
         } else {
             std::ofstream file2(PLATFORM_FILE_PREFIX + "config.cfg");
@@ -69,6 +77,7 @@ struct Config {
             file2 << "ip:classic.crosscraft.wtf" << std::endl;
             file2 << "port:25565" << std::endl;
             file2 << "username:CC-User" << std::endl;
+            file2 << "oldSky:0" << std::endl;
             file2.close();
         }
 

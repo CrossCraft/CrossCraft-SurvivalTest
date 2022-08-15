@@ -12,6 +12,7 @@ class Clouds {
     void update(double dt);
     void draw();
 
+    bool draw_sky;
   private:
     void generate();
 

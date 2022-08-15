@@ -6,6 +6,7 @@
 #include "World/Generation/ClassicGenerator.hpp"
 #include "World/Generation/CrossCraftGenerator.hpp"
 #include "World/SaveData.hpp"
+#include <gtc/type_ptr.hpp>
 
 namespace CrossCraft {
 using namespace Stardust_Celeste::Utilities;
@@ -41,22 +42,26 @@ const std::string frag_source = R"(
     #version 400
     uniform sampler2D tex;
     uniform float scroll;
+    uniform int drawSky;
+    uniform vec3 fogColor;
     in vec2 uv;
     in vec4 color;
     in vec3 position;
 
     out vec4 FragColor;
 
-    const vec3 fogColor = vec3(0.59765f, 0.796875, 1.0f);
     const float density = 0.0005f;
 
     void main() {
         vec4 texColor = texture(tex, vec2(uv.x + scroll, uv.y));
-        texColor *= vec4(1.0f / 255.0f) * color;
+        if(drawSky == 0)
+            texColor *= vec4(1.0f / 255.0f) * color;
+        else 
+            texColor = vec4(0.599765f, 0.796875f, 1.0f, 1.0f);
 
         float dist = abs(position.z);
-        const float fogMax = (8.0f * 16.0f * 0.8);
-        const float fogMin = (8.0f * 16.0f * 0.2);
+        const float fogMax = (12.0f * 16.0f * 0.8);
+        const float fogMin = (4.0f * 16.0f * 0.2);
         float fogFactor = (fogMax - dist) / (fogMax - fogMin);
         fogFactor = clamp(fogFactor, 0.0f, 1.0f);
 
@@ -85,10 +90,14 @@ const std::string vert_source =
 
 const std::string frag_source =
     R"(
-    float4 main(float2 vTexcoord : TEXCOORD0, float4 vColor : COLOR0, float4 coords : WPOS, uniform sampler2D tex, uniform float scroll) {
+    float4 main(float2 vTexcoord : TEXCOORD0, float4 vColor : COLOR0, float4 coords : WPOS, uniform sampler2D tex, uniform float scroll, uniform int drawSky, uniform float3 fogColor) {
 
         float4 texColor = tex2D(tex, float2(vTexcoord.x + scroll, vTexcoord.y));
-        texColor *= vColor;
+        if(drawSky == 0)
+            texColor *= vColor;
+        else 
+            texColor = float4(0.599765f, 0.796875f, 1.0f, 1.0f);
+
         texColor = clamp(texColor, 0.0f, 1.0f);
 
         float dist = coords.z / coords.w;
@@ -97,8 +106,7 @@ const std::string frag_source =
         float fogMin = (4.0f * 16.0f * 0.2f);
         float fogFactor = (fogMax - dist) / (fogMax - fogMin);
         fogFactor = clamp(fogFactor, 0.0f, 1.0f);
-    
-        float3 fogColor = float3(0.59765f, 0.796875, 1.0f);
+
         texColor.rgb = lerp(fogColor.rgb, texColor.rgb, fogFactor);
 
         if(texColor.a < 0.1f)
@@ -110,10 +118,6 @@ const std::string frag_source =
 #endif
 
 void GameState::on_start() {
-    // Set Color
-    Rendering::RenderContext::get().set_color(
-        Rendering::Color{0x99, 0xCC, 0xFF, 0xFF});
-
 #if BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX ||                \
     BUILD_PLAT == BUILD_VITA
     auto shad =
@@ -126,6 +130,32 @@ void GameState::on_start() {
 
     // Read config
     world->cfg = Config::loadConfig();
+
+    if (world->cfg.oldSky) {
+        Rendering::RenderContext::get().set_color(
+            Rendering::Color{ 0x99, 0xCC, 0xFF, 0xFF });
+
+        auto fc = glm::vec3(0.59765f, 0.796875, 1.0f);
+#if BUILD_PLAT != BUILD_PSP
+        auto progID = Rendering::ShaderManager::get().get_current_shader().programID;
+        auto location = glGetUniformLocation(progID, "fogColor");
+        glUniform3f(location, fc.x, fc.y, fc.z);
+#else
+        sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 3.0f * 16.0f, 0x00FFCC99);
+#endif
+    }
+    else {
+        Rendering::RenderContext::get().set_color(
+            Rendering::Color{ 0xFF, 0xFF, 0xFF, 0xFF });
+        auto fc = glm::vec3(1.0f, 1.0f, 1.0f);
+#if BUILD_PLAT != BUILD_PSP
+        auto progID = Rendering::ShaderManager::get().get_current_shader().programID;
+        auto location = glGetUniformLocation(progID, "fogColor");
+        glUniform3f(location, fc.x, fc.y, fc.z);
+#else
+        sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 3.0f * 16.0f, 0x00FFFFFF);
+#endif
+    }
 
     if (forced_mp) {
         // Connect to Multiplayer
