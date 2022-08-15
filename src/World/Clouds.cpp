@@ -103,7 +103,7 @@ void Clouds::draw() {
     auto location2 = glGetUniformLocation(progID, "drawSky");
     glUniform1i(location2, 1);
 #else
-    sceGuTextureOffset(scroll / 256.0f);
+    sceGuTexOffset(scroll / 256.0f);
 #endif
     mesh.draw();
 
@@ -117,7 +117,7 @@ void Clouds::draw() {
 #if BUILD_PLAT != BUILD_PSP
     glUniform1f(location, 0.0f);
 #else
-    sceGuTextureOffset(0.0f);
+    sceGuTexOffset(0.0f);
 #endif
 
     Rendering::RenderContext::get().matrix_clear();

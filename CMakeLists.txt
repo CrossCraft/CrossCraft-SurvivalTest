@@ -34,7 +34,7 @@ add_executable(CrossCraft-SurvivalTest ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
 target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/)
 
 if(NOT VITA)
-    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlib)
+    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlib yaml-cpp)
 else()
     target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic)
 endif()
