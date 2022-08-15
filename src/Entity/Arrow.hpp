@@ -19,6 +19,7 @@ namespace CrossCraft
     struct ArrowData : public Entity
     {
         float lifeTime;
+        bool playerArrow;
         bool inRange;
         void doPhysics(float dt, World *w);
     };
@@ -38,8 +39,8 @@ namespace CrossCraft
         uint32_t texture;
         std::vector<ArrowData> arrows;
         uint16_t idx_counter;
-        std::vector<Rendering::Vertex> m_verts;
+        std::vector<Rendering::Vertex> m_verts, m_verts2;
         std::vector<uint16_t> m_index;
-        Rendering::Mesh blockMesh;
+        Rendering::Mesh blockMesh, blockMesh2;
     };
 }

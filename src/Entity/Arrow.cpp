@@ -44,15 +44,25 @@ namespace CrossCraft
 
         idx_counter = 0;
 
-        m_verts.push_back(Rendering::Vertex{0.5f, 0.0f, c, xFace1[0], xFace1[1], xFace1[2]});
-        m_verts.push_back(Rendering::Vertex{0.5f, 5.0f / 32.0f, c, xFace1[3], xFace1[4], xFace1[5]});
-        m_verts.push_back(Rendering::Vertex{0.0f, 5.0f / 32.0f, c, xFace1[6], xFace1[7], xFace1[8]});
-        m_verts.push_back(Rendering::Vertex{0.0f, 0.0f, c, xFace1[9], xFace1[10], xFace1[11]});
+        m_verts.push_back(Rendering::Vertex{ 0.5f, 0.0f, c, xFace1[0], xFace1[1], xFace1[2] });
+        m_verts.push_back(Rendering::Vertex{ 0.5f, 5.0f / 32.0f, c, xFace1[3], xFace1[4], xFace1[5] });
+        m_verts.push_back(Rendering::Vertex{ 0.0f, 5.0f / 32.0f, c, xFace1[6], xFace1[7], xFace1[8] });
+        m_verts.push_back(Rendering::Vertex{ 0.0f, 0.0f, c, xFace1[9], xFace1[10], xFace1[11] });
 
-        m_verts.push_back(Rendering::Vertex{0.5f, 0.0f, c, xFace2[0], xFace2[1], xFace2[2]});
-        m_verts.push_back(Rendering::Vertex{0.5f, 5.0f / 32.0f, c, xFace2[3], xFace2[4], xFace2[5] });
-        m_verts.push_back(Rendering::Vertex{0.0f, 5.0f / 32.0f, c, xFace2[6], xFace2[7], xFace2[8]});
-        m_verts.push_back(Rendering::Vertex{0.0f, 0.0f, c, xFace2[9], xFace2[10], xFace2[11]});
+        m_verts.push_back(Rendering::Vertex{ 0.5f, 0.0f, c, xFace2[0], xFace2[1], xFace2[2] });
+        m_verts.push_back(Rendering::Vertex{ 0.5f, 5.0f / 32.0f, c, xFace2[3], xFace2[4], xFace2[5] });
+        m_verts.push_back(Rendering::Vertex{ 0.0f, 5.0f / 32.0f, c, xFace2[6], xFace2[7], xFace2[8] });
+        m_verts.push_back(Rendering::Vertex{ 0.0f, 0.0f, c, xFace2[9], xFace2[10], xFace2[11] });
+
+        m_verts2.push_back(Rendering::Vertex{ 0.5f, 10.0f / 32.0f, c, xFace1[0], xFace1[1], xFace1[2] });
+        m_verts2.push_back(Rendering::Vertex{ 0.5f, 15.0f / 32.0f, c, xFace1[3], xFace1[4], xFace1[5] });
+        m_verts2.push_back(Rendering::Vertex{ 0.0f, 15.0f / 32.0f, c, xFace1[6], xFace1[7], xFace1[8] });
+        m_verts2.push_back(Rendering::Vertex{ 0.0f, 10.0f / 32.0f, c, xFace1[9], xFace1[10], xFace1[11] });
+
+        m_verts2.push_back(Rendering::Vertex{ 0.5f, 10.0f / 32.0f, c, xFace2[0], xFace2[1], xFace2[2] });
+        m_verts2.push_back(Rendering::Vertex{ 0.5f, 15.0f / 32.0f, c, xFace2[3], xFace2[4], xFace2[5] });
+        m_verts2.push_back(Rendering::Vertex{ 0.0f, 15.0f / 32.0f, c, xFace2[6], xFace2[7], xFace2[8] });
+        m_verts2.push_back(Rendering::Vertex{ 0.0f, 10.0f / 32.0f, c, xFace2[9], xFace2[10], xFace2[11] });
 
         // Push Back Indices
         m_index.push_back(0);
@@ -72,7 +82,10 @@ namespace CrossCraft
         idx_counter += 4;
 
         blockMesh.add_data(m_verts.data(), m_verts.size(),
-                           m_index.data(), m_index.size());
+            m_index.data(), m_index.size());
+
+        blockMesh2.add_data(m_verts2.data(), m_verts2.size(),
+            m_index.data(), m_index.size());
     }
     Arrow::~Arrow()
     {
@@ -100,11 +113,11 @@ namespace CrossCraft
             auto diff = p->pos - d.pos;
             auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-            if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f) {
+            if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f && d.playerArrow) {
                 p->arrows++;
                 toRemove = i;
             }
-            else if (len < 4.0f) {
+            else if (len < 4.0f && d.playerArrow) {
                 d.pos += diff * dt * 3.0f;
             }
 
@@ -145,7 +158,10 @@ namespace CrossCraft
             Rendering::RenderContext::get().matrix_translate(glm::vec3(-0.5f, -0.5f, -0.5f));
 
             if (a.inRange)
-                blockMesh.draw();
+                if (a.playerArrow)
+                    blockMesh.draw();
+                else
+                    blockMesh2.draw();
 
 #ifndef PSP
             glEnable(GL_CULL_FACE);

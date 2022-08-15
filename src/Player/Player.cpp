@@ -245,6 +245,7 @@ void Player::update(float dt, World *wrld) {
         data.rot = glm::vec2(rot.x, rot.y);
         data.size = { 0.1f, 0.0f, 0.1f };
         data.lifeTime = 10.0f;
+        data.playerArrow = false;
 
         wrld->arrow->add_arrow(data);
         is_firing = false;
