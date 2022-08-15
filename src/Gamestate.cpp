@@ -40,6 +40,7 @@ const std::string vert_source = R"(
 const std::string frag_source = R"(
     #version 400
     uniform sampler2D tex;
+    uniform float scroll;
     in vec2 uv;
     in vec4 color;
     in vec3 position;
@@ -50,7 +51,7 @@ const std::string frag_source = R"(
     const float density = 0.0005f;
 
     void main() {
-        vec4 texColor = texture(tex, uv);
+        vec4 texColor = texture(tex, vec2(uv.x + scroll, uv.y));
         texColor *= vec4(1.0f / 255.0f) * color;
 
         float dist = abs(position.z);
@@ -84,9 +85,9 @@ const std::string vert_source =
 
 const std::string frag_source =
     R"(
-    float4 main(float2 vTexcoord : TEXCOORD0, float4 vColor : COLOR0, float4 coords : WPOS, uniform sampler2D tex) {
+    float4 main(float2 vTexcoord : TEXCOORD0, float4 vColor : COLOR0, float4 coords : WPOS, uniform sampler2D tex, uniform float scroll) {
 
-        float4 texColor = tex2D(tex, vTexcoord);
+        float4 texColor = tex2D(tex, float2(vTexcoord.x + scroll, vTexcoord.y));
         texColor *= vColor;
         texColor = clamp(texColor, 0.0f, 1.0f);
 

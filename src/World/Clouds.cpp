@@ -1,6 +1,7 @@
 #include "Clouds.hpp"
 #include <array>
 #include "../TexturePackManager.hpp"
+#include <Rendering/ShaderManager.hpp>
 namespace CrossCraft {
 
 Clouds::Clouds() {
@@ -86,17 +87,29 @@ void Clouds::generate() {
 
 void Clouds::update(double dt) {
     scroll += dt;
-
-    if (scroll > 256)
-        scroll = 0.0f;
 }
 
 void Clouds::draw() {
-    Rendering::RenderContext::get().matrix_translate({scroll, 80, 0});
+    Rendering::RenderContext::get().matrix_translate({0, 80, 0});
 
     Rendering::TextureManager::get().bind_texture(texture);
     mesh.bind();
+
+#if BUILD_PLAT != BUILD_PSP
+    auto progID = Rendering::ShaderManager::get().get_current_shader().programID;
+    auto location = glGetUniformLocation(progID, "scroll");
+    glUniform1f(location, scroll / 4096.0f);
+#else
+    sceGuTextureOffset(scroll / 256.0f);
+#endif
     mesh.draw();
+
+
+#if BUILD_PLAT != BUILD_PSP
+    glUniform1f(location, 0.0f);
+#else
+    sceGuTextureOffset(0.0f);
+#endif
 
     Rendering::RenderContext::get().matrix_clear();
 }
