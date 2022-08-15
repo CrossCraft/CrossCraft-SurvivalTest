@@ -93,6 +93,46 @@ auto ResourcePackManager::add_layer(std::string name) -> void {
     layers.push_back(name);
 }
 
+#if BUILD_PLAT == BUILD_PSP
+    static int sceIoMove(const char *src, const char *dest) {
+        int ret = 0;
+        size_t i = 0;
+        char strage[32] = {0};
+        char *p1 = nullptr, *p2 = nullptr;
+        p1 = std::strchr(src, ':');
+
+        if (p1 == nullptr)
+            return -1;
+
+        p2 = std::strchr(dest, ':');
+        if (p2 == nullptr)
+            return -1;
+
+        if ((p1 - src) != (p2 - dest))
+            return -1;
+
+        for (i = 0; (src + i) <= p1; i++) {
+            if ((i+1) >= sizeof(strage))
+                return -1;
+
+            if (src[i] != dest[i])
+                return -1;
+
+            strage[i] = src[i];
+        }
+
+        strage[i] = '\0';
+
+        u32 data[2] = {0};
+        data[0] = (u32)(p1 + 1);
+        data[1] = (u32)(p2 + 1);
+
+        ret = sceIoDevctl(strage, 0x02415830, &data, sizeof(data), nullptr, 0);
+
+        return ret;
+    }
+#endif
+
 auto ResourcePackManager::convert_old_resourcepacks() -> void {
     std::vector<std::string> old_paths;
 
@@ -146,21 +186,52 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
             std::filesystem::create_directories(prefix + "/assets/crosscraft/textures/menu");
 
             // Moooove some stuuuuff
+#if BUILD_PLAT == BUILD_PSP
+            sceIoMove((prefix + "/assets/menu/logo.png").c_str(), (prefix +
+                                    "/assets/crosscraft/textures/menu/logo.png").c_str());
+            sceIoMove((prefix + "/assets/armor/chain.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/armor/chain.png").c_str());
+            sceIoMove((prefix + "/assets/armor/plate.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/armor/plate.png").c_str());
+            sceIoMove((prefix + "/assets/gui/gui.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/gui/gui.png").c_str());
+            sceIoMove((prefix + "/assets/gui/icons.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/gui/icons.png").c_str());
+            sceIoMove((prefix + "/assets/2char.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/2char.png").c_str());
+            sceIoMove((prefix + "/assets/char.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/char.png").c_str());
+            sceIoMove((prefix + "/assets/clouds.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/clouds.png").c_str());
+            sceIoMove((prefix + "/assets/default.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/default.png").c_str());
+            sceIoMove((prefix + "/assets/dirt.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/dirt.png").c_str());
+            sceIoMove((prefix + "/assets/grass.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/grass.png").c_str());
+            sceIoMove((prefix + "/assets/particles.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/particles.png").c_str());
+            sceIoMove((prefix + "/assets/rain.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/rain.png").c_str());
+            sceIoMove((prefix + "/assets/rock.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/rock.png").c_str());
+            sceIoMove((prefix + "/assets/terrain.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/terrain.png").c_str());
+            sceIoMove((prefix + "/assets/water.png").c_str(), (prefix +
+                                    "/assets/minecraft/textures/water.png").c_str());
+#else
             std::filesystem::rename(prefix + "/assets/menu/logo.png", prefix +
                                     "/assets/crosscraft/textures/menu/logo.png");
-            std::filesystem::remove_all(prefix + "/assets/menu/");
 
             std::filesystem::rename(prefix + "/assets/armor/chain.png", prefix +
                                     "/assets/minecraft/textures/armor/chain.png");
             std::filesystem::rename(prefix + "/assets/armor/plate.png", prefix +
                                     "/assets/minecraft/textures/armor/plate.png");
-            std::filesystem::remove_all(prefix + "/assets/armor/");
 
             std::filesystem::rename(prefix + "/assets/gui/gui.png", prefix +
                                     "/assets/minecraft/textures/gui/gui.png");
             std::filesystem::rename(prefix + "/assets/gui/icons.png", prefix +
                                     "/assets/minecraft/textures/gui/icons.png");
-            std::filesystem::remove_all(prefix + "/assets/gui/");
 
             std::filesystem::rename(prefix + "/assets/2char.png", prefix +
                                     "/assets/minecraft/textures/2char.png");
@@ -184,6 +255,12 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
                                     "/assets/minecraft/textures/terrain.png");
             std::filesystem::rename(prefix + "/assets/water.png", prefix +
                                     "/assets/minecraft/textures/water.png");
+#endif
+
+            // Remove old empty dirs
+            std::filesystem::remove_all(prefix + "/assets/menu/");
+            std::filesystem::remove_all(prefix + "/assets/armor/");
+            std::filesystem::remove_all(prefix + "/assets/gui/");
 
             // Now start migrating everything over to the new directory
             // [..]copy over the default textures to fill in for missing stuff                                +
