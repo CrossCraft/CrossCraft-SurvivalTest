@@ -5,6 +5,9 @@ namespace CrossCraft
 
     BlockRep::BlockRep()
     {
+        isSwinging = false;
+        swingTime = 0.0f;
+
         for (int i = 0; i < 50; i++)
         {
             setup_model(i);
@@ -22,30 +25,30 @@ namespace CrossCraft
         Rendering::Color c;
         c.color = LIGHT_TOP;
 
-        m_verts[50].push_back(Rendering::Vertex{ 40.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 40.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{40.0f / 64.0f, 20.0f / 64.0f, c, 0.0f, 0.0f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{40.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 64.0f, c, 0.25f, 0.0f, 0.0f});
 
-        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 64.0f, c, 0.25f, 0.0f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 64.0f, c, 0.25f, 0.0f, 0.25f});
 
-        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.0f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 1.0f, c,            0.25f, 0.75f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.25f });
+        m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 64.0f, c, 0.25f, 0.0f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 20.0f / 64.0f, c, 0.0f, 0.0f, 0.25f});
 
-        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 52.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 56.0f / 64.0f, 1.0f, c,            0.0f, 0.75f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 56.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.0f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 20.0f / 64.0f, c, 0.0f, 0.0f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{56.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{56.0f / 64.0f, 20.0f / 64.0f, c, 0.0f, 0.0f, 0.0f});
 
-        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 16.0f / 64.0f, c,   0.0f, 0.75f, 0.0f });
-        m_verts[50].push_back(Rendering::Vertex{ 44.0f / 64.0f, 20.0f / 64.0f, c,   0.0f, 0.75f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 20.0f / 64.0f, c,   0.25f, 0.75f, 0.25f });
-        m_verts[50].push_back(Rendering::Vertex{ 48.0f / 64.0f, 16.0f / 64.0f, c,   0.25f, 0.75f, 0.0f });
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 16.0f / 64.0f, c, 0.0f, 0.75f, 0.0f});
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 64.0f, c, 0.0f, 0.75f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 64.0f, c, 0.25f, 0.75f, 0.25f});
+        m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 16.0f / 64.0f, c, 0.25f, 0.75f, 0.0f});
 
         m_index[50].push_back(0);
         m_index[50].push_back(1);
@@ -163,6 +166,24 @@ namespace CrossCraft
                                  m_index[type].data(), m_index[type].size());
     }
 
+    auto BlockRep::update(float dt) -> void
+    {
+        swingTime -= dt;
+        if (swingTime < 0)
+        {
+            isSwinging = false;
+        }
+    }
+
+    auto BlockRep::trigger_swing() -> void
+    {
+        if (!isSwinging)
+        {
+            isSwinging = true;
+            swingTime = 0.25f;
+        }
+    }
+
     auto BlockRep::drawBlk(int8_t type, int x, int y, int y_offset, float scale)
         -> void
     {
@@ -206,22 +227,32 @@ namespace CrossCraft
 
         auto ctx = &Rendering::RenderContext::get();
 
-        if (type != 50) {
+        if (type != 50)
+        {
             ctx->matrix_view(glm::mat4(1.0f));
             ctx->matrix_translate(glm::vec3(0.280f, -0.7225f + cube_bob, -0.725f));
             if (type == 6 || type == 37 || type == 38 || type == 39 || type == 40 ||
                 type == 44)
             {
-                ctx->matrix_translate({ 0.0f, 0.175f, 0.0f });
+                ctx->matrix_translate({0.0f, 0.175f, 0.0f});
             }
-            ctx->matrix_rotate({ 0, 45.0f, 0 });
-            ctx->matrix_scale({ 0.40f, 0.40f, 0.40f });
+            ctx->matrix_rotate({0, 45.0f, 0});
+            ctx->matrix_scale({0.40f, 0.40f, 0.40f});
         }
-        else {
+        else
+        {
             ctx->matrix_view(glm::mat4(1.0f));
             ctx->matrix_translate(glm::vec3(0.75f, -1.0f + cube_bob, -0.6f));
-            ctx->matrix_rotate({ -60.0f, 45.0f, 0 });
-            ctx->matrix_scale({ 1.0f, 1.25f, 1.0f });
+            ctx->matrix_rotate({-60.0f, 45.0f, 0});
+            ctx->matrix_scale({1.0f, 1.25f, 1.0f});
+        }
+
+        if (isSwinging)
+        {
+            auto timeIn = 0.25f - swingTime;
+            auto sval = sinf(timeIn * 4.0f * 3.14159f);
+            ctx->matrix_translate(glm::vec3(sval * 0.1f * 0.75f, sval * 0.15f * 0.75f, 0.0f));
+            ctx->matrix_rotate(glm::vec3(-sval * 0.1f * 90.0f, sval * 0.15f * 30.0f, 0.0f));
         }
 
         // DISABLE CULL
@@ -263,7 +294,7 @@ namespace CrossCraft
         sceGuDisable(GU_CULL_FACE);
 #endif
 
-        if(type == 50)
+        if (type == 50)
             Rendering::TextureManager::get().bind_texture(player_tex);
 
         blockMesh[type].draw();

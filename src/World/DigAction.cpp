@@ -65,6 +65,8 @@ auto DigAction::dig(std::any d) -> void {
     }
 #endif
 
+    w->player->blockRep->trigger_swing();
+
     // Create a default vector of the player facing
     auto default_vec = glm::vec3(0, 0, 1);
     default_vec = glm::rotateX(default_vec, DEGTORAD(w->player->get_rot().x));

@@ -148,6 +148,8 @@ class Player : public PlayerEntity {
 
     World *wrldRef;
 
+    ScopePtr<BlockRep> blockRep;
+
   private:
     const float playerSpeed = 4.3f;
     auto rotate(float dt, float sense) -> void;
@@ -172,8 +174,6 @@ class Player : public PlayerEntity {
     ScopePtr<Graphics::G2D::Sprite> heartFull;
     uint32_t gui_texture, icons_texture, water_texture, overlay_texture,
         font_texture;
-
-    ScopePtr<BlockRep> blockRep;
 
     bool hasDir;
     AABB model;

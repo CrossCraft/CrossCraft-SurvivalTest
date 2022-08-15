@@ -372,6 +372,8 @@ void Player::update(float dt, World *wrld) {
 
     vel.x = 0.0f;
     vel.z = 0.0f;
+
+    blockRep->update(dt);
 }
 
 auto Player::draw(World *wrld) -> void {
