@@ -133,27 +133,24 @@ void GameState::on_start() {
 
     if (world->cfg.oldSky) {
         Rendering::RenderContext::get().set_color(
-            Rendering::Color{ 0x99, 0xCC, 0xFF, 0xFF });
+            Rendering::Color{0x99, 0xCC, 0xFF, 0xFF});
 
         auto fc = glm::vec3(0.59765f, 0.796875, 1.0f);
 #if BUILD_PLAT != BUILD_PSP
-        auto progID = Rendering::ShaderManager::get().get_current_shader().programID;
+        auto progID =
+            Rendering::ShaderManager::get().get_current_shader().programID;
         auto location = glGetUniformLocation(progID, "fogColor");
         glUniform3f(location, fc.x, fc.y, fc.z);
-#else
-        sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 3.0f * 16.0f, 0x00FFCC99);
 #endif
-    }
-    else {
+    } else {
         Rendering::RenderContext::get().set_color(
-            Rendering::Color{ 0xFF, 0xFF, 0xFF, 0xFF });
+            Rendering::Color{0xFF, 0xFF, 0xFF, 0xFF});
         auto fc = glm::vec3(1.0f, 1.0f, 1.0f);
 #if BUILD_PLAT != BUILD_PSP
-        auto progID = Rendering::ShaderManager::get().get_current_shader().programID;
+        auto progID =
+            Rendering::ShaderManager::get().get_current_shader().programID;
         auto location = glGetUniformLocation(progID, "fogColor");
         glUniform3f(location, fc.x, fc.y, fc.z);
-#else
-        sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 3.0f * 16.0f, 0x00FFFFFF);
 #endif
     }
 
@@ -223,6 +220,5 @@ void GameState::on_draw(Core::Application *app, double dt) {
 
     if (client.get() == nullptr || client->is_ready)
         world->draw();
-
 }
 } // namespace CrossCraft

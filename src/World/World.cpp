@@ -24,8 +24,8 @@
 
 namespace CrossCraft {
 
-    SteveData sd = SteveData();
-    ZombieData zd = ZombieData();
+SteveData sd = SteveData();
+ZombieData zd = ZombieData();
 World::World(std::shared_ptr<Player> p) {
     tick_counter = 0;
     player = p;
@@ -72,23 +72,22 @@ World::World(std::shared_ptr<Player> p) {
     break_icd = 0.0f;
     chunk_generate_icd = 0.0f;
 
-
     isBreaking = false;
     timeLeftToBreak = -1.0f;
-    breaking = { -1, -1, -1 };
+    breaking = {-1, -1, -1};
 
     steve = create_scopeptr<Steve>();
     zombie = create_scopeptr<Zombie>();
 
     sd.animationTime = 0.0f;
-    sd.head_rotation = { 30.0f, 120.0f };
-    sd.pos = { 128.0f, 38.8f, 128.0f };
-    sd.rot = { 0.0f, 180.0f };
+    sd.head_rotation = {30.0f, 120.0f};
+    sd.pos = {128.0f, 38.8f, 128.0f};
+    sd.rot = {0.0f, 180.0f};
 
     zd.animationTime = 0.0f;
-    zd.head_rotation = { 30.0f, 120.0f };
-    zd.pos = { 128.0f, 38.8f, 129.0f };
-    zd.rot = { 0.0f, 180.0f };
+    zd.head_rotation = {30.0f, 120.0f};
+    zd.pos = {128.0f, 38.8f, 129.0f};
+    zd.rot = {0.0f, 180.0f};
 }
 
 auto World::spawn() -> void {
@@ -320,16 +319,21 @@ void World::draw() {
     sceGuDisable(GU_BLEND);
     sceGuDisable(GU_ALPHA_TEST);
     sceGuEnable(GU_FOG);
+    if (!cfg.oldSky) {
+        sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 4.5f * 16.0f, 0x00FFFFFF);
+    } else {
+        sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 4.5f * 16.0f, 0x00FFCC99);
+    }
     sceGuEnable(GU_DEPTH_TEST);
 #else
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 #endif
 
-    std::map<float, ChunkStack*> chunk_sorted;
+    std::map<float, ChunkStack *> chunk_sorted;
     chunk_sorted.clear();
 
-    for (auto const& [key, val] : chunks) {
+    for (auto const &[key, val] : chunks) {
         glm::vec2 relative_chunk_pos = glm::vec2(
             val->get_chunk_pos().x * 16.0f, val->get_chunk_pos().y * 16.0f);
         auto diff =
@@ -339,11 +343,11 @@ void World::draw() {
     }
 
     // Draw opaque
-    for (auto const& [key, val] : chunk_sorted) {
+    for (auto const &[key, val] : chunk_sorted) {
         val->draw(this);
     }
 
-    std::map<float, ChunkStack*, std::greater<float>> chunk_reverse_sorted;
+    std::map<float, ChunkStack *, std::greater<float>> chunk_reverse_sorted;
     chunk_reverse_sorted.insert(chunk_sorted.begin(), chunk_sorted.end());
     chunk_sorted.clear();
 
@@ -360,17 +364,14 @@ void World::draw() {
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
     // Draw flora
-    for (auto const& [key, val] : chunk_reverse_sorted) {
+    for (auto const &[key, val] : chunk_reverse_sorted) {
         val->draw_flora();
     }
     // Draw transparent
-    for (auto const& [key, val] : chunk_reverse_sorted) {
+    for (auto const &[key, val] : chunk_reverse_sorted) {
         val->draw_transparent();
     }
 
-#if BUILD_PLAT == BUILD_PSP
-    sceGuDisable(GU_FOG);
-#endif
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
