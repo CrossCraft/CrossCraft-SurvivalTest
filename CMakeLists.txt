@@ -18,6 +18,8 @@ endif()
 
 add_subdirectory(ext/Stardust-Celeste Stardust)
 
+add_compile_definitions(YAML_CPP_STATIC_DEFINE)
+
 if(NOT VITA)
     add_subdirectory(ext/zlib ZLib)
 endif()

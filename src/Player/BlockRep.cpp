@@ -26,26 +26,32 @@ namespace CrossCraft
         c.color = LIGHT_TOP;
 
         // THE HAND
-        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.25f});
+
+        // Right
+        m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.25f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{40.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{40.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.25f});
 
+        // Front
         m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.25f});
 
+        // Left
         m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.0f});
 
+        // Back
         m_verts[50].push_back(Rendering::Vertex{56.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{56.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{52.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.0f});
 
+        // Far end
         m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 16.0f / 32.0f, c, 0.0f, 0.75f, 0.0f});
         m_verts[50].push_back(Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.75f, 0.25f});
         m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.75f, 0.25f});

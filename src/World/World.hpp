@@ -25,6 +25,7 @@
 #include "../Entity/Drops.hpp"
 #include "../Entity/Arrow.hpp"
 #include "../Sound/SoundManager.hpp"
+#include "../Model/Steve.hpp"
 
 namespace CrossCraft {
 
@@ -173,6 +174,7 @@ class World {
 
     ScopePtr<SoundManager> sound_manager;
     ScopePtr<Arrow> arrow;
+    ScopePtr<Steve> steve;
   private:
     /**
      * @brief Get the needed chunks

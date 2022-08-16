@@ -24,6 +24,7 @@
 
 namespace CrossCraft {
 
+    SteveData sd = SteveData();
 World::World(std::shared_ptr<Player> p) {
     tick_counter = 0;
     player = p;
@@ -62,6 +63,7 @@ World::World(std::shared_ptr<Player> p) {
     sbox = create_scopeptr<SelectionBox>();
     drops = create_scopeptr<Drops>();
     arrow = create_scopeptr<Arrow>();
+    steve = create_scopeptr<Steve>();
     drops->terrain_atlas = terrain_atlas;
 
     sound_manager = create_scopeptr<SoundManager>();
@@ -74,6 +76,11 @@ World::World(std::shared_ptr<Player> p) {
     isBreaking = false;
     timeLeftToBreak = -1.0f;
     breaking = { -1, -1, -1 };
+
+    sd.animationTime = 0.0f;
+    sd.head_rotation = { 30.0f, 120.0f };
+    sd.pos = { 128.0f, 38.8f, 128.0f };
+    sd.rot = { 0.0f, 45.0f };
 }
 
 auto World::spawn() -> void {
@@ -186,6 +193,7 @@ auto World::get_needed_chunks() -> std::vector<glm::ivec2> {
 }
 
 void World::update(double dt) {
+    sd.rot.y += dt * 10.0f;
 
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
@@ -311,10 +319,10 @@ void World::draw() {
     glEnable(GL_CULL_FACE);
 #endif
 
-    std::map<float, ChunkStack *> chunk_sorted;
+    std::map<float, ChunkStack*> chunk_sorted;
     chunk_sorted.clear();
 
-    for (auto const &[key, val] : chunks) {
+    for (auto const& [key, val] : chunks) {
         glm::vec2 relative_chunk_pos = glm::vec2(
             val->get_chunk_pos().x * 16.0f, val->get_chunk_pos().y * 16.0f);
         auto diff =
@@ -324,11 +332,11 @@ void World::draw() {
     }
 
     // Draw opaque
-    for (auto const &[key, val] : chunk_sorted) {
+    for (auto const& [key, val] : chunk_sorted) {
         val->draw(this);
     }
 
-    std::map<float, ChunkStack *, std::greater<float>> chunk_reverse_sorted;
+    std::map<float, ChunkStack*, std::greater<float>> chunk_reverse_sorted;
     chunk_reverse_sorted.insert(chunk_sorted.begin(), chunk_sorted.end());
     chunk_sorted.clear();
 
@@ -345,11 +353,11 @@ void World::draw() {
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
     // Draw flora
-    for (auto const &[key, val] : chunk_reverse_sorted) {
+    for (auto const& [key, val] : chunk_reverse_sorted) {
         val->draw_flora();
     }
     // Draw transparent
-    for (auto const &[key, val] : chunk_reverse_sorted) {
+    for (auto const& [key, val] : chunk_reverse_sorted) {
         val->draw_transparent();
     }
 
@@ -358,6 +366,8 @@ void World::draw() {
 #endif
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
+
+    steve->draw(sd);
 
     sbox->draw();
 
