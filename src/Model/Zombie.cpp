@@ -7,7 +7,7 @@ namespace CrossCraft
 
     Zombie::Zombie()
     {
-        YAML::Node config = YAML::LoadFile("models/steve.yaml");
+        YAML::Node config = YAML::LoadFile("models/zombie.yaml");
 
         auto tSize = config["model"][0]["texsize"];
         auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
