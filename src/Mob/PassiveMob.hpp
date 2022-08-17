@@ -8,6 +8,6 @@ namespace CrossCraft
     public:
         PassiveMob() = default;
         virtual ~PassiveMob() = default;
-        void update(Player *p);
+        void update(float dt, Player *p, World* w);
     };
 }

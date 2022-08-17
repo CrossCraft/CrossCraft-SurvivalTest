@@ -26,6 +26,6 @@ namespace CrossCraft
         MobType mobType;
         glm::vec2 head_rotation;
 
-        virtual void update(Player *p) = 0;
+        virtual void update(float dt, Player *p, World* w) = 0;
     };
 }

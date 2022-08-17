@@ -8,6 +8,6 @@ namespace CrossCraft
     public:
         AggressiveMob() = default;
         virtual ~AggressiveMob() = default;
-        void update(Player *p);
+        void update(float dt, Player *p, World* w);
     };
 }

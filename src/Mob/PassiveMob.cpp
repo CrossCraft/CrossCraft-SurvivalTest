@@ -2,7 +2,7 @@
 
 namespace CrossCraft
 {
-    void PassiveMob::update(Player *p)
+    void PassiveMob::update(float dt, Player *p, World* w)
     {
     }
 }

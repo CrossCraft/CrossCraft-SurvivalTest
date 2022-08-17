@@ -20,7 +20,7 @@ namespace CrossCraft
         Steve();
         ~Steve();
 
-        void draw(SteveData& sd);
+        void draw(SteveData* sd);
 
     private:
         uint32_t tex;

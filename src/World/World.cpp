@@ -24,8 +24,6 @@
 
 namespace CrossCraft {
 
-SteveData sd = SteveData();
-ZombieData zd = ZombieData();
 World::World(std::shared_ptr<Player> p) {
     tick_counter = 0;
     player = p;
@@ -76,18 +74,25 @@ World::World(std::shared_ptr<Player> p) {
     timeLeftToBreak = -1.0f;
     breaking = {-1, -1, -1};
 
-    steve = create_scopeptr<Steve>();
-    zombie = create_scopeptr<Zombie>();
+    mobManager = create_scopeptr<MobManager>();
 
-    sd.animationTime = 0.0f;
-    sd.head_rotation = {30.0f, 120.0f};
-    sd.pos = {128.0f, 38.8f, 128.0f};
-    sd.rot = {0.0f, 180.0f};
+    SteveData* sd = new SteveData();
+    sd->animationTime = 0.0f;
+    sd->head_rotation = {30.0f, 120.0f};
+    sd->pos = {128.0f, 38.8f, 128.0f};
+    sd->rot = {0.0f, 180.0f};
+    sd->mobType = MobType::Steve;
+    sd->size = { 0.6f, 1.8f, 0.6f };
+    mobManager->add_mob(sd);
 
-    zd.animationTime = 0.0f;
-    zd.head_rotation = {30.0f, 120.0f};
-    zd.pos = {128.0f, 38.8f, 129.0f};
-    zd.rot = {0.0f, 180.0f};
+    ZombieData* zd = new ZombieData();
+    zd->animationTime = 0.0f;
+    zd->head_rotation = {30.0f, 120.0f};
+    zd->pos = {128.0f, 38.8f, 129.0f};
+    zd->rot = {0.0f, 180.0f};
+    zd->mobType = MobType::Zombie;
+    zd->size = { 0.6f, 1.8f, 0.6f };
+    mobManager->add_mob(zd);
 }
 
 auto World::spawn() -> void {
@@ -200,9 +205,6 @@ auto World::get_needed_chunks() -> std::vector<glm::ivec2> {
 }
 
 void World::update(double dt) {
-    sd.rot.y += dt * 10.0f;
-    zd.rot.y += dt * 10.0f;
-
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
     player->update(static_cast<float>(dt), this);
@@ -211,6 +213,7 @@ void World::update(double dt) {
     psystem->update(dt);
     drops->update(dt, player.get(), this);
     arrow->update(dt, player.get(), this);
+    mobManager->update(dt, player.get(), this);
 
     tick_counter += dt;
     stored_dt = dt;
@@ -377,8 +380,7 @@ void World::draw() {
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
-    steve->draw(sd);
-    zombie->draw(zd);
+    mobManager->draw();
 
     sbox->draw();
 

@@ -22,7 +22,7 @@ namespace CrossCraft
         Zombie();
         ~Zombie();
 
-        void draw(ZombieData& sd);
+        void draw(ZombieData* sd);
 
     private:
         uint32_t tex;
