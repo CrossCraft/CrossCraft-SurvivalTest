@@ -137,5 +137,7 @@ if(VITA)
         FILE audio/step/wood2.wav audio/step/wood2.wav
         FILE audio/step/wood3.wav audio/step/wood3.wav
         FILE audio/step/wood4.wav audio/step/wood4.wav
+        FILE models/steve.yaml models/steve.yaml
+        FILE models/zombie.yaml models/zombie.yaml
     )
 endif()

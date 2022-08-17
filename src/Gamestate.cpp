@@ -102,7 +102,7 @@ const std::string frag_source =
 
         float dist = coords.z / coords.w;
 
-        float fogMax = (4.0f * 16.0f * 0.8f);
+        float fogMax = (6.0f * 16.0f * 0.8f);
         float fogMin = (4.0f * 16.0f * 0.2f);
         float fogFactor = (fogMax - dist) / (fogMax - fogMin);
         fogFactor = clamp(fogFactor, 0.0f, 1.0f);
