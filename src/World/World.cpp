@@ -200,6 +200,8 @@ auto World::get_needed_chunks() -> std::vector<glm::ivec2> {
 }
 
 void World::update(double dt) {
+    sd.rot.y += dt * 10.0f;
+    zd.rot.y += dt * 10.0f;
 
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
