@@ -2,13 +2,16 @@
 #include <glm.hpp>
 #include "Model.hpp"
 #include "../Entity/Entity.hpp"
+#include "../Mob/AggressiveMob.hpp"
 
 namespace CrossCraft
 {
     using namespace Stardust_Celeste;
-    //TODO: Add Mob Data
-    struct ZombieData : public Entity
+    class ZombieData : public AggressiveMob
     {
+    public:
+        ZombieData() = default;
+        ~ZombieData() = default;
         glm::vec2 head_rotation;
         float animationTime;
     };
@@ -19,7 +22,7 @@ namespace CrossCraft
         Zombie();
         ~Zombie();
 
-        void draw(ZombieData sd);
+        void draw(ZombieData& sd);
 
     private:
         uint32_t tex;

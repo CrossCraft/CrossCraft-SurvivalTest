@@ -53,6 +53,8 @@ typedef uint8_t block_t;
 class ChunkStack;
 class Drops;
 class Arrow;
+class Zombie;
+class Steve;
 
 /**
  * @brief The world

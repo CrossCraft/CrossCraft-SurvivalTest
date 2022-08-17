@@ -542,8 +542,6 @@ void MenuState::down(std::any m) {
         if (total_idx > 6)
             total_idx = 6;
 
-        total_idx + 1;
-
         if (mstate->selIdx > total_idx)
             mstate->selIdx = 0;
     }

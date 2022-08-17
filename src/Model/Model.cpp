@@ -3,7 +3,8 @@
 
 namespace CrossCraft
 {
-    auto getUVs(YAML::Node arr, int idx, glm::vec2 texSize)->std::array<float, 8> {
+    auto getUVs(YAML::Node arr, int idx, glm::vec2 texSize) -> std::array<float, 8>
+    {
         auto data = arr[idx];
         auto sp = data["offset"];
         auto ep = data["extent"];
@@ -18,8 +19,7 @@ namespace CrossCraft
             min.x, min.y,
             min.x, max.y,
             max.x, max.y,
-            max.x, min.y
-        };
+            max.x, min.y};
     }
 
     void Model::load(YAML::Node node, glm::vec2 texSize)
@@ -49,68 +49,57 @@ namespace CrossCraft
         m_index.shrink_to_fit();
         blockMesh.delete_data();
 
-        
-            // Y Max
-            auto uvs = getUVs(uv, 0, texSize);
+        // Y Max
+        auto uvs = getUVs(uv, 0, texSize);
 
-            m_verts.push_back(Rendering::Vertex{ uvs[0], uvs[1], c, start.x, endPos.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[2], uvs[3], c, start.x, endPos.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[4], uvs[5], c, endPos.x, endPos.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[6], uvs[7], c, endPos.x, endPos.y, start.z });
-        
+        m_verts.push_back(Rendering::Vertex{uvs[0], uvs[1], c, start.x, endPos.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[2], uvs[3], c, start.x, endPos.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[4], uvs[5], c, endPos.x, endPos.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[6], uvs[7], c, endPos.x, endPos.y, start.z});
 
-        
-            // Y Min
-            uvs = getUVs(uv, 1, texSize);
+        // Y Min
+        uvs = getUVs(uv, 1, texSize);
 
-            m_verts.push_back(Rendering::Vertex{ uvs[0], uvs[1], c, start.x, start.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[2], uvs[3], c, start.x, start.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[4], uvs[5], c, endPos.x, start.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[6], uvs[7], c, endPos.x, start.y, start.z });
-        
+        m_verts.push_back(Rendering::Vertex{uvs[0], uvs[1], c, start.x, start.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[2], uvs[3], c, start.x, start.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[4], uvs[5], c, endPos.x, start.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[6], uvs[7], c, endPos.x, start.y, start.z});
 
-        
-            // Z Max
-            uvs = getUVs(uv, 2, texSize);
+        // Z Max
+        uvs = getUVs(uv, 2, texSize);
 
-            m_verts.push_back(Rendering::Vertex{ uvs[0], uvs[1], c, start.x, endPos.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[2], uvs[3], c, start.x, start.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[4], uvs[5], c, start.x, start.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[6], uvs[7], c, start.x, endPos.y, endPos.z });
-        
+        m_verts.push_back(Rendering::Vertex{uvs[0], uvs[1], c, start.x, endPos.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[2], uvs[3], c, start.x, start.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[4], uvs[5], c, start.x, start.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[6], uvs[7], c, start.x, endPos.y, endPos.z});
 
-        
-            // Z Min
-            uvs = getUVs(uv, 3, texSize);
+        // Z Min
+        uvs = getUVs(uv, 3, texSize);
 
-            m_verts.push_back(Rendering::Vertex{ uvs[0], uvs[1], c, endPos.x, endPos.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[2], uvs[3], c, endPos.x, start.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[4], uvs[5], c, endPos.x, start.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[6], uvs[7], c, endPos.x, endPos.y, endPos.z });
-        
+        m_verts.push_back(Rendering::Vertex{uvs[0], uvs[1], c, endPos.x, endPos.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[2], uvs[3], c, endPos.x, start.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[4], uvs[5], c, endPos.x, start.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[6], uvs[7], c, endPos.x, endPos.y, endPos.z});
 
-        
-            // X Max
-            uvs = getUVs(uv, 4, texSize);
+        // X Max
+        uvs = getUVs(uv, 4, texSize);
 
-            m_verts.push_back(Rendering::Vertex{ uvs[0], uvs[1], c, endPos.x, endPos.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[2], uvs[3], c, endPos.x, start.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[4], uvs[5], c, start.x, start.y, endPos.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[6], uvs[7], c, start.x, endPos.y, endPos.z });
-        
+        m_verts.push_back(Rendering::Vertex{uvs[0], uvs[1], c, endPos.x, endPos.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[2], uvs[3], c, endPos.x, start.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[4], uvs[5], c, start.x, start.y, endPos.z});
+        m_verts.push_back(Rendering::Vertex{uvs[6], uvs[7], c, start.x, endPos.y, endPos.z});
 
-        
-            // X Min
-            uvs = getUVs(uv, 5, texSize);
+        // X Min
+        uvs = getUVs(uv, 5, texSize);
 
-            m_verts.push_back(Rendering::Vertex{ uvs[0], uvs[1], c, start.x, endPos.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[2], uvs[3], c, start.x, start.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[4], uvs[5], c, endPos.x, start.y, start.z });
-            m_verts.push_back(Rendering::Vertex{ uvs[6], uvs[7], c, endPos.x, endPos.y, start.z });
-        
+        m_verts.push_back(Rendering::Vertex{uvs[0], uvs[1], c, start.x, endPos.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[2], uvs[3], c, start.x, start.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[4], uvs[5], c, endPos.x, start.y, start.z});
+        m_verts.push_back(Rendering::Vertex{uvs[6], uvs[7], c, endPos.x, endPos.y, start.z});
 
         // Add Indices
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++)
+        {
             m_index.push_back(idx_counter + 0);
             m_index.push_back(idx_counter + 1);
             m_index.push_back(idx_counter + 2);
@@ -121,7 +110,7 @@ namespace CrossCraft
         }
 
         blockMesh.add_data(m_verts.data(), m_verts.size(),
-            m_index.data(), m_index.size());
+                           m_index.data(), m_index.size());
     }
 
     void Model::draw(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
@@ -140,7 +129,6 @@ namespace CrossCraft
 #endif
 
         blockMesh.draw();
-
 
 #if BUILD_PLAT != BUILD_PSP
         glEnable(GL_CULL_FACE);

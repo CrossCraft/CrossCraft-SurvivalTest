@@ -1,15 +1,16 @@
 #pragma once
 #include <glm.hpp>
 #include "Model.hpp"
-#include "../Entity/Entity.hpp"
+#include "../Mob/PassiveMob.hpp"
 
 namespace CrossCraft
 {
     using namespace Stardust_Celeste;
-    //TODO: Add Mob Data
-    struct SteveData : public Entity
+    class SteveData : public PassiveMob
     {
-        glm::vec2 head_rotation;
+    public:
+        SteveData() = default;
+        ~SteveData() = default;
         float animationTime;
     };
 
@@ -19,7 +20,7 @@ namespace CrossCraft
         Steve();
         ~Steve();
 
-        void draw(SteveData sd);
+        void draw(SteveData& sd);
 
     private:
         uint32_t tex;
