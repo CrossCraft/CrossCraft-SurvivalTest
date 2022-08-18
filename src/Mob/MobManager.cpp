@@ -9,6 +9,7 @@ namespace CrossCraft
         skeleton = create_scopeptr<Skeleton>();
         zombie = create_scopeptr<Zombie>();
         creeper = create_scopeptr<Creeper>();
+        pig = create_scopeptr<Pig>();
 
         mobs.clear();
     }
@@ -29,10 +30,10 @@ namespace CrossCraft
 
     void MobManager::update(float dt, Player *p, World *w)
     {
-        for (auto m : mobs)
-        {
-            m->update(dt, p, w);
-        }
+        //for (auto m : mobs)
+        //{
+        //    m->update(dt, p, w);
+        //}
     }
     void MobManager::draw()
     {
@@ -54,6 +55,10 @@ namespace CrossCraft
 
             case MobType::Creeper:
                 creeper->draw((CreeperData *)m);
+                break;
+
+            case MobType::Pig:
+                pig->draw((PigData *)m);
                 break;
 
             default:

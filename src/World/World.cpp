@@ -113,6 +113,15 @@ namespace CrossCraft
         cpd->mobType = MobType::Creeper;
         cpd->size = {0.6f, 1.4625f, 0.6f};
         mobManager->add_mob(cpd);
+
+        PigData *pd = new PigData();
+        pd->animationTime = 0.0f;
+        pd->head_rotation = {30.0f, 120.0f};
+        pd->pos = {129.0f, 38.0f, 130.0f};
+        pd->rot = {0.0f, 180.0f};
+        pd->mobType = MobType::Pig;
+        pd->size = {0.9f, 0.9f, 0.9f};
+        mobManager->add_mob(pd);
     }
 
     auto World::spawn() -> void
