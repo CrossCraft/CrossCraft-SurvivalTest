@@ -8,6 +8,7 @@ namespace CrossCraft
         steve = create_scopeptr<Steve>();
         skeleton = create_scopeptr<Skeleton>();
         zombie = create_scopeptr<Zombie>();
+        creeper = create_scopeptr<Creeper>();
 
         mobs.clear();
     }
@@ -49,6 +50,10 @@ namespace CrossCraft
 
             case MobType::Zombie:
                 zombie->draw((ZombieData *)m);
+                break;
+
+            case MobType::Creeper:
+                creeper->draw((CreeperData *)m);
                 break;
 
             default:

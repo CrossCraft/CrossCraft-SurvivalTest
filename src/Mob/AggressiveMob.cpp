@@ -41,6 +41,9 @@ namespace CrossCraft
         if (mobType == MobType::Skeleton) {
             vSpeed = 2.0f;
         }
+        else if (mobType == MobType::Creeper) {
+            vSpeed = 1.8f;
+        }
 
         if (len < 24.0f && len > 1.0f) {
             diff /= len;
@@ -53,8 +56,8 @@ namespace CrossCraft
             auto angle = glm::orientedAngle(defaultPoint, refVec);
             rot.y = 90.0f - angle / 3.14159f * 180.0f;
 
-            if (yDiff > 0 && !is_falling && yDiff < 7.0f && !water_cutoff) {
-                vel.y = 5.4f;
+            if ((int)yDiff > 0 && !is_falling && yDiff < 7.0f && !water_cutoff) {
+                vel.y = 6.9f;
             }
         }
 

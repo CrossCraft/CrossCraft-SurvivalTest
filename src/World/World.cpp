@@ -104,6 +104,15 @@ namespace CrossCraft
         skd->mobType = MobType::Skeleton;
         skd->size = {0.6f, 1.8f, 0.6f};
         mobManager->add_mob(skd);
+
+        CreeperData *cpd = new CreeperData();
+        cpd->animationTime = 0.0f;
+        cpd->head_rotation = {30.0f, 120.0f};
+        cpd->pos = {129.0f, 38.4625f, 129.0f};
+        cpd->rot = {0.0f, 180.0f};
+        cpd->mobType = MobType::Creeper;
+        cpd->size = {0.6f, 1.4625f, 0.6f};
+        mobManager->add_mob(cpd);
     }
 
     auto World::spawn() -> void

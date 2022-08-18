@@ -1,6 +1,7 @@
 #pragma once
 #include "Mob.hpp"
 #include <vector>
+#include "../Model/Creeper.hpp"
 #include "../Model/Steve.hpp"
 #include "../Model/Zombie.hpp"
 #include "../Model/Skeleton.hpp"
@@ -24,6 +25,7 @@ namespace CrossCraft
     private:
         std::vector<Mob *> mobs;
 
+        ScopePtr<Creeper> creeper;
         ScopePtr<Steve> steve;
         ScopePtr<Skeleton> skeleton;
         ScopePtr<Zombie> zombie;
