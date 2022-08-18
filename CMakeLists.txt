@@ -138,6 +138,13 @@ if(VITA)
         FILE audio/step/wood3.wav audio/step/wood3.wav
         FILE audio/step/wood4.wav audio/step/wood4.wav
         FILE models/steve.yaml models/steve.yaml
+        FILE models/armor.yaml models/armor.yaml
         FILE models/zombie.yaml models/zombie.yaml
+        FILE models/skeleton.yaml models/skeleton.yaml
+        FILE models/creeper.yaml models/creeper.yaml
+        FILE models/spider.yaml models/spider.yaml
+        FILE models/pig.yaml models/pig.yaml
+        FILE models/sheep.yaml models/sheep.yaml
+        FILE models/sheep_fur.yaml models/sheep_fur.yaml
     )
 endif()

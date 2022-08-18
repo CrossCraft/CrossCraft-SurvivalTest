@@ -35,6 +35,7 @@ jobs:
           name: CrossCraft-Linux
           path: |
             audio/
+            models/
             CrossCraft-SurvivalTest
             texturepacks/
             LICENSE
@@ -62,6 +63,7 @@ jobs:
           name: CrossCraft-Mac
           path: |
             audio/
+            models/
             CrossCraft-SurvivalTest
             texturepacks/
             LICENSE
@@ -88,6 +90,7 @@ jobs:
           name: CrossCraft-Windows
           path: |
             audio\
+            models\
             CrossCraft-SurvivalTest.exe
             zlib.dll
             texturepacks\
@@ -125,6 +128,7 @@ jobs:
           name: CrossCraft-PSP
           path: |
             audio/
+            models/
             EBOOT.PBP
             CrossCraft-SurvivalTest.prx
             default.zip
