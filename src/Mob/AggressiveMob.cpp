@@ -37,10 +37,15 @@ namespace CrossCraft
             vel.y = 4.8f;
         }
 
+        auto vSpeed = 2.3f;
+        if (mobType == MobType::Skeleton) {
+            vSpeed = 2.0f;
+        }
+
         if (len < 24.0f && len > 1.0f) {
             diff /= len;
-            vel.x = diff.x * 0.5f * 2.3f;
-            vel.z = diff.y * 0.5f * 2.3f;
+            vel.x = diff.x * 0.5f * vSpeed;
+            vel.z = diff.y * 0.5f * vSpeed;
 
             auto defaultPoint = glm::vec2(0.0f, 1.0f);
             auto refVec = diff;

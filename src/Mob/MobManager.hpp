@@ -3,6 +3,7 @@
 #include <vector>
 #include "../Model/Steve.hpp"
 #include "../Model/Zombie.hpp"
+#include "../Model/Skeleton.hpp"
 
 namespace CrossCraft
 {
@@ -17,13 +18,14 @@ namespace CrossCraft
 
         void add_mob(Mob *mobData);
 
-        void update(float dt, Player *p, World* w);
+        void update(float dt, Player *p, World *w);
         void draw();
 
     private:
         std::vector<Mob *> mobs;
 
         ScopePtr<Steve> steve;
+        ScopePtr<Skeleton> skeleton;
         ScopePtr<Zombie> zombie;
     };
 }
