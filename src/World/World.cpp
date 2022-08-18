@@ -93,7 +93,7 @@ namespace CrossCraft
         ad->pos = {128.0f, 38.9f, 128.0f};
         ad->rot = {0.0f, 180.0f};
         ad->mobType = MobType::Armor;
-        sd->size = { 0.6f, 1.8f, 0.6f };
+        sd->size = {0.6f, 1.8f, 0.6f};
         mobManager->add_mob(ad);
 
         ZombieData *zd = new ZombieData();
@@ -141,6 +141,15 @@ namespace CrossCraft
         shd->size = {0.9f, 0.9f, 0.9f};
         shd->hasWool = true;
         mobManager->add_mob(shd);
+
+        SpiderData *spd = new SpiderData();
+        spd->animationTime = 0.0f;
+        spd->head_rotation = {30.0f, 120.0f};
+        spd->pos = {131.0f, 37.8f, 128.5f};
+        spd->rot = {0.0f, 180.0f};
+        spd->mobType = MobType::Spider;
+        spd->size = {1.8f, 0.9f, 1.8f};
+        mobManager->add_mob(spd);
     }
 
     auto World::spawn() -> void

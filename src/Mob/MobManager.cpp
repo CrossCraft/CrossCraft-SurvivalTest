@@ -12,6 +12,7 @@ namespace CrossCraft
         pig = create_scopeptr<Pig>();
         sheep = create_scopeptr<Sheep>();
         armor = create_scopeptr<Armor>();
+        spider = create_scopeptr<Spider>();
 
         mobs.clear();
     }
@@ -69,6 +70,10 @@ namespace CrossCraft
 
             case MobType::Armor:
                 armor->draw((ArmorData *)m);
+                break;
+
+            case MobType::Spider:
+                spider->draw((SpiderData *)m);
                 break;
 
             default:
