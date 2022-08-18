@@ -10,6 +10,7 @@ namespace CrossCraft
         zombie = create_scopeptr<Zombie>();
         creeper = create_scopeptr<Creeper>();
         pig = create_scopeptr<Pig>();
+        sheep = create_scopeptr<Sheep>();
 
         mobs.clear();
     }
@@ -59,6 +60,10 @@ namespace CrossCraft
 
             case MobType::Pig:
                 pig->draw((PigData *)m);
+                break;
+
+            case MobType::Sheep:
+                sheep->draw((SheepData *)m);
                 break;
 
             default:

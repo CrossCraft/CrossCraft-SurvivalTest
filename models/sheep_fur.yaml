@@ -1,0 +1,68 @@
+model:
+  - texsize: [64, 32]
+  - leg:
+    anchor: [0.15625, 0.0, 0.15625]
+    size: [0.3125, 0.75, 0.3125]
+    uv: 
+      - # Top
+        offset: [4, 16]
+        extent: [4, 4]
+      - # Bottom
+        offset: [8, 16]
+        extent: [4, 4]
+      - # Front
+        offset: [4, 20]
+        extent: [4, 12]
+      - # Back
+        offset: [12, 20]
+        extent: [4, 12]
+      - # Right
+        offset: [0, 20]
+        extent: [4, 12]
+      - # Left
+        offset: [8, 20]
+        extent: [4, 12]
+  - torso:
+    anchor: [0.21875, 1.03125, 0.3125]
+    size: [0.4375, 1.0625, 0.625]
+    uv: 
+      - # Top
+        offset: [34, 8]
+        extent: [8, 6]
+      - # Bottom
+        offset: [42, 8]
+        extent: [8, 6]
+      - # Front
+        offset: [34, 14]
+        extent: [8, 16]
+      - # Back
+        offset: [48, 14]
+        extent: [8, 16]
+      - # Right
+        offset: [28, 14]
+        extent: [6, 16]
+      - # Left
+        offset: [42, 14]
+        extent: [6, 16]
+  - head:
+    anchor: [0.21875, 0.21875, 0.21875]
+    size: [0.4375, 0.4375, 0.4375]
+    uv: 
+      - # Top
+        offset: [6, 0]
+        extent: [6, 6]
+      - # Bottom
+        offset: [12, 0]
+        extent: [6, 6]
+      - # Front
+        offset: [6, 6]
+        extent: [6, 6]
+      - # Back
+        offset: [18, 6]
+        extent: [6, 6]
+      - # Right
+        offset: [0, 6]
+        extent: [6, 6]
+      - # Left
+        offset: [12, 6]
+        extent: [6, 6]

@@ -6,6 +6,7 @@
 #include "../Model/Steve.hpp"
 #include "../Model/Zombie.hpp"
 #include "../Model/Skeleton.hpp"
+#include "../Model/Sheep.hpp"
 
 namespace CrossCraft
 {
@@ -31,5 +32,6 @@ namespace CrossCraft
         ScopePtr<Skeleton> skeleton;
         ScopePtr<Zombie> zombie;
         ScopePtr<Pig> pig;
+        ScopePtr<Sheep> sheep;
     };
 }

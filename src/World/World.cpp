@@ -86,7 +86,7 @@ namespace CrossCraft
         sd->mobType = MobType::Steve;
         sd->size = {0.6f, 1.8f, 0.6f};
         mobManager->add_mob(sd);
-
+        
         ZombieData *zd = new ZombieData();
         zd->animationTime = 0.0f;
         zd->head_rotation = {30.0f, 120.0f};
@@ -95,7 +95,7 @@ namespace CrossCraft
         zd->mobType = MobType::Zombie;
         zd->size = {0.6f, 1.8f, 0.6f};
         mobManager->add_mob(zd);
-
+        
         SkeletonData *skd = new SkeletonData();
         skd->animationTime = 0.0f;
         skd->head_rotation = {30.0f, 120.0f};
@@ -104,7 +104,7 @@ namespace CrossCraft
         skd->mobType = MobType::Skeleton;
         skd->size = {0.6f, 1.8f, 0.6f};
         mobManager->add_mob(skd);
-
+        
         CreeperData *cpd = new CreeperData();
         cpd->animationTime = 0.0f;
         cpd->head_rotation = {30.0f, 120.0f};
@@ -113,7 +113,7 @@ namespace CrossCraft
         cpd->mobType = MobType::Creeper;
         cpd->size = {0.6f, 1.4625f, 0.6f};
         mobManager->add_mob(cpd);
-
+        
         PigData *pd = new PigData();
         pd->animationTime = 0.0f;
         pd->head_rotation = {30.0f, 120.0f};
@@ -122,6 +122,16 @@ namespace CrossCraft
         pd->mobType = MobType::Pig;
         pd->size = {0.9f, 0.9f, 0.9f};
         mobManager->add_mob(pd);
+
+        SheepData *shd = new SheepData();
+        shd->animationTime = 0.0f;
+        shd->head_rotation = {30.0f, 120.0f};
+        shd->pos = {129.0f, 38.25f, 127.0f};
+        shd->rot = {0.0f, 180.0f};
+        shd->mobType = MobType::Sheep;
+        shd->size = {0.9f, 0.9f, 0.9f};
+        shd->hasWool = true;
+        mobManager->add_mob(shd);
     }
 
     auto World::spawn() -> void
