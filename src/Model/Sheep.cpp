@@ -43,7 +43,7 @@ namespace CrossCraft
     {
         auto ctx = &Rendering::RenderContext::get();
         ctx->matrix_clear();
-        ctx->matrix_translate({sd->pos.x, sd->pos.y, sd->pos.z});
+        ctx->matrix_translate({sd->pos.x, sd->pos.y - 0.75f, sd->pos.z});
         ctx->matrix_rotate(glm::vec3(sd->rot, 0.0f));
         ctx->matrix_scale({0.9f, 0.9f, 0.9f});
 

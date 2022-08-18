@@ -2,12 +2,12 @@
 #include <glm.hpp>
 #include "Model.hpp"
 #include "../Entity/Entity.hpp"
-#include "../Mob/PassiveMob.hpp"
+#include "../Mob/AggressiveMob.hpp"
 
 namespace CrossCraft
 {
     using namespace Stardust_Celeste;
-    class SpiderData : public PassiveMob
+    class SpiderData : public AggressiveMob
     {
     public:
         SpiderData() = default;

@@ -33,10 +33,10 @@ namespace CrossCraft
 
     void MobManager::update(float dt, Player *p, World *w)
     {
-        //for (auto m : mobs)
-        //{
-        //    m->update(dt, p, w);
-        //}
+        for (auto m : mobs)
+        {
+            m->update(dt, p, w);
+        }
     }
     void MobManager::draw()
     {
