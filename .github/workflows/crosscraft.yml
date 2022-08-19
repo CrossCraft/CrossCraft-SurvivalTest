@@ -34,7 +34,6 @@ jobs:
         with:
           name: CrossCraft-Linux
           path: |
-            models/
             CrossCraft-SurvivalTest
             resourcepacks/
             LICENSE
@@ -61,7 +60,6 @@ jobs:
         with:
           name: CrossCraft-Mac
           path: |
-            models/
             CrossCraft-SurvivalTest
             resourcepacks/
             LICENSE
@@ -87,10 +85,9 @@ jobs:
         with:
           name: CrossCraft-Windows
           path: |
-            models\
             CrossCraft-SurvivalTest.exe
             zlib.dll
-            models/
+            resourcepacks\
             LICENSE
             README.md
             config.cfg
@@ -124,7 +121,6 @@ jobs:
         with:
           name: CrossCraft-PSP
           path: |
-            models/
             EBOOT.PBP
             CrossCraft-SurvivalTest.prx
             default.zip
