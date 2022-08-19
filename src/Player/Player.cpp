@@ -2,7 +2,7 @@
 #include "../BlockConst.hpp"
 #include "../Chunk/ChunkUtil.hpp"
 #include "../MP/OutPackets.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include <Platform/Platform.hpp>
 #include <Utilities/Input.hpp>
 #include <Utilities/Logger.hpp>
@@ -68,17 +68,17 @@ Player::Player()
           255.0f),
     model(pos, { 0.6, 1.8, 0.6 }), itemSelections{ SlotInfo{-1, 0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{-1,0},
                                                   SlotInfo{-1, 0}, SlotInfo{Block::Mushroom2,10}, SlotInfo{Block::Mushroom1,10}, SlotInfo{Block::TNT, 10} } {
-    gui_texture = TexturePackManager::get().load_texture(
-        "assets/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    gui_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, true);
-    icons_texture = TexturePackManager::get().load_texture(
-        "assets/gui/icons.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    icons_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/gui/icons.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         true, true);
-    water_texture = TexturePackManager::get().load_texture(
-        "assets/water.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
+    water_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/water.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
         true);
-    font_texture = TexturePackManager::get().load_texture(
-        "assets/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    font_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, false);
 
     in_tab = false;

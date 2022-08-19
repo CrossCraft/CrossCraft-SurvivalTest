@@ -34,10 +34,8 @@ jobs:
         with:
           name: CrossCraft-Linux
           path: |
-            audio/
-            models/
             CrossCraft-SurvivalTest
-            texturepacks/
+            resourcepacks/
             LICENSE
             README.md
             config.cfg
@@ -62,10 +60,8 @@ jobs:
         with:
           name: CrossCraft-Mac
           path: |
-            audio/
-            models/
             CrossCraft-SurvivalTest
-            texturepacks/
+            resourcepacks/
             LICENSE
             README.md
             config.cfg
@@ -89,11 +85,9 @@ jobs:
         with:
           name: CrossCraft-Windows
           path: |
-            audio\
-            models\
             CrossCraft-SurvivalTest.exe
             zlib.dll
-            texturepacks\
+            resourcepacks\
             LICENSE
             README.md
             config.cfg
@@ -121,14 +115,12 @@ jobs:
           cd ..
           mv build/EBOOT.PBP EBOOT.PBP
           mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
-          mv texturepacks/default.zip default.zip
+          mv resourcepacks/default.zip default.zip
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: CrossCraft-PSP
           path: |
-            audio/
-            models/
             EBOOT.PBP
             CrossCraft-SurvivalTest.prx
             default.zip

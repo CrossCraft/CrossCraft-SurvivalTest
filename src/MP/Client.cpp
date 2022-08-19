@@ -3,7 +3,7 @@
 #include "InPackets.hpp"
 #include "OutPackets.hpp"
 
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include <string>
 #include <thread>
 #include <zlib.h>
@@ -304,8 +304,8 @@ Client::Client(World *wrld, std::string ip, u16 port) {
     mesh.add_data(mesh_data.data(), mesh_data.size(), mesh_indices.data(),
                   mesh_indices.size());
 
-    font_texture = TexturePackManager::get().load_texture(
-        "assets/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    font_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, false);
     fontRenderer = create_scopeptr<Graphics::G2D::FontRenderer>(
         font_texture, glm::vec2(16, 16));

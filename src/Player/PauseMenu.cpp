@@ -1,5 +1,5 @@
 #include "PauseMenu.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include "../UI/TextHelper.hpp"
 
 #define BUILD_PC (BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX)
@@ -16,12 +16,12 @@ extern GLFWwindow *window;
 namespace CrossCraft {
 
 PauseMenu::PauseMenu() {
-    gui_tex = TexturePackManager::get().load_texture(
-        "assets/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    gui_tex = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, true);
 
-    font_texture = TexturePackManager::get().load_texture(
-        "assets/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    font_texture = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, false);
 
     unsel_sprite = create_scopeptr<Graphics::G2D::Sprite>(

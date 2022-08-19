@@ -1,4 +1,5 @@
 #include "SoundManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
 
 namespace CrossCraft
@@ -7,14 +8,18 @@ namespace CrossCraft
     auto SoundManager::load_dig() -> void
     {
         ClipList l1;
-        l1.clips.clear();                           
-        l1.clips.push_back(create_refptr<Audio::Clip>(PLATFORM_APP_FILE_PREFIX + "audio/dig/glass1.wav"));
-        l1.clips.push_back(create_refptr<Audio::Clip>(PLATFORM_APP_FILE_PREFIX + "audio/dig/glass2.wav"));
-        l1.clips.push_back(create_refptr<Audio::Clip>(PLATFORM_APP_FILE_PREFIX + "audio/dig/glass3.wav"));
+        l1.clips.clear();
+
+        l1.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
+                            get_sound("assets/minecraft/sounds/dig/glass1.wav")));
+        l1.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
+                            get_sound("assets/minecraft/sounds/dig/glass2.wav")));
+        l1.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
+                            get_sound("assets/minecraft/sounds/dig/glass3.wav")));
 
         dig.emplace("glass", l1);
 
-        std::string prefix = PLATFORM_APP_FILE_PREFIX + "audio/dig/";
+        std::string prefix = PLATFORM_APP_FILE_PREFIX + "assets/minecraft/sounds/dig/";
         std::string name[4] = {"grass",
                                "gravel",
                                "stone",
@@ -25,14 +30,15 @@ namespace CrossCraft
             ClipList l;
             l.clips.clear();
             for (int c = 0; c < 4; c++)
-                l.clips.push_back(create_refptr<Audio::Clip>(prefix + name[i] + std::to_string(c + 1) + ".wav"));
+                l.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
+                            get_path() + prefix + name[i] + std::to_string(c + 1) + ".wav"));
 
             dig.emplace(name[i], l);
         }
     }
     auto SoundManager::load_step() -> void
     {
-        std::string prefix = PLATFORM_APP_FILE_PREFIX + "audio/step/";
+        std::string prefix = PLATFORM_APP_FILE_PREFIX + "assets/minecraft/sounds/dig/";
         std::string name[4] = {"grass",
                                "gravel",
                                "stone",
@@ -43,7 +49,8 @@ namespace CrossCraft
             ClipList l;
             l.clips.clear();
             for (int c = 0; c < 4; c++)
-                l.clips.push_back(create_refptr<Audio::Clip>(prefix + name[i] + std::to_string(c + 1) + ".wav"));
+                l.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
+                            get_path() + prefix + name[i] + std::to_string(c + 1) + ".wav"));
 
             step.emplace(name[i], l);
         }

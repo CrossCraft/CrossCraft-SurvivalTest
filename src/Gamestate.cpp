@@ -1,7 +1,7 @@
 #include "Gamestate.hpp"
 
 #include "Rendering/ShaderManager.hpp"
-#include "TexturePackManager.hpp"
+#include "ResourcePackManager.hpp"
 #include "Utils.hpp"
 #include "World/Generation/ClassicGenerator.hpp"
 #include "World/Generation/CrossCraftGenerator.hpp"

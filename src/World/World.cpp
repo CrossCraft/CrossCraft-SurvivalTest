@@ -1,5 +1,5 @@
 #include "World.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include "Generation/NoiseUtil.hpp"
 #include "Generation/WorldGenUtil.hpp"
 #include "SelectionBox.hpp"
@@ -32,8 +32,8 @@ World::World(std::shared_ptr<Player> p) {
     hmap = nullptr;
     client = nullptr;
     loaded = false;
-    terrain_atlas = TexturePackManager::get().load_texture(
-        "assets/terrain.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    terrain_atlas = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/terrain.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         true, false, true);
     p->terrain_atlas = terrain_atlas;
     p->wrldRef = this;
