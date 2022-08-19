@@ -1,15 +1,9 @@
 model:
   - texsize: [64, 32]
   - leg:
-    anchor: [0.0625, 1.0, 0.0625]
-    size: [0.125, 1.0, 0.125]
+    anchor: [1.0, 0.0625, 0.0625]
+    size: [1.0, 0.125, 0.125]
     uv: 
-      - # Top
-        offset: [18, 2]
-        extent: [2, 2]
-      - # Bottom
-        offset: [52, 2]
-        extent: [2, 2]
       - # Front
         offset: [20, 2]
         extent: [16, 2]
@@ -22,6 +16,12 @@ model:
       - # Left
         offset: [36, 0]
         extent: [16, 2]
+      - # Top
+        offset: [18, 2]
+        extent: [2, 2]
+      - # Bottom
+        offset: [52, 2]
+        extent: [2, 2]
   - torso:
     anchor: [0.1875, 0.1875, 0.1875]
     size: [0.37, 0.375, 0.375]

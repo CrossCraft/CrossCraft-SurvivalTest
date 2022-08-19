@@ -139,15 +139,15 @@ World::World(std::shared_ptr<Player> p) {
     shd->size = {0.9f, 0.9f, 0.9f};
     shd->hasWool = true;
     mobManager->add_mob(shd);
-    //
-    //    SpiderData *spd = new SpiderData();
-    //    spd->animationTime = 0.0f;
-    //    spd->head_rotation = {30.0f, 120.0f};
-    //    spd->pos = {131.0f, 37.8f, 128.5f};
-    //    spd->rot = {0.0f, 180.0f};
-    //    spd->mobType = MobType::Spider;
-    //    spd->size = {1.8f, 0.9f, 1.8f};
-    //    mobManager->add_mob(spd);
+
+    SpiderData *spd = new SpiderData();
+    spd->animationTime = 0.0f;
+    spd->head_rotation = {30.0f, 120.0f};
+    spd->pos = {131.0f, 37.8f, 128.5f};
+    spd->rot = {0.0f, 180.0f};
+    spd->mobType = MobType::Spider;
+    spd->size = {1.8f, 0.9f, 1.8f};
+    mobManager->add_mob(spd);
 }
 
 auto World::spawn() -> void {
