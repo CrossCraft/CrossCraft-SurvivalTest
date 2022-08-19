@@ -1,12 +1,13 @@
 #include "Zombie.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
 #include <yaml-cpp/yaml.h>
 namespace CrossCraft {
 
 Zombie::Zombie() {
     YAML::Node config =
-        YAML::LoadFile(PLATFORM_APP_FILE_PREFIX + "models/zombie.yaml");
+        YAML::LoadFile(ResourcePackManager::get().
+                            get_file("assets/crosscraft/models/zombie.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -16,8 +17,8 @@ Zombie::Zombie() {
     torso.load(config["model"][3], texSize);
     head.load(config["model"][4], texSize);
 
-    tex = TexturePackManager::get().load_texture(
-        "assets/mob/zombie.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    tex = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/mob/zombie.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, false);
 }
 

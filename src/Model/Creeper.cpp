@@ -1,12 +1,13 @@
 #include "Creeper.hpp"
-#include "../TexturePackManager.hpp"
+#include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
 #include <yaml-cpp/yaml.h>
 namespace CrossCraft {
 
 Creeper::Creeper() {
     YAML::Node config =
-        YAML::LoadFile(PLATFORM_APP_FILE_PREFIX + "models/creeper.yaml");
+        YAML::LoadFile(ResourcePackManager::get().
+                            get_file("assets/crosscraft/models/creeper.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -15,8 +16,8 @@ Creeper::Creeper() {
     torso.load(config["model"][2], texSize);
     head.load(config["model"][3], texSize);
 
-    tex = TexturePackManager::get().load_texture(
-        "assets/mob/creeper.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+    tex = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/mob/creeper.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
         false, false);
 }
 

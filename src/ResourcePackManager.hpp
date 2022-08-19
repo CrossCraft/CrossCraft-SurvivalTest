@@ -18,7 +18,7 @@ class ResourcePackManager {
     auto get_path() -> std::string;
     auto load_texture(std::string filename, u32 magFilter, u32 minFilter,
                       bool repeat, bool flip = false, bool vram = false) -> u32;
-    auto get_sound(std::string filename) -> std::string;
+    auto get_file(std::string filename) -> std::string;
     auto add_layer(std::string name) -> void;
 
     auto convert_old_resourcepacks() -> void;

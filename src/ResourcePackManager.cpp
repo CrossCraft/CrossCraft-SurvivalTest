@@ -48,7 +48,7 @@ auto ResourcePackManager::get_path() -> std::string {
     return "";
 }
 
-auto ResourcePackManager::get_sound(std::string filename) -> std::string {
+auto ResourcePackManager::get_file(std::string filename) -> std::string {
 
     for (int i = layers.size() - 1; i >= 0; i--) {
         auto &l = layers[i];

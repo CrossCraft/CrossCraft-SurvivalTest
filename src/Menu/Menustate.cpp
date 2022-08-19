@@ -32,15 +32,14 @@ namespace CrossCraft
 
     MenuState::~MenuState() { on_cleanup(); }
 
-void MenuState::on_start() {
-    createDirs();
+    void MenuState::on_start()
+    {
+        createDirs();
+        ResourcePackManager::get().convert_old_resourcepacks();
+        ResourcePackManager::get().scan_folder(PLATFORM_FILE_PREFIX +
+                                              "resourcepacks/");
 
-    ResourcePackManager::get().convert_old_resourcepacks();
-
-    ResourcePackManager::get().scan_folder(PLATFORM_FILE_PREFIX +
-                                          "resourcepacks/");
-
-    textureMenu = false;
+        textureMenu = false;
 
         // Make new controllers
         psp_controller = new Input::PSPController();
@@ -55,21 +54,21 @@ void MenuState::on_start() {
         Rendering::RenderContext::get().matrix_ortho(0, 480, 0, 272, -30, 30);
         Rendering::RenderContext::get().set_mode_2D();
 
-    bg_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/dirt.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
-        true);
+        bg_texture = ResourcePackManager::get().load_texture(
+            "assets/minecraft/textures/dirt.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
+            true);
 
-    logo_texture = ResourcePackManager::get().load_texture(
-        "assets/crosscraft/textures/menu/logo.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, true);
+        logo_texture = ResourcePackManager::get().load_texture(
+            "assets/crosscraft/textures/menu/logo.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+            false, true);
 
-    gui_tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, true);
+        gui_tex = ResourcePackManager::get().load_texture(
+            "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+            false, true);
 
-    font_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        font_texture = ResourcePackManager::get().load_texture(
+            "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
+            false, false);
 
         bg_tile = create_scopeptr<Graphics::G2D::Sprite>(
             bg_texture, Rendering::Rectangle{{0, 0}, {32, 32}},
@@ -111,7 +110,8 @@ void MenuState::on_start() {
         sceKernelDcacheWritebackInvalidateAll();
         selIdx = 0;
 #endif
-}
+
+    }
 
     void MenuState::on_cleanup()
     {
@@ -217,190 +217,6 @@ void MenuState::on_start() {
                     else if (cY >= 54 && cY < 74)
                     {
                         selIdx = 6;
-    }
-
-#endif
-}
-
-void MenuState::on_draw(Core::Application *app, double dt) {
-
-    Rendering::RenderContext::get().set_mode_2D();
-    Rendering::RenderContext::get().matrix_ortho(0, 480, 0, 272, 100, -100);
-
-    for (int x = 0; x < 16; x++)
-        for (int y = 0; y < 9; y++) {
-            Rendering::RenderContext::get().matrix_translate(
-                {x * 32, y * 32, 0});
-            bg_tile->draw();
-            Rendering::RenderContext::get().matrix_clear();
-        }
-
-    fontRenderer->clear();
-    splashRenderer->clear();
-    if (!textureMenu) {
-        // Singleplayer
-        if (selIdx != 0) {
-            fontRenderer->add_text(
-                "Singleplayer",
-                {241 - fontRenderer->calculate_size("Singleplayer") / 2, 134},
-                shadow, -19);
-            fontRenderer->add_text(
-                "Singleplayer",
-                {240 - fontRenderer->calculate_size("Singleplayer") / 2, 135},
-                white, -20);
-        } else {
-            fontRenderer->add_text(
-                "Singleplayer",
-                {241 - fontRenderer->calculate_size("Singleplayer") / 2, 134},
-                CC_TEXT_COLOR_SELECT_BACK, -19);
-            fontRenderer->add_text(
-                "Singleplayer",
-                {240 - fontRenderer->calculate_size("Singleplayer") / 2, 135},
-                CC_TEXT_COLOR_SELECT_FRONT, -20);
-        }
-
-        // Multiplayer
-        fontRenderer->add_text(
-            "Multiplayer",
-            {241 - fontRenderer->calculate_size("Multiplayer") / 2, 134 - 24},
-            shadow, -19);
-        fontRenderer->add_text(
-            "Multiplayer",
-            {240 - fontRenderer->calculate_size("Multiplayer") / 2, 135 - 24},
-            white, -20);
-
-        // Resource Packs
-        if (selIdx != 2) {
-            fontRenderer->add_text(
-                "Resource Packs",
-                {241 - fontRenderer->calculate_size("Resource Packs") / 2,
-                 134 - 24 * 2},
-                shadow, -19);
-            fontRenderer->add_text(
-                "Resource Packs",
-                {240 - fontRenderer->calculate_size("Resource Packs") / 2,
-                 135 - 24 * 2},
-                white, -20);
-        } else {
-            fontRenderer->add_text(
-                "Resource Packs",
-                {241 - fontRenderer->calculate_size("Resource Packs") / 2,
-                 134 - 24 * 2},
-                CC_TEXT_COLOR_SELECT_BACK, -19);
-            fontRenderer->add_text(
-                "Resource Packs",
-                {240 - fontRenderer->calculate_size("Resource Packs") / 2,
-                 135 - 24 * 2},
-                CC_TEXT_COLOR_SELECT_FRONT, -20);
-        }
-
-        // Quit Game
-        if (selIdx != 3) {
-            fontRenderer->add_text(
-                "Quit Game",
-                {241 - fontRenderer->calculate_size("Quit Game") / 2,
-                 134 - 24 * 3},
-                shadow, -19);
-            fontRenderer->add_text(
-                "Quit Game",
-                {240 - fontRenderer->calculate_size("Quit Game") / 2,
-                 135 - 24 * 3},
-                white, -20);
-        } else {
-            fontRenderer->add_text(
-                "Quit Game",
-                {241 - fontRenderer->calculate_size("Quit Game") / 2,
-                 134 - 24 * 3},
-                CC_TEXT_COLOR_SELECT_BACK, -19);
-            fontRenderer->add_text(
-                "Quit Game",
-                {240 - fontRenderer->calculate_size("Quit Game") / 2,
-                 135 - 24 * 3},
-                CC_TEXT_COLOR_SELECT_FRONT, -20);
-        }
-
-        fontRenderer->add_text("CrossCraft Survival Test 1 (0.28)",
-                               {3, 272 - 11}, Rendering::Color{21, 21, 21, 255},
-                               -19);
-        fontRenderer->add_text("CrossCraft Survival Test 1 (0.28)",
-                               {2, 272 - 10}, Rendering::Color{85, 85, 85, 255},
-                               -20);
-
-        fontRenderer->add_text(
-            "Copyleft CrossCraft Team. Made with <3!",
-            {478 - fontRenderer->calculate_size(
-                       "Copyleft CrossCraft Team. Made with <3!"),
-             2},
-            Rendering::Color{63, 63, 63, 255}, -19);
-        fontRenderer->add_text(
-            "Copyleft CrossCraft Team. Made with <3!",
-            {477 - fontRenderer->calculate_size(
-                       "Copyleft CrossCraft Team. Made with <3!"),
-             3},
-            Rendering::Color{255, 255, 255, 255}, -19);
-
-        // Splash text uses pure yellow instead of registered yellow for..
-        // some reason..
-        splashRenderer->add_text("Survival Test!", {1, -1},
-                                 CC_TEXT_COLOR_SPLASH_FRONT, -10);
-
-        splashRenderer->add_text("Survival Test!", {0, 0},
-                                 CC_TEXT_COLOR_SPLASH_BACK, -11);
-
-        logo_sprite->draw();
-
-        Rendering::RenderContext::get().matrix_translate(
-            {0, (-24 * 3) - 17, 0});
-        dis_sprite->draw();
-        Rendering::RenderContext::get().matrix_clear();
-
-        for (int i = 0; i < 4; i++) {
-            Rendering::RenderContext::get().matrix_translate(
-                {0, (-i * 24) - 15, 0});
-            if (selIdx == i && selIdx != 1)
-                sel_sprite->draw();
-            else if (i != 1)
-                unsel_sprite->draw();
-            Rendering::RenderContext::get().matrix_clear();
-        }
-    } else {
-        Rendering::RenderContext::get().matrix_translate({0, -128, 0});
-        if (selIdx == 0)
-            sel_sprite->draw();
-        else
-            unsel_sprite->draw();
-        Rendering::RenderContext::get().matrix_clear();
-
-        fontRenderer->add_text(
-            "Resource Packs:",
-            {241 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
-            shadow, -19);
-
-        fontRenderer->add_text(
-            "Resource Packs:",
-            {240 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
-            white, -20);
-
-        for (int i = 0; i < 6; i++) {
-            bool do_not_select;
-            if (ResourcePackManager::get().pack_names.size() > i) {
-                auto name = ResourcePackManager::get().pack_names[i];
-
-                Rendering::RenderContext::get().matrix_translate(
-                    {0, -i * 24 + 50, 0});
-
-                auto vec = ResourcePackManager::get().layers;
-                if (std::find(vec.begin(), vec.end(), name) != vec.end()) {
-                    Rendering::RenderContext::get().matrix_translate(
-                        {0, -50, 0});
-                    dis_sprite->draw();
-                    do_not_select = true;
-                } else {
-                    do_not_select = false;
-                    if (selIdx == i + 1) {
-                        sel_sprite->draw();
-                    } else {
-                        unsel_sprite->draw();
                     }
                 }
             }
@@ -461,30 +277,31 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                 "Multiplayer",
                 {240 - fontRenderer->calculate_size("Multiplayer") / 2, 135 - 24},
                 white, -20);
-            // Texture Packs
+
+            // Resource Packs
             if (selIdx != 2)
             {
                 fontRenderer->add_text(
-                    "Texture Packs",
-                    {241 - fontRenderer->calculate_size("Texture Packs") / 2,
+                    "Resource Packs",
+                    {241 - fontRenderer->calculate_size("Resource Packs") / 2,
                      134 - 24 * 2},
                     shadow, -19);
                 fontRenderer->add_text(
-                    "Texture Packs",
-                    {240 - fontRenderer->calculate_size("Texture Packs") / 2,
+                    "Resource Packs",
+                    {240 - fontRenderer->calculate_size("Resource Packs") / 2,
                      135 - 24 * 2},
                     white, -20);
             }
             else
             {
                 fontRenderer->add_text(
-                    "Texture Packs",
-                    {241 - fontRenderer->calculate_size("Texture Packs") / 2,
+                    "Resource Packs",
+                    {241 - fontRenderer->calculate_size("Resource Packs") / 2,
                      134 - 24 * 2},
                     CC_TEXT_COLOR_SELECT_BACK, -19);
                 fontRenderer->add_text(
-                    "Texture Packs",
-                    {240 - fontRenderer->calculate_size("Texture Packs") / 2,
+                    "Resource Packs",
+                    {240 - fontRenderer->calculate_size("Resource Packs") / 2,
                      135 - 24 * 2},
                     CC_TEXT_COLOR_SELECT_FRONT, -20);
             }
@@ -573,26 +390,26 @@ void MenuState::on_draw(Core::Application *app, double dt) {
             Rendering::RenderContext::get().matrix_clear();
 
             fontRenderer->add_text(
-                "Texture Packs:",
-                {241 - fontRenderer->calculate_size("Texture Packs:") / 2, 240},
+                "Resource Packs:",
+                {241 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
                 shadow, -19);
 
             fontRenderer->add_text(
-                "Texture Packs:",
-                {240 - fontRenderer->calculate_size("Texture Packs:") / 2, 240},
+                "Resource Packs:",
+                {240 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
                 white, -20);
 
             for (int i = 0; i < 6; i++)
             {
                 bool do_not_select;
-                if (TexturePackManager::get().path_names.size() > i)
+                if (ResourcePackManager::get().pack_names.size() > i)
                 {
-                    auto name = TexturePackManager::get().path_names[i];
+                    auto name = ResourcePackManager::get().pack_names[i];
 
                     Rendering::RenderContext::get().matrix_translate(
                         {0, -i * 24 + 50, 0});
 
-                    auto vec = TexturePackManager::get().layers;
+                    auto vec = ResourcePackManager::get().layers;
                     if (std::find(vec.begin(), vec.end(), name) != vec.end())
                     {
                         Rendering::RenderContext::get().matrix_translate(
@@ -727,8 +544,8 @@ void MenuState::on_draw(Core::Application *app, double dt) {
             else if (mstate->selIdx != -1)
             {
                 auto name =
-                    TexturePackManager::get().path_names[mstate->selIdx - 1];
-                auto &vec = TexturePackManager::get().layers;
+                    ResourcePackManager::get().pack_names[mstate->selIdx - 1];
+                auto &vec = ResourcePackManager::get().layers;
                 if (std::find(vec.begin(), vec.end(), name) == vec.end())
                 {
                     vec.push_back(name);
@@ -742,20 +559,20 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                     Rendering::TextureManager::get().delete_texture(
                         mstate->font_texture);
 
-                    mstate->bg_texture = TexturePackManager::get().load_texture(
-                        "assets/dirt.png", SC_TEX_FILTER_NEAREST,
+                    mstate->bg_texture = ResourcePackManager::get().load_texture(
+                        "assets/minecraft/textures/dirt.png", SC_TEX_FILTER_NEAREST,
                         SC_TEX_FILTER_NEAREST, false, true);
 
-                    mstate->logo_texture = TexturePackManager::get().load_texture(
-                        "assets/menu/logo.png", SC_TEX_FILTER_NEAREST,
+                    mstate->logo_texture = ResourcePackManager::get().load_texture(
+                        "assets/crosscraft/textures/menu/logo.png", SC_TEX_FILTER_NEAREST,
                         SC_TEX_FILTER_NEAREST, false, true);
 
-                    mstate->gui_tex = TexturePackManager::get().load_texture(
+                    mstate->gui_tex = ResourcePackManager::get().load_texture(
                         "assets/gui/gui.png", SC_TEX_FILTER_NEAREST,
                         SC_TEX_FILTER_NEAREST, false, true);
 
-                    mstate->font_texture = TexturePackManager::get().load_texture(
-                        "assets/default.png", SC_TEX_FILTER_NEAREST,
+                    mstate->font_texture = ResourcePackManager::get().load_texture(
+                        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
                         SC_TEX_FILTER_NEAREST, false, false);
 
                     mstate->bg_tile->texture = mstate->bg_texture;
@@ -773,123 +590,40 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                         vec.erase(std::find(vec.begin(), vec.end(), name));
                 }
 
-                TexturePackManager::get().write_config();
+                ResourcePackManager::get().write_config();
             }
-    fontRenderer->draw();
-
-    if (!textureMenu) {
-        Rendering::RenderContext::get().matrix_rotate({0, 0, 22.0f});
-        Rendering::RenderContext::get().matrix_translate({360, 50, 0});
-        Rendering::RenderContext::get().matrix_scale(
-            {scaleFactor, scaleFactor, 1.75f});
-        splashRenderer->draw();
-        Rendering::RenderContext::get().matrix_clear();
-    }
-
-#if PSP
-    sceKernelDcacheWritebackInvalidateAll();
-    sceGuDisable(GU_DEPTH_TEST);
-#else
-    glDisable(GL_DEPTH_TEST);
-#endif
-}
-
-void MenuState::trigger(std::any m) {
-    auto mstate = std::any_cast<MenuState *>(m);
-
-    if (!mstate->textureMenu) {
-        if (mstate->selIdx == 0) {
-            mstate->startSP = true;
-        }
-        if (mstate->selIdx == 1) {
-            // mstate->startMP = true;
-        }
-        if (mstate->selIdx == 2) {
-            mstate->textureMenu = true;
-            mstate->selIdx = 0;
-        }
-        if (mstate->selIdx == 3) {
-            mstate->shouldQuit = true;
-        }
-    } else {
-        if (mstate->selIdx == 0) {
-            mstate->textureMenu = false;
-        } else if (mstate->selIdx != -1) {
-            auto name =
-                ResourcePackManager::get().pack_names[mstate->selIdx - 1];
-            auto &vec = ResourcePackManager::get().layers;
-            if (std::find(vec.begin(), vec.end(), name) == vec.end()) {
-                vec.push_back(name);
-
-                Rendering::TextureManager::get().delete_texture(
-                    mstate->bg_texture);
-                Rendering::TextureManager::get().delete_texture(
-                    mstate->logo_texture);
-                Rendering::TextureManager::get().delete_texture(
-                    mstate->gui_tex);
-                Rendering::TextureManager::get().delete_texture(
-                    mstate->font_texture);
-
-                mstate->bg_texture = ResourcePackManager::get().load_texture(
-                    "assets/minecraft/textures/dirt.png", SC_TEX_FILTER_NEAREST,
-                    SC_TEX_FILTER_NEAREST, false, true);
-
-                mstate->logo_texture = ResourcePackManager::get().load_texture(
-                    "assets/crosscraft/textures/menu/logo.png", SC_TEX_FILTER_NEAREST,
-                    SC_TEX_FILTER_NEAREST, false, true);
-
-                mstate->gui_tex = ResourcePackManager::get().load_texture(
-                    "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST,
-                    SC_TEX_FILTER_NEAREST, false, true);
-
-                mstate->font_texture = ResourcePackManager::get().load_texture(
-                    "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
-                    SC_TEX_FILTER_NEAREST, false, false);
-
-                mstate->bg_tile->texture = mstate->bg_texture;
-                mstate->logo_sprite->texture = mstate->logo_texture;
-                mstate->unsel_sprite->texture = mstate->gui_tex;
-                mstate->sel_sprite->texture = mstate->gui_tex;
-                mstate->dis_sprite->texture = mstate->gui_tex;
-
-                mstate->fontRenderer->texture = mstate->font_texture;
-                mstate->splashRenderer->texture = mstate->font_texture;
-
-            } else {
-                if (name != ResourcePackManager::get().pack_names[0])
-                    vec.erase(std::find(vec.begin(), vec.end(), name));
-            }
-
-            ResourcePackManager::get().write_config();
         }
     }
 
-void MenuState::up(std::any m) {
-    auto mstate = std::any_cast<MenuState *>(m);
-    mstate->selIdx--;
-    if (mstate->selIdx < 0)
-        mstate->selIdx = 0;
-}
-void MenuState::down(std::any m) {
-    auto mstate = std::any_cast<MenuState *>(m);
-
-    if (!mstate->textureMenu) {
-        mstate->selIdx++;
-        if (mstate->selIdx > 3)
-            mstate->selIdx = 3;
-    } else {
-
-        mstate->selIdx++;
-        int total_idx = ResourcePackManager::get().pack_names.size();
-        if (total_idx > 6)
-            total_idx = 6;
-
-        total_idx + 1;
-
-        if (mstate->selIdx > total_idx)
+    void MenuState::up(std::any m)
+    {
+        auto mstate = std::any_cast<MenuState *>(m);
+        mstate->selIdx--;
+        if (mstate->selIdx < 0)
             mstate->selIdx = 0;
     }
-}
+    void MenuState::down(std::any m)
+    {
+        auto mstate = std::any_cast<MenuState *>(m);
+
+        if (!mstate->textureMenu)
+        {
+            mstate->selIdx++;
+            if (mstate->selIdx > 3)
+                mstate->selIdx = 3;
+        }
+        else
+        {
+
+            mstate->selIdx++;
+            int total_idx = ResourcePackManager::get().pack_names.size();
+            if (total_idx > 6)
+                total_idx = 6;
+
+            if (mstate->selIdx > total_idx)
+                mstate->selIdx = 0;
+        }
+    }
 
     /* Ugly Key-Binding Function */
 

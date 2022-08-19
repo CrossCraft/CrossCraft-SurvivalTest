@@ -11,11 +11,11 @@ namespace CrossCraft
         l1.clips.clear();
 
         l1.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
-                            get_sound("assets/minecraft/sounds/dig/glass1.wav")));
+                            get_file("assets/minecraft/sounds/dig/glass1.wav")));
         l1.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
-                            get_sound("assets/minecraft/sounds/dig/glass2.wav")));
+                            get_file("assets/minecraft/sounds/dig/glass2.wav")));
         l1.clips.push_back(create_refptr<Audio::Clip>(ResourcePackManager::get().
-                            get_sound("assets/minecraft/sounds/dig/glass3.wav")));
+                            get_file("assets/minecraft/sounds/dig/glass3.wav")));
 
         dig.emplace("glass", l1);
 
