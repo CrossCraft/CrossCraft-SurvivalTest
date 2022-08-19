@@ -10,7 +10,6 @@ class PigData : public PassiveMob {
   public:
     PigData() = default;
     ~PigData() = default;
-    float animationTime;
 };
 
 class Pig {

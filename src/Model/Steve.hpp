@@ -9,7 +9,6 @@ class SteveData : public PassiveMob {
   public:
     SteveData() = default;
     ~SteveData() = default;
-    float animationTime;
 };
 
 class Steve {

@@ -23,6 +23,8 @@ class Mob : public Entity {
     MobType mobType;
     glm::vec2 head_rotation;
     bool inRange;
+    bool isAnimating;
+    float animationTime;
 
     virtual void update(float dt, Player *p, World *w) = 0;
 };

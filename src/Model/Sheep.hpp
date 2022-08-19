@@ -10,7 +10,6 @@ class SheepData : public PassiveMob {
   public:
     SheepData() = default;
     ~SheepData() = default;
-    float animationTime;
     bool hasWool;
 };
 

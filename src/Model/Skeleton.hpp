@@ -10,7 +10,6 @@ class SkeletonData : public AggressiveMob {
   public:
     SkeletonData() = default;
     ~SkeletonData() = default;
-    float animationTime;
 };
 
 class Skeleton {

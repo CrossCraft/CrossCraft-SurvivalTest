@@ -10,7 +10,6 @@ class SpiderData : public AggressiveMob {
   public:
     SpiderData() = default;
     ~SpiderData() = default;
-    float animationTime;
 };
 
 class Spider {

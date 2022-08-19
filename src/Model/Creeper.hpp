@@ -10,7 +10,6 @@ class CreeperData : public AggressiveMob {
   public:
     CreeperData() = default;
     ~CreeperData() = default;
-    float animationTime;
 };
 
 class Creeper {

@@ -10,7 +10,6 @@ class ZombieData : public AggressiveMob {
   public:
     ZombieData() = default;
     ~ZombieData() = default;
-    float animationTime;
 };
 
 class Zombie {

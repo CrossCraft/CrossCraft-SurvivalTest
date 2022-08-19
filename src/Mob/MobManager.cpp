@@ -35,6 +35,15 @@ void MobManager::update(float dt, Player *p, World *w) {
         else
             m->inRange = true;
 
+        if (m->vel.x != 0 && m->vel.z != 0 && !m->isAnimating) {
+            m->isAnimating = true;
+            m->animationTime = 3.0f;
+        }
+        m->animationTime -= dt;
+
+        if (m->animationTime < 0)
+            m->isAnimating = false;
+
         m->update(dt, p, w);
     }
 }
