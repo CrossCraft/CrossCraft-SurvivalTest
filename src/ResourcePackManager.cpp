@@ -9,7 +9,7 @@ namespace CrossCraft {
 using namespace Stardust_Celeste;
 
 ResourcePackManager::ResourcePackManager() {
-    path_names.clear();
+    pack_names.clear();
     layers.push_back("default");
 
     std::ifstream fs(PLATFORM_FILE_PREFIX + "resourcepacks.txt");
@@ -272,22 +272,38 @@ auto ResourcePackManager::scan_folder(std::string path) -> void {
     for (const auto &entry : std::filesystem::directory_iterator(p)) {
 
         if (entry.is_directory()) {
-            // Add to list
-            path_names.push_back(entry.path().filename().string());
+            // Add name.txt entry to list
+            std::ifstream nametxt(path + "/" + entry.path().filename().string() + "/name.txt");
+
+            // add a fallback to avoid crashes
+            if (nametxt.is_open()) {
+                std::stringstream pck;
+                pck << nametxt.rdbuf();
+                std::string packname = pck.str();
+                // remove newline stuff
+                packname.erase( std::remove(packname.begin(), packname.end(),
+                                '\r'), packname.end() );
+                packname.erase( std::remove(packname.begin(), packname.end(),
+                                '\n'), packname.end() );
+                pack_names.push_back(packname);
+                nametxt.close();
+            } else {
+                pack_names.push_back(entry.path().filename().string());
+            }
         } else if (entry.is_regular_file()) {
             auto filename = entry.path().filename().string();
 
             if (filename.find(".zip") != std::string::npos) {
                 extract_zip(path + filename);
-                path_names.push_back(entry.path().filename().string().substr(
+                pack_names.push_back(entry.path().filename().string().substr(
                     0, filename.find(".zip")));
             }
         }
     }
 
-    std::sort(path_names.begin(), path_names.end());
-    path_names.erase(std::unique(path_names.begin(), path_names.end()),
-                     path_names.end());
+    std::sort(pack_names.begin(), pack_names.end());
+    pack_names.erase(std::unique(pack_names.begin(), pack_names.end()),
+                     pack_names.end());
 }
 
 auto ResourcePackManager::extract_zip(std::string path) -> int {

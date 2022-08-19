@@ -355,8 +355,8 @@ void MenuState::on_draw(Core::Application *app, double dt) {
 
         for (int i = 0; i < 6; i++) {
             bool do_not_select;
-            if (ResourcePackManager::get().path_names.size() > i) {
-                auto name = ResourcePackManager::get().path_names[i];
+            if (ResourcePackManager::get().pack_names.size() > i) {
+                auto name = ResourcePackManager::get().pack_names[i];
 
                 Rendering::RenderContext::get().matrix_translate(
                     {0, -i * 24 + 50, 0});
@@ -472,7 +472,7 @@ void MenuState::trigger(std::any m) {
             mstate->textureMenu = false;
         } else if (mstate->selIdx != -1) {
             auto name =
-                ResourcePackManager::get().path_names[mstate->selIdx - 1];
+                ResourcePackManager::get().pack_names[mstate->selIdx - 1];
             auto &vec = ResourcePackManager::get().layers;
             if (std::find(vec.begin(), vec.end(), name) == vec.end()) {
                 vec.push_back(name);
@@ -512,7 +512,7 @@ void MenuState::trigger(std::any m) {
                 mstate->splashRenderer->texture = mstate->font_texture;
 
             } else {
-                if (name != "default")
+                if (name != ResourcePackManager::get().pack_names[0])
                     vec.erase(std::find(vec.begin(), vec.end(), name));
             }
 
@@ -537,7 +537,7 @@ void MenuState::down(std::any m) {
     } else {
 
         mstate->selIdx++;
-        int total_idx = ResourcePackManager::get().path_names.size();
+        int total_idx = ResourcePackManager::get().pack_names.size();
         if (total_idx > 6)
             total_idx = 6;
 

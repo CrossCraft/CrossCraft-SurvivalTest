@@ -28,7 +28,7 @@ class ResourcePackManager {
         return txm;
     }
 
-    std::vector<std::string> path_names;
+    std::vector<std::string> pack_names;
     std::vector<std::string> layers;
 
   private:
