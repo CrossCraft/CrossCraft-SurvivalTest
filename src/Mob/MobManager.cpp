@@ -1,84 +1,84 @@
 #include "MobManager.hpp"
+#include "../Player/Player.hpp"
 
-namespace CrossCraft
-{
+namespace CrossCraft {
 
-    MobManager::MobManager()
-    {
-        steve = create_scopeptr<Steve>();
-        skeleton = create_scopeptr<Skeleton>();
-        zombie = create_scopeptr<Zombie>();
-        creeper = create_scopeptr<Creeper>();
-        pig = create_scopeptr<Pig>();
-        sheep = create_scopeptr<Sheep>();
-        armor = create_scopeptr<Armor>();
-        spider = create_scopeptr<Spider>();
+MobManager::MobManager() {
+    steve = create_scopeptr<Steve>();
+    skeleton = create_scopeptr<Skeleton>();
+    zombie = create_scopeptr<Zombie>();
+    creeper = create_scopeptr<Creeper>();
+    pig = create_scopeptr<Pig>();
+    sheep = create_scopeptr<Sheep>();
+    armor = create_scopeptr<Armor>();
+    spider = create_scopeptr<Spider>();
 
-        mobs.clear();
-    }
-    MobManager::~MobManager()
-    {
-        for (auto m : mobs)
-        {
-            delete m;
-        }
-
-        mobs.clear();
+    mobs.clear();
+}
+MobManager::~MobManager() {
+    for (auto m : mobs) {
+        delete m;
     }
 
-    void MobManager::add_mob(Mob *mobData)
-    {
-        mobs.push_back(mobData);
+    mobs.clear();
+}
+
+void MobManager::add_mob(Mob *mobData) { mobs.push_back(mobData); }
+
+void MobManager::update(float dt, Player *p, World *w) {
+    for (auto m : mobs) {
+        auto diff = p->pos - m->pos;
+        auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
+
+        if (len > 24.0f)
+            m->inRange = false;
+        else
+            m->inRange = true;
+
+        m->update(dt, p, w);
     }
+}
+void MobManager::draw() {
+    for (auto m : mobs) {
+        if (!m->inRange)
+            continue;
 
-    void MobManager::update(float dt, Player *p, World *w)
-    {
-        for (auto m : mobs)
-        {
-            m->update(dt, p, w);
-        }
-    }
-    void MobManager::draw()
-    {
-        for (auto m : mobs)
-        {
-            switch (m->mobType)
-            {
-            case MobType::Steve:
-                steve->draw((SteveData *)m);
-                break;
+        switch (m->mobType) {
+        case MobType::Steve:
+            steve->draw((SteveData *)m);
+            break;
 
-            case MobType::Skeleton:
-                skeleton->draw((SkeletonData *)m);
-                break;
+        case MobType::Skeleton:
+            skeleton->draw((SkeletonData *)m);
+            break;
 
-            case MobType::Zombie:
-                zombie->draw((ZombieData *)m);
-                break;
+        case MobType::Zombie:
+            zombie->draw((ZombieData *)m);
+            break;
 
-            case MobType::Creeper:
-                creeper->draw((CreeperData *)m);
-                break;
+        case MobType::Creeper:
+            creeper->draw((CreeperData *)m);
+            break;
 
-            case MobType::Pig:
-                pig->draw((PigData *)m);
-                break;
+        case MobType::Pig:
+            pig->draw((PigData *)m);
+            break;
 
-            case MobType::Sheep:
-                sheep->draw((SheepData *)m);
-                break;
+        case MobType::Sheep:
+            sheep->draw((SheepData *)m);
+            break;
 
-            case MobType::Armor:
-                armor->draw((ArmorData *)m);
-                break;
+        case MobType::Armor:
+            armor->draw((ArmorData *)m);
+            break;
 
-            case MobType::Spider:
-                spider->draw((SpiderData *)m);
-                break;
+        case MobType::Spider:
+            spider->draw((SpiderData *)m);
+            break;
 
-            default:
-                break;
-            }
+        default:
+            break;
         }
     }
 }
+} // namespace CrossCraft
