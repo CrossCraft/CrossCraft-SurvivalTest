@@ -18,6 +18,8 @@
 #include <sys/types.h>
 #endif
 
+#include <filesystem>
+
 namespace CrossCraft {
 using namespace Stardust_Celeste;
 inline void netInit() {
@@ -48,6 +50,11 @@ inline void createDirs() {
     sceIoMkdir("ux0:/data/CrossCraft-ST/resourcepacks", 0777);
     Utilities::Logger::get_app_log()->flush_output = true;
     Utilities::Logger::get_core_log()->flush_output = true;
+    if (!std::filesystem::exists(
+            "ux0:/data/CrossCraft-ST/resourcepacks/default")) {
+        sceIoCopy("app0:/default.zip",
+                  "ux0:/data/CrossCraft-ST/resourcepacks/default.zip", true);
+    }
 #elif BUILD_PLAT == BUILD_PSP
     sceIoMkdir("./resourcepacks", 0777);
     {

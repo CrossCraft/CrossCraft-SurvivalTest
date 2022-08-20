@@ -100,5 +100,6 @@ if(VITA)
         FILE src/assets/vita/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
         FILE src/assets/vita/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
         FILE src/assets/vita/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
+        FILE resourcepacks/default.zip default.zip
     )
 endif()
