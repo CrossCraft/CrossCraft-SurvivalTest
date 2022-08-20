@@ -89,7 +89,7 @@ if(VITA)
     set(VITA_VERSION "01.00")
 
     target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/include/)
-    target_link_libraries(CrossCraft-SurvivalTest SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub openal pthread SceAudioIn_stub SceAudio_stub)
+    target_link_libraries(CrossCraft-SurvivalTest SceCtrl_stub vitaGL vitashark mathneon SceShaccCg_stub SceShaccCgExt SceIme_stub SceAppMgr_stub SceGxm_stub SceCommonDialog_stub SceProcessmgr_stub SceDisplay_stub SceKernelDmacMgr_stub ScePower_stub taihen_stub openal pthread SceAudioIn_stub SceAudio_stub vorbisfile vorbis ogg)
 
     vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
 
