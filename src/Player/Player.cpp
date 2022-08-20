@@ -66,20 +66,28 @@ extern Player *player_ptr;
 Player::Player()
     : cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
           255.0f),
-    model(pos, { 0.6, 1.8, 0.6 }), itemSelections{ SlotInfo{-1, 0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{-1,0}, SlotInfo{-1,0},
-                                                  SlotInfo{-1, 0}, SlotInfo{Block::Mushroom2,10}, SlotInfo{Block::Mushroom1,10}, SlotInfo{Block::TNT, 10} } {
+      model(pos, {0.6, 1.8, 0.6}), itemSelections{
+                                       SlotInfo{-1, 0},
+                                       SlotInfo{-1, 0},
+                                       SlotInfo{-1, 0},
+                                       SlotInfo{-1, 0},
+                                       SlotInfo{-1, 0},
+                                       SlotInfo{-1, 0},
+                                       SlotInfo{Block::Mushroom2, 10},
+                                       SlotInfo{Block::Mushroom1, 10},
+                                       SlotInfo{Block::TNT, 10}} {
     gui_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, true);
+        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, true);
     icons_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/gui/icons.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        true, true);
+        "assets/minecraft/textures/gui/icons.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, true, true);
     water_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/water.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
-        true);
+        "assets/minecraft/textures/water.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, true);
     font_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
 
     in_tab = false;
     player_ptr = this;
@@ -91,7 +99,7 @@ Player::Player()
     hasDir = false;
     is_firing = false;
 
-    size = { 0.6f, 1.8f, 0.6f };
+    size = {0.6f, 1.8f, 0.6f};
 
     HP = 20;
     arrows = 255;
@@ -169,8 +177,8 @@ Player::Player()
     chat = create_scopeptr<Chat>();
     blockRep = create_scopeptr<BlockRep>();
     blockRep->player_tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/char.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/char.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
     pauseMenu = create_scopeptr<PauseMenu>();
     listener = create_scopeptr<Audio::Listener>();
 
@@ -178,9 +186,9 @@ Player::Player()
     fps_timer = 0.0f;
     fps_display = 0;
 
-    pos = { 0, 0, 0 };
-    rot = { 0, 0 };
-    vel = { 0, 0, 0 };
+    pos = {0, 0, 0};
+    rot = {0, 0};
+    vel = {0, 0, 0};
 
     countChange = true;
 
@@ -233,7 +241,7 @@ void Player::update(float dt, World *wrld) {
         fps_count = 0;
     }
 
-    glm::vec3 look = { 0, 0, -1 };
+    glm::vec3 look = {0, 0, -1};
     look = glm::rotateX(look, DEGTORAD(-rot.x));
     look = glm::rotateY(look, DEGTORAD(-rot.y));
 
@@ -243,16 +251,16 @@ void Player::update(float dt, World *wrld) {
         data.pos.y -= (1.80f - 1.5965f);
         data.vel = look * 24.0f;
         data.rot = glm::vec2(rot.x, rot.y);
-        data.size = { 0.1f, 0.0f, 0.1f };
+        data.size = {0.1f, 0.0f, 0.1f};
         data.lifeTime = 10.0f;
-        data.playerArrow = false;
+        data.playerArrow = true;
 
         wrld->arrow->add_arrow(data);
         is_firing = false;
         arrows--;
     }
 
-    //listener->update(pos, vel, look, { 0, 1, 0 });
+    // listener->update(pos, vel, look, { 0, 1, 0 });
     chat->update(dt);
 
     hasDir = false;
@@ -324,7 +332,7 @@ void Player::update(float dt, World *wrld) {
         if (totalFall >= 0.0f) {
             int tF = totalFall - 3;
 
-            if(tF > 0 && !water_cutoff)
+            if (tF > 0 && !water_cutoff)
                 HP -= tF;
         }
     }
@@ -391,13 +399,13 @@ auto Player::draw(World *wrld) -> void {
     auto ipos = glm::ivec3(static_cast<int>(pos.x), static_cast<int>(pos.y),
                            static_cast<int>(pos.z));
 
-    bool change = in_inv_delta != in_inventory || in_chat_delta != in_chat ||
-                  fps_count == 0 || prev_ipos != ipos ||
-                  chat_size != chat->data.size() ||
-                  selector_block_prev != selectedBlock ||
-                  selector_idx_prev != selectorIDX ||
-                  chat_text_size != chat_text.size() || in_tab ||
-                  (wrld->client != nullptr && wrld->client->disconnected) || countChange;
+    bool change =
+        in_inv_delta != in_inventory || in_chat_delta != in_chat ||
+        fps_count == 0 || prev_ipos != ipos || chat_size != chat->data.size() ||
+        selector_block_prev != selectedBlock ||
+        selector_idx_prev != selectorIDX ||
+        chat_text_size != chat_text.size() || in_tab ||
+        (wrld->client != nullptr && wrld->client->disconnected) || countChange;
 
     if (change)
         playerHUD->clear();
@@ -518,13 +526,13 @@ auto Player::draw(World *wrld) -> void {
         for (int i = 0; i < 9; i++) {
             int count = (int)itemSelections[i].quantity;
             if (count > 1) {
-                playerHUD->draw_text(std::to_string(count),
-                    CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER,
-                    CC_TEXT_ALIGN_CENTER, i * 4 - 16, -12, false, 2 + ((19-i) / 6), -4);
+                playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
+                                     CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
+                                     i * 4 - 16, -12, false, 2 + ((19 - i) / 6),
+                                     -4);
             }
         }
     }
-
 
     if (change)
         playerHUD->rebuild();
