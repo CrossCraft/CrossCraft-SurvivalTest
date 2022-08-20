@@ -28,6 +28,7 @@ jobs:
           make
           cd ..
           mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
+          strip ./CrossCraft-SurvivalTest
           chmod +x ./CrossCraft-SurvivalTest
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
@@ -80,6 +81,7 @@ jobs:
           cmake --build . --config Release
           move Release\CrossCraft-SurvivalTest.exe CrossCraft-SurvivalTest.exe
           move ZLib\Release\zlib.dll zlib.dll
+          move Stardust\ext\openal\Release\OpenAL32.dll OpenAL32.dll
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -87,6 +89,7 @@ jobs:
           path: |
             CrossCraft-SurvivalTest.exe
             zlib.dll
+            OpenAL32.dll
             resourcepacks\
             LICENSE
             README.md
