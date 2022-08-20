@@ -48,7 +48,6 @@ else()
 endif()
 
 if(PSP)
-    target_compile_options(CrossCraft-SurvivalTest PRIVATE -g)
     create_pbp_file(
         TARGET CrossCraft-SurvivalTest
         TITLE CrossCraft-SurvivalTest

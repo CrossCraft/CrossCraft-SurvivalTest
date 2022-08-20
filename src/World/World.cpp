@@ -33,8 +33,8 @@ World::World(std::shared_ptr<Player> p) {
     client = nullptr;
     loaded = false;
     terrain_atlas = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/terrain.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        true, false, true);
+        "assets/minecraft/textures/terrain.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, true, false, true);
     p->terrain_atlas = terrain_atlas;
     p->wrldRef = this;
 
@@ -75,43 +75,43 @@ World::World(std::shared_ptr<Player> p) {
     breaking = {-1, -1, -1};
 
     mobManager = create_scopeptr<MobManager>();
-    /*
-        SteveData *sd = new SteveData();
-        sd->animationTime = 0.0f;
-        sd->head_rotation = {30.0f, 120.0f};
-        sd->pos = {128.0f, 38.8f, 128.0f};
-        sd->rot = {0.0f, 180.0f};
-        sd->mobType = MobType::Steve;
-        sd->size = {0.6f, 1.8f, 0.6f};
-        mobManager->add_mob(sd);
 
-        ArmorData *ad = new ArmorData();
-        ad->animationTime = 0.0f;
-        ad->head_rotation = {30.0f, 120.0f};
-        ad->pos = {128.0f, 38.9f, 128.0f};
-        ad->rot = {0.0f, 180.0f};
-        ad->mobType = MobType::Armor;
-        sd->size = {0.6f, 1.8f, 0.6f};
-        mobManager->add_mob(ad);
+    SteveData *sd = new SteveData();
+    sd->animationTime = 0.0f;
+    sd->head_rotation = {30.0f, 120.0f};
+    sd->pos = {128.0f, 38.8f, 128.0f};
+    sd->rot = {0.0f, 180.0f};
+    sd->mobType = MobType::Steve;
+    sd->size = {0.6f, 1.8f, 0.6f};
+    mobManager->add_mob(sd);
 
-        ZombieData *zd = new ZombieData();
-        zd->animationTime = 0.0f;
-        zd->head_rotation = {30.0f, 120.0f};
-        zd->pos = {128.0f, 38.8f, 129.0f};
-        zd->rot = {0.0f, 180.0f};
-        zd->mobType = MobType::Zombie;
-        zd->size = {0.6f, 1.8f, 0.6f};
-        mobManager->add_mob(zd);
+    ArmorData *ad = new ArmorData();
+    ad->animationTime = 0.0f;
+    ad->head_rotation = {30.0f, 120.0f};
+    ad->pos = {128.0f, 38.9f, 128.0f};
+    ad->rot = {0.0f, 180.0f};
+    ad->mobType = MobType::Armor;
+    sd->size = {0.6f, 1.8f, 0.6f};
+    mobManager->add_mob(ad);
 
-        SkeletonData *skd = new SkeletonData();
-        skd->animationTime = 0.0f;
-        skd->head_rotation = {30.0f, 120.0f};
-        skd->pos = {129.0f, 38.8f, 128.0f};
-        skd->rot = {0.0f, 180.0f};
-        skd->mobType = MobType::Skeleton;
-        skd->size = {0.6f, 1.8f, 0.6f};
-        mobManager->add_mob(skd);
-    */
+    ZombieData *zd = new ZombieData();
+    zd->animationTime = 0.0f;
+    zd->head_rotation = {30.0f, 120.0f};
+    zd->pos = {128.0f, 38.8f, 129.0f};
+    zd->rot = {0.0f, 180.0f};
+    zd->mobType = MobType::Zombie;
+    zd->size = {0.6f, 1.8f, 0.6f};
+    mobManager->add_mob(zd);
+
+    SkeletonData *skd = new SkeletonData();
+    skd->animationTime = 0.0f;
+    skd->head_rotation = {30.0f, 120.0f};
+    skd->pos = {129.0f, 38.8f, 128.0f};
+    skd->rot = {0.0f, 180.0f};
+    skd->mobType = MobType::Skeleton;
+    skd->size = {0.6f, 1.8f, 0.6f};
+    mobManager->add_mob(skd);
+
     CreeperData *cpd = new CreeperData();
     cpd->animationTime = 0.0f;
     cpd->head_rotation = {30.0f, 120.0f};
