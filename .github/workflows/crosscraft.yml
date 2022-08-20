@@ -115,7 +115,7 @@ jobs:
           cd ..
           mv build/EBOOT.PBP EBOOT.PBP
           mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
-          mv resourcepacks/default.zip default.zip
+          unzip resourcepacks/default.zip -d resourcepacks/default/
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -123,7 +123,7 @@ jobs:
           path: |
             EBOOT.PBP
             CrossCraft-SurvivalTest.prx
-            default.zip
+            resourcepacks/
             LICENSE
             README.md
             config.cfg
@@ -161,12 +161,14 @@ jobs:
           make
           cd ..
           mv build/CrossCraft-SurvivalTest.vpk CrossCraft-SurvivalTest.vpk
+          unzip resourcepacks/default.zip -d CrossCraft-ST/resourcepacks/default/
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: CrossCraft-Vita
           path: |
             CrossCraft-SurvivalTest.vpk
+            CrossCraft-ST/
             LICENSE
             README.md
 
