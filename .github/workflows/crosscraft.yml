@@ -161,6 +161,7 @@ jobs:
           make
           cd ..
           mv build/CrossCraft-SurvivalTest.vpk CrossCraft-SurvivalTest.vpk
+          mkdir -p CrossCraft-ST/resourcepacks/default/
           unzip resourcepacks/default.zip -d CrossCraft-ST/resourcepacks/default/
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
