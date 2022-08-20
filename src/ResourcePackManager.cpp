@@ -93,6 +93,8 @@ auto ResourcePackManager::add_layer(std::string name) -> void {
     layers.push_back(name);
 }
 
+#define renameCheck(x, y) if(std::filesystem::exists(x)) std::filesystem::rename(x, y);
+
 auto ResourcePackManager::convert_old_resourcepacks() -> void {
     std::vector<std::string> old_paths;
 
@@ -144,6 +146,7 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
             std::filesystem::create_directories(prefix + "/assets/minecraft/sounds/dig");
             std::filesystem::create_directories(prefix + "/assets/minecraft/sounds/step");
             std::filesystem::create_directories(prefix + "/assets/crosscraft/textures/menu");
+            std::filesystem::create_directories(PLATFORM_FILE_PREFIX + "resourcepacks/");
 
             // Moooove some stuuuuff
 #if BUILD_PLAT == BUILD_VITA || BUILD_PLAT == BUILD_PSP
@@ -201,40 +204,41 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
             // Remove the old texture pack
             sceIoRemove(prefix.c_str());
 #else
-            std::filesystem::rename(prefix + "/assets/menu/logo.png", prefix +
+
+            renameCheck(prefix + "/assets/menu/logo.png", prefix +
                                     "/assets/crosscraft/textures/menu/logo.png");
 
-            std::filesystem::rename(prefix + "/assets/armor/chain.png", prefix +
+            renameCheck(prefix + "/assets/armor/chain.png", prefix +
                                     "/assets/minecraft/textures/armor/chain.png");
-            std::filesystem::rename(prefix + "/assets/armor/plate.png", prefix +
+            renameCheck(prefix + "/assets/armor/plate.png", prefix +
                                     "/assets/minecraft/textures/armor/plate.png");
 
-            std::filesystem::rename(prefix + "/assets/gui/gui.png", prefix +
+            renameCheck(prefix + "/assets/gui/gui.png", prefix +
                                     "/assets/minecraft/textures/gui/gui.png");
-            std::filesystem::rename(prefix + "/assets/gui/icons.png", prefix +
+            renameCheck(prefix + "/assets/gui/icons.png", prefix +
                                     "/assets/minecraft/textures/gui/icons.png");
 
-            std::filesystem::rename(prefix + "/assets/2char.png", prefix +
+            renameCheck(prefix + "/assets/2char.png", prefix +
                                     "/assets/minecraft/textures/2char.png");
-            std::filesystem::rename(prefix + "/assets/char.png", prefix +
+            renameCheck(prefix + "/assets/char.png", prefix +
                                     "/assets/minecraft/textures/char.png");
-            std::filesystem::rename(prefix + "/assets/clouds.png", prefix +
+            renameCheck(prefix + "/assets/clouds.png", prefix +
                                     "/assets/minecraft/textures/clouds.png");
-            std::filesystem::rename(prefix + "/assets/default.png", prefix +
+            renameCheck(prefix + "/assets/default.png", prefix +
                                     "/assets/minecraft/textures/default.png");
-            std::filesystem::rename(prefix + "/assets/dirt.png", prefix +
+            renameCheck(prefix + "/assets/dirt.png", prefix +
                                     "/assets/minecraft/textures/dirt.png");
-            std::filesystem::rename(prefix + "/assets/grass.png", prefix +
+            renameCheck(prefix + "/assets/grass.png", prefix +
                                     "/assets/minecraft/textures/grass.png");
-            std::filesystem::rename(prefix + "/assets/particles.png", prefix +
+            renameCheck(prefix + "/assets/particles.png", prefix +
                                     "/assets/minecraft/textures/particles.png");
-            std::filesystem::rename(prefix + "/assets/rain.png", prefix +
+            renameCheck(prefix + "/assets/rain.png", prefix +
                                     "/assets/minecraft/textures/rain.png");
-            std::filesystem::rename(prefix + "/assets/rock.png", prefix +
+            renameCheck(prefix + "/assets/rock.png", prefix +
                                     "/assets/minecraft/textures/rock.png");
-            std::filesystem::rename(prefix + "/assets/terrain.png", prefix +
+            renameCheck(prefix + "/assets/terrain.png", prefix +
                                     "/assets/minecraft/textures/terrain.png");
-            std::filesystem::rename(prefix + "/assets/water.png", prefix +
+            renameCheck(prefix + "/assets/water.png", prefix +
                                     "/assets/minecraft/textures/water.png");
 
             // Remove old empty dirs
@@ -242,11 +246,6 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
             std::filesystem::remove_all(prefix + "/assets/armor/");
             std::filesystem::remove_all(prefix + "/assets/gui/");
 
-            // Now start migrating everything over to the new directory
-            // [..]copy over the default textures to fill in for missing stuff                                +
-            std::filesystem::copy(PLATFORM_FILE_PREFIX + "resourcepacks/default",
-                                  PLATFORM_FILE_PREFIX + "resourcepacks/" + path,
-                                  std::filesystem::copy_options::recursive);
             // now put the old contents there
             std::filesystem::copy(prefix, PLATFORM_FILE_PREFIX + "resourcepacks/"
                                     + path, std::filesystem::copy_options::overwrite_existing
