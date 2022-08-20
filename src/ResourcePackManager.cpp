@@ -191,11 +191,6 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
             sceIoRemove((prefix + "/assets/armor/").c_str());
             sceIoRemove((prefix + "/assets/gui/").c_str());
 
-            // Now start migrating everything over to the new directory
-            // [..]copy over the default textures to fill in for missing stuff                                +
-            std::filesystem::copy(PLATFORM_FILE_PREFIX + "resourcepacks/default",
-                                  PLATFORM_FILE_PREFIX + "resourcepacks/" + path,
-                                  std::filesystem::copy_options::recursive);
             // now put the old contents there
             std::filesystem::copy(prefix, PLATFORM_FILE_PREFIX + "resourcepacks/"
                                     + path, std::filesystem::copy_options::overwrite_existing
