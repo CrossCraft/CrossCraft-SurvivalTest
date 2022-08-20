@@ -5,19 +5,20 @@ namespace CrossCraft
 {
     void ArrowData::doPhysics(float dt, World *w)
     {
-        pos.y += 1.25f;
-        test_collide(w, dt);
-        pos.y -= 1.25f;
-        pos.y += vel.y * dt;
+        auto testpos = pos + vel * dt;
 
-        auto y1 = vel.y;
+        auto castPos = glm::ivec3(testpos.x, testpos.y, testpos.z);
+        auto idx = w->getIdx(castPos.x, castPos.y, castPos.z);
+        if (idx > 0) {
+            auto blk = w->worldData[idx];
 
-        test_collide(w, dt);
-        pos.x += vel.x * dt;
-        pos.z += vel.z * dt;
-
-        vel.y = y1;
-
+            if (blk == Block::Air || blk == Block::Water || blk == Block::Still_Lava || blk == Block::Still_Water || blk == Block::Lava) {
+                pos += vel * dt;
+            }
+            else {
+                vel = { 0, 0, 0 };
+            }
+        }
 
         if (vel.x == 0 || vel.z == 0 || vel.y == 0)
         {
