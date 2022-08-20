@@ -106,10 +106,6 @@ namespace CrossCraft
         scaleFactor = 1.3f;
         scaleTimer = 0.0f;
 
-        clip = create_scopeptr<Audio::Clip>(ResourcePackManager::get().get_file("assets/minecraft/music/hal3.ogg"), true);
-        clip->set_volume(0.6f);
-        clip->play();
-
 #if PSP
         sceKernelDcacheWritebackInvalidateAll();
         selIdx = 0;
@@ -141,7 +137,7 @@ namespace CrossCraft
 
     void MenuState::on_update(Core::Application *app, double dt)
     {
-        clip->update();
+        MusicManager::get().update(dt);
         if (shouldQuit)
         {
             app->exit();

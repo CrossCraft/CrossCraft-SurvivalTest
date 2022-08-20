@@ -82,7 +82,7 @@ World::World(std::shared_ptr<Player> p) {
     SteveData *sd = new SteveData();
     sd->animationTime = 0.0f;
     sd->head_rotation = {30.0f, 120.0f};
-    sd->pos = {128.0f, 38.8f, 128.0f};
+    sd->pos = {128.0f, 50.0f, 128.0f};
     sd->rot = {0.0f, 180.0f};
     sd->mobType = MobType::Steve;
     sd->size = {0.6f, 1.8f, 0.6f};
@@ -91,7 +91,7 @@ World::World(std::shared_ptr<Player> p) {
     ArmorData *ad = new ArmorData();
     ad->animationTime = 0.0f;
     ad->head_rotation = {30.0f, 120.0f};
-    ad->pos = {128.0f, 38.9f, 128.0f};
+    ad->pos = {128.0f, 50.0f, 128.0f};
     ad->rot = {0.0f, 180.0f};
     ad->mobType = MobType::Armor;
     sd->size = {0.6f, 1.8f, 0.6f};
@@ -100,7 +100,7 @@ World::World(std::shared_ptr<Player> p) {
     ZombieData *zd = new ZombieData();
     zd->animationTime = 0.0f;
     zd->head_rotation = {30.0f, 120.0f};
-    zd->pos = {128.0f, 38.8f, 129.0f};
+    zd->pos = {128.0f, 50.0f, 129.0f};
     zd->rot = {0.0f, 180.0f};
     zd->mobType = MobType::Zombie;
     zd->size = {0.6f, 1.8f, 0.6f};
@@ -109,7 +109,7 @@ World::World(std::shared_ptr<Player> p) {
     SkeletonData *skd = new SkeletonData();
     skd->animationTime = 0.0f;
     skd->head_rotation = {30.0f, 120.0f};
-    skd->pos = {129.0f, 38.8f, 128.0f};
+    skd->pos = {129.0f, 50.0f, 128.0f};
     skd->rot = {0.0f, 180.0f};
     skd->mobType = MobType::Skeleton;
     skd->size = {0.6f, 1.8f, 0.6f};
@@ -146,7 +146,7 @@ World::World(std::shared_ptr<Player> p) {
     SpiderData *spd = new SpiderData();
     spd->animationTime = 0.0f;
     spd->head_rotation = {30.0f, 120.0f};
-    spd->pos = {131.0f, 37.8f, 128.5f};
+    spd->pos = {131.0f, 50.8f, 128.5f};
     spd->rot = {0.0f, 180.0f};
     spd->mobType = MobType::Spider;
     spd->size = {1.8f, 0.9f, 1.8f};
@@ -414,6 +414,7 @@ void World::draw() {
     if (chunk_sorted.size() > 0) {
         // Draw opaque
         for (auto const& [key, val] : chunk_sorted) {
+            if(val != nullptr)
             val->draw(this);
         }
     }
@@ -433,10 +434,12 @@ void World::draw() {
     if (chunk_reverse_sorted.size() > 0) {
         // Draw flora
         for (auto const& [key, val] : chunk_reverse_sorted) {
+            if (val != nullptr)
             val->draw_flora();
         }
         // Draw transparent
         for (auto const& [key, val] : chunk_reverse_sorted) {
+            if (val != nullptr)
             val->draw_transparent();
         }
     }

@@ -6,6 +6,7 @@
 #include "World/Generation/ClassicGenerator.hpp"
 #include "World/Generation/CrossCraftGenerator.hpp"
 #include "World/SaveData.hpp"
+#include "MusicManager.hpp"
 #include <gtc/type_ptr.hpp>
 
 namespace CrossCraft {
@@ -206,6 +207,9 @@ void GameState::quit(std::any d) {
 }
 
 void GameState::on_update(Core::Application *app, double dt) {
+
+    MusicManager::get().update(dt);
+
     if (client.get() != nullptr)
         client->update(dt);
 
