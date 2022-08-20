@@ -528,10 +528,12 @@ auto Player::draw(World *wrld) -> void {
             if (count > 1) {
                 playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
                                      CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
-                                     i * 4 - 16, -12, false, 2 + ((19 - i) / 6),
-                                     -4);
+                                     0, 0, false, -77 + i * 20,
+                                     -124);
             }
         }
+
+        countChange = false;
     }
 
     if (change)

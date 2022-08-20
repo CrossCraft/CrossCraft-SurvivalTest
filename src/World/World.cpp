@@ -24,6 +24,9 @@
 
 namespace CrossCraft {
 
+    std::map<float, ChunkStack*> chunk_sorted;
+    std::map<float, ChunkStack*, std::greater<float>> chunk_reverse_sorted;
+
 World::World(std::shared_ptr<Player> p) {
     tick_counter = 0;
     player = p;
@@ -148,6 +151,10 @@ World::World(std::shared_ptr<Player> p) {
     spd->mobType = MobType::Spider;
     spd->size = {1.8f, 0.9f, 1.8f};
     mobManager->add_mob(spd);
+
+
+    chunk_sorted.clear();
+    chunk_sorted.clear();
 }
 
 auto World::spawn() -> void {
@@ -367,6 +374,20 @@ void World::update(double dt) {
 
             to_generate.erase(to_generate.begin()->first);
         }
+
+        chunk_sorted.clear();
+        chunk_reverse_sorted.clear();
+
+        for (auto const& [key, val] : chunks) {
+            glm::vec2 relative_chunk_pos = glm::vec2(
+                val->get_chunk_pos().x * 16.0f, val->get_chunk_pos().y * 16.0f);
+            auto diff =
+                glm::vec2(player->pos.x, player->pos.z) - relative_chunk_pos;
+            auto len = fabsf(sqrtf(diff.x * diff.x + diff.y * diff.y));
+            chunk_sorted.emplace(len, val);
+        }
+
+        chunk_reverse_sorted.insert(chunk_sorted.begin(), chunk_sorted.end());
     }
 }
 
@@ -390,26 +411,12 @@ void World::draw() {
     glEnable(GL_CULL_FACE);
 #endif
 
-    std::map<float, ChunkStack *> chunk_sorted;
-    chunk_sorted.clear();
-
-    for (auto const &[key, val] : chunks) {
-        glm::vec2 relative_chunk_pos = glm::vec2(
-            val->get_chunk_pos().x * 16.0f, val->get_chunk_pos().y * 16.0f);
-        auto diff =
-            glm::vec2(player->pos.x, player->pos.z) - relative_chunk_pos;
-        auto len = fabsf(sqrtf(diff.x * diff.x + diff.y * diff.y));
-        chunk_sorted.emplace(len, val);
+    if (chunk_sorted.size() > 0) {
+        // Draw opaque
+        for (auto const& [key, val] : chunk_sorted) {
+            val->draw(this);
+        }
     }
-
-    // Draw opaque
-    for (auto const &[key, val] : chunk_sorted) {
-        val->draw(this);
-    }
-
-    std::map<float, ChunkStack *, std::greater<float>> chunk_reverse_sorted;
-    chunk_reverse_sorted.insert(chunk_sorted.begin(), chunk_sorted.end());
-    chunk_sorted.clear();
 
 #if BUILD_PLAT == BUILD_VITA
     glEnable(GL_BLEND);
@@ -423,13 +430,15 @@ void World::draw() {
     // Set up texture
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
-    // Draw flora
-    for (auto const &[key, val] : chunk_reverse_sorted) {
-        val->draw_flora();
-    }
-    // Draw transparent
-    for (auto const &[key, val] : chunk_reverse_sorted) {
-        val->draw_transparent();
+    if (chunk_reverse_sorted.size() > 0) {
+        // Draw flora
+        for (auto const& [key, val] : chunk_reverse_sorted) {
+            val->draw_flora();
+        }
+        // Draw transparent
+        for (auto const& [key, val] : chunk_reverse_sorted) {
+            val->draw_transparent();
+        }
     }
 
     clouds->draw();

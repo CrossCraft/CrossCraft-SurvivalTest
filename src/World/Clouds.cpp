@@ -5,6 +5,10 @@
 
 namespace CrossCraft {
 
+#ifndef PSP
+    GLuint location;
+    GLuint location2;
+#endif
 Clouds::Clouds() {
 
     texture = ResourcePackManager::get().load_texture(
@@ -15,6 +19,11 @@ Clouds::Clouds() {
 
 #ifdef PSP
     idx_counter2 = 0;
+#else
+    auto progID =
+        Rendering::ShaderManager::get().get_current_shader().programID;
+    location = glGetUniformLocation(progID, "scroll");
+    location2 = glGetUniformLocation(progID, "drawSky");
 #endif
 
     generate();
@@ -173,12 +182,8 @@ void Clouds::draw() {
     Rendering::RenderContext::get().matrix_scale({2.0f, 1.0f, 2.0f});
 
 #if BUILD_PLAT != BUILD_PSP
-    auto progID =
-        Rendering::ShaderManager::get().get_current_shader().programID;
-    auto location = glGetUniformLocation(progID, "scroll");
     glUniform1f(location, scroll / 4096.0f);
 
-    auto location2 = glGetUniformLocation(progID, "drawSky");
     glUniform1i(location2, 1);
     mesh.bind();
 #else
