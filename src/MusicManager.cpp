@@ -30,7 +30,7 @@ namespace CrossCraft
             srand(time(0));
             int r = rand() % tracks.size();
             music = create_scopeptr<Audio::Clip>(ResourcePackManager::get().get_file(tracks[r]), true);
-            timer = 420.0f + rand() % 240;
+            timer = 420.0f + rand() % 360;
         }
     }
 
