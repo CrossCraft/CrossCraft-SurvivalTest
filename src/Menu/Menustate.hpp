@@ -59,6 +59,8 @@ namespace CrossCraft
     ScopePtr<Graphics::G2D::FontRenderer> fontRenderer;
     ScopePtr<Graphics::G2D::FontRenderer> splashRenderer;
 
+    ScopePtr<Audio::Clip> clip;
+
     float scaleFactor;
     float scaleTimer;
 

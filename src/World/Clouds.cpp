@@ -169,7 +169,7 @@ void Clouds::update(double dt) { scroll += dt; }
 void Clouds::draw() {
 
     Rendering::RenderContext::get().matrix_clear();
-    Rendering::RenderContext::get().matrix_translate({-256.0f, 67, -256.0f});
+    Rendering::RenderContext::get().matrix_translate({-128.0f, 67, -128.0f});
     Rendering::RenderContext::get().matrix_scale({2.0f, 1.0f, 2.0f});
 
 #if BUILD_PLAT != BUILD_PSP
