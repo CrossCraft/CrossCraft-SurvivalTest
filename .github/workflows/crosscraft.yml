@@ -119,6 +119,7 @@ jobs:
           mv build/EBOOT.PBP EBOOT.PBP
           mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
           unzip resourcepacks/default.zip -d resourcepacks/default/
+          mv resourcepacks/default.zip default.zip
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
