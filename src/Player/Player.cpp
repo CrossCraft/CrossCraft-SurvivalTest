@@ -147,8 +147,8 @@ Player::Player()
     heartFull->set_layer(-2);
 
     airContainer = create_scopeptr<Graphics::G2D::Sprite>(icons_texture,
-        Rendering::Rectangle{ {149, 40}, {8, 8} }, Rendering::Rectangle{ {16.0f / 256.0f, (256.0f - 26.0f) / 256.0f},
-                             {8.0f / 256.0f, 8.0f / 256.0f} }
+        Rendering::Rectangle{ {148, 40}, {9, 9} }, Rendering::Rectangle{ {16.0f / 256.0f, (256.0f - 26.0f) / 256.0f},
+                             {9.0f / 256.0f, 9.0f / 256.0f} }
         );
     airContainer->set_layer(-2);
 
