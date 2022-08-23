@@ -102,6 +102,7 @@ Player::Player()
     size = {0.6f, 1.8f, 0.6f};
 
     HP = 20;
+    air = 10.0f;
     arrows = 255;
     score = 0;
 
@@ -144,6 +145,12 @@ Player::Player()
         Rendering::Rectangle{{53.0f / 256.0f, (256.0f - 8.0f) / 256.0f},
                              {7.0f / 256.0f, 7.0f / 256.0f}});
     heartFull->set_layer(-2);
+
+    airContainer = create_scopeptr<Graphics::G2D::Sprite>(icons_texture,
+        Rendering::Rectangle{ {149, 40}, {8, 8} }, Rendering::Rectangle{ {16.0f / 256.0f, (256.0f - 26.0f) / 256.0f},
+                             {8.0f / 256.0f, 8.0f / 256.0f} }
+        );
+    airContainer->set_layer(-2);
 
     heartHalf = create_scopeptr<Graphics::G2D::Sprite>(
         icons_texture, Rendering::Rectangle{{147, 29}, {7, 7}},
@@ -344,6 +351,18 @@ void Player::update(float dt, World *wrld) {
         vel.y *= 0.7f;
     }
 
+    if (is_head_water) {
+        air -= dt;
+
+        if (air < -1.1f) {
+            air += 1.0f;
+            HP -= 2;
+        }
+    }
+    else {
+        air = 10.0f;
+    }
+
     pos += vel * dt;
     vel = vel2;
 
@@ -405,7 +424,7 @@ auto Player::draw(World *wrld) -> void {
         selector_block_prev != selectedBlock ||
         selector_idx_prev != selectorIDX ||
         chat_text_size != chat_text.size() || in_tab ||
-        (wrld->client != nullptr && wrld->client->disconnected) || countChange;
+        (wrld->client != nullptr && wrld->client->disconnected) || countChange || air != 10.0f;
 
     if (change)
         playerHUD->clear();
@@ -535,6 +554,14 @@ auto Player::draw(World *wrld) -> void {
 
         countChange = false;
     }
+
+    if (air < 10) {
+        for (int i = 0; i < air; i++) {
+            airContainer->draw();
+            Rendering::RenderContext::get().matrix_translate({ 9.0f, 0.0f, 0.0f });
+        }
+    }
+    Rendering::RenderContext::get().matrix_clear();
 
     if (change)
         playerHUD->rebuild();

@@ -36,6 +36,7 @@ class BlockRep;
 class PlayerEntity : public Entity {
   public:
     int8_t HP;
+    float air;
     uint8_t arrows;
     uint16_t score;
 };
@@ -172,6 +173,7 @@ class Player : public PlayerEntity {
     ScopePtr<Graphics::G2D::Sprite> heartBG;
     ScopePtr<Graphics::G2D::Sprite> heartHalf;
     ScopePtr<Graphics::G2D::Sprite> heartFull;
+    ScopePtr<Graphics::G2D::Sprite> airContainer;
     uint32_t gui_texture, icons_texture, water_texture, overlay_texture,
         font_texture;
 
