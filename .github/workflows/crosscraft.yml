@@ -42,7 +42,7 @@ jobs:
             config.cfg
   
   Mac:
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     steps:
       - name: Checkout
         uses: actions/checkout@v2
