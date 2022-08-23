@@ -147,7 +147,7 @@ Player::Player()
     heartFull->set_layer(-2);
 
     airContainer = create_scopeptr<Graphics::G2D::Sprite>(icons_texture,
-        Rendering::Rectangle{ {148, 40}, {9, 9} }, Rendering::Rectangle{ {16.0f / 256.0f, (256.0f - 26.0f) / 256.0f},
+        Rendering::Rectangle{ {148, 38}, {9, 9} }, Rendering::Rectangle{ {16.0f / 256.0f, (256.0f - 27.0f) / 256.0f},
                              {9.0f / 256.0f, 9.0f / 256.0f} }
         );
     airContainer->set_layer(-2);
@@ -455,7 +455,7 @@ auto Player::draw(World *wrld) -> void {
             playerHUD->draw_text(
                 playerHUD->get_block_name(itemSelections[selectorIDX].type),
                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
-                0, 4, CC_TEXT_BG_NONE);
+                0, 5, CC_TEXT_BG_NONE,0, -3);
 
         selector_block_prev = selectedBlock;
         selector_idx_prev = selectorIDX;
