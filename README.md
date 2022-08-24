@@ -2,13 +2,11 @@
 
 ---
 
-CrossCraft-SurvivalTest is a project that aims to implement Minecraft Java Edition: Classic Survival Test. It is not a clone. CrossCraft does not use any of the source code of the original game, nor do the developers have any knowledge of the source code. CrossCraft does not use the original copyrighted assets. All knowledge is figured out with documentation and observation of in-game mechanics.
+CrossCraft-SurvivalTest is a project that aims to implement Minecraft Java Edition: Classic Survival Test. It is not a clone. CrossCraft does not use any of the source code of the original game, nor do the developers have any knowledge of the source code. CrossCraft does not use the original copyrighted assets. All knowledge is figured out with documentation and observation of in-game mechanics. We are not associated with Mojang or Microsoft.
 
-Textures are a combination of handmade and adaptations from [Unity Pack](https://www.curseforge.com/minecraft/texture-packs/unity) under CC0
+Textures are a combination of handmade and adaptations from various packs. Please check the license file in the resourcepack. All music is made by Sredni Tonek. 
 
 CrossCraft's goal is to be platform-independent and work across all PC platforms and many major game consoles. CrossCraft supports Windows, Mac, Linux, PSP, and PS Vita. Further support will be added over time as systems change and upgrade. The next planned platform is the PS2.
-
-We are not associated with Mojang or Microsoft.
 
 <br>
 <div align=center><img src=./branding/Screenshot.png></div>
@@ -42,7 +40,7 @@ Ubuntu/Debian Linux:
 
 `make`
 
-Also copy your audio and texturepacks folder into the build directory.
+Also copy your resourcepacks folder into the build directory.
 
 ## License
 
