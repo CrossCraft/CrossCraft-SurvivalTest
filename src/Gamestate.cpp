@@ -1,12 +1,12 @@
 #include "Gamestate.hpp"
 
+#include "MusicManager.hpp"
 #include "Rendering/ShaderManager.hpp"
 #include "ResourcePackManager.hpp"
 #include "Utils.hpp"
 #include "World/Generation/ClassicGenerator.hpp"
 #include "World/Generation/CrossCraftGenerator.hpp"
 #include "World/SaveData.hpp"
-#include "MusicManager.hpp"
 #include <gtc/type_ptr.hpp>
 
 namespace CrossCraft {

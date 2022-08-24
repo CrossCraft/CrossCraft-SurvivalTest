@@ -5,9 +5,8 @@
 namespace CrossCraft {
 
 Pig::Pig() {
-    YAML::Node config =
-        YAML::LoadFile(ResourcePackManager::get().
-                            get_file("assets/crosscraft/models/pig.yaml"));
+    YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
+        "assets/crosscraft/models/pig.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -17,8 +16,8 @@ Pig::Pig() {
     head.load(config["model"][3], texSize);
 
     tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/mob/pig.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/mob/pig.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
 }
 
 Pig::~Pig() {}

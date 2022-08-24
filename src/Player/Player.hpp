@@ -9,6 +9,7 @@
  *
  */
 #pragma once
+#include "../Entity/Entity.hpp"
 #include "../MP/Client.hpp"
 #include "../UI/TextHelper.hpp"
 #include "../UI/UserInterface.hpp"
@@ -16,14 +17,13 @@
 #include "AABB.hpp"
 #include "BlockRep.hpp"
 #include "Chat.hpp"
-#include "../Entity/Entity.hpp"
 #include "Graphics/2D/FontRenderer.hpp"
 #include "PauseMenu.hpp"
+#include <Audio/AudioListener.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Rendering/Camera.hpp>
 #include <Rendering/Primitive/Rectangle.hpp>
 #include <any>
-#include <Audio/AudioListener.hpp>
 #include <glm.hpp>
 
 using namespace Stardust_Celeste;
@@ -40,7 +40,6 @@ class PlayerEntity : public Entity {
     uint8_t arrows;
     uint16_t score;
 };
-
 
 struct SlotInfo {
     int16_t type;

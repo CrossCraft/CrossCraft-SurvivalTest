@@ -6,8 +6,8 @@
 namespace CrossCraft {
 
 #ifndef PSP
-    GLuint location;
-    GLuint location2;
+GLuint location;
+GLuint location2;
 #endif
 Clouds::Clouds() {
 

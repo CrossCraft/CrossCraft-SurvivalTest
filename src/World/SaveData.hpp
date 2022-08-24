@@ -1,15 +1,13 @@
 #pragma once
-#include <any>
 #include "World.hpp"
+#include <any>
 
-namespace CrossCraft
-{
-    class World;
+namespace CrossCraft {
+class World;
 
-    class SaveData
-    {
-    public:
-        static auto load_world(World *wrld) -> bool;
-        static auto save(std::any p) -> void;
-    };
+class SaveData {
+  public:
+    static auto load_world(World *wrld) -> bool;
+    static auto save(std::any p) -> void;
+};
 } // namespace CrossCraft

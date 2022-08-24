@@ -5,9 +5,8 @@
 namespace CrossCraft {
 
 Zombie::Zombie() {
-    YAML::Node config =
-        YAML::LoadFile(ResourcePackManager::get().
-                            get_file("assets/crosscraft/models/zombie.yaml"));
+    YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
+        "assets/crosscraft/models/zombie.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -18,8 +17,8 @@ Zombie::Zombie() {
     head.load(config["model"][4], texSize);
 
     tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/mob/zombie.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/mob/zombie.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
 }
 
 Zombie::~Zombie() {}

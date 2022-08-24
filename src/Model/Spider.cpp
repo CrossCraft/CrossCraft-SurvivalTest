@@ -5,9 +5,8 @@
 namespace CrossCraft {
 
 Spider::Spider() {
-    YAML::Node config =
-        YAML::LoadFile(ResourcePackManager::get().
-                            get_file("assets/crosscraft/models/spider.yaml"));
+    YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
+        "assets/crosscraft/models/spider.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -18,8 +17,8 @@ Spider::Spider() {
     tail.load(config["model"][4], texSize);
 
     tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/mob/spider.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/mob/spider.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
 }
 
 Spider::~Spider() {}

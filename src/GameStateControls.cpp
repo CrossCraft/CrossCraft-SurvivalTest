@@ -239,9 +239,8 @@ void GameState::bind_controls() {
     key_controller->add_command({(int)Input::Keys::KeyPad6, KeyFlag::Press},
                                 {Player::press_right, world->player.get()});
 
-    key_controller->add_command(
-        {(int)Input::Keys::Tab, KeyFlag::Press},
-        {Player::tab_start, world->player.get()});
+    key_controller->add_command({(int)Input::Keys::Tab, KeyFlag::Press},
+                                {Player::tab_start, world->player.get()});
 
     Input::add_controller(psp_controller);
     Input::add_controller(key_controller);

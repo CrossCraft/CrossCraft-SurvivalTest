@@ -2,8 +2,8 @@
 #include "ProtocolTypes.hpp"
 #include "Rendering/Rendering.hpp"
 #include "Utility.hpp"
-#include <map>
 #include <Graphics/2D/FontRenderer.hpp>
+#include <map>
 
 #if BUILD_PLAT != BUILD_WINDOWS
 #include <netdb.h>
@@ -52,6 +52,7 @@ class Client {
 
     bool disconnected;
     std::string disconnectReason;
+
   private:
     u32 font_texture;
     ScopePtr<Graphics::G2D::FontRenderer> fontRenderer;
@@ -59,7 +60,6 @@ class Client {
     int my_socket;
     std::vector<RefPtr<Network::ByteBuffer>> packetsIn;
     bool connected;
-
 
     void process_packet(RefPtr<Network::ByteBuffer> packet);
     Rendering::Mesh mesh;

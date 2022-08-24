@@ -6,9 +6,8 @@
 namespace CrossCraft {
 
 Steve::Steve() {
-    YAML::Node config =
-        YAML::LoadFile(ResourcePackManager::get().
-                            get_file("assets/crosscraft/models/steve.yaml"));
+    YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
+        "assets/crosscraft/models/steve.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -19,8 +18,8 @@ Steve::Steve() {
     head.load(config["model"][4], texSize);
 
     tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/char.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false,
-        false);
+        "assets/minecraft/textures/char.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
 }
 
 Steve::~Steve() {}

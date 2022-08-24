@@ -22,9 +22,10 @@ class ChunkMeshBuilder {
                                  uint32_t lightVal, ChunkMeshSelection meshSel);
 
     static void add_face_to_mesh_wrld(ChunkMesh *chunkMesh, const World *wrld,
-                                 std::array<float, 12> data,
-                                 std::array<float, 8> uv, glm::vec3 pos,
-                                 uint32_t lightVal, ChunkMeshSelection meshSel);
+                                      std::array<float, 12> data,
+                                      std::array<float, 8> uv, glm::vec3 pos,
+                                      uint32_t lightVal,
+                                      ChunkMeshSelection meshSel);
 
     static void add_xface_to_mesh(ChunkMesh *chunkMesh, std::array<float, 8> uv,
                                   glm::vec3 pos, uint32_t lightVal,

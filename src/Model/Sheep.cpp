@@ -6,9 +6,8 @@ namespace CrossCraft {
 
 Sheep::Sheep() {
     {
-        YAML::Node config =
-            YAML::LoadFile(ResourcePackManager::get().
-                            get_file("assets/crosscraft/models/sheep.yaml"));
+        YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
+            "assets/crosscraft/models/sheep.yaml"));
 
         auto tSize = config["model"][0]["texsize"];
         auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());
@@ -21,13 +20,12 @@ Sheep::Sheep() {
             "assets/minecraft/textures/mob/sheep.png", SC_TEX_FILTER_NEAREST,
             SC_TEX_FILTER_NEAREST, false, false);
         tex2 = ResourcePackManager::get().load_texture(
-            "assets/minecraft/textures/mob/sheep_fur.png", SC_TEX_FILTER_NEAREST,
-            SC_TEX_FILTER_NEAREST, false, false);
+            "assets/minecraft/textures/mob/sheep_fur.png",
+            SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false, false);
     }
 
-    YAML::Node config =
-        YAML::LoadFile(ResourcePackManager::get().
-                            get_file("assets/crosscraft/models/sheep_fur.yaml"));
+    YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
+        "assets/crosscraft/models/sheep_fur.yaml"));
 
     auto tSize = config["model"][0]["texsize"];
     auto texSize = glm::vec2(tSize[0].as<float>(), tSize[1].as<float>());

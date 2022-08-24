@@ -8,18 +8,15 @@ typedef uint8_t Byte;
 typedef int8_t SByte;
 typedef int16_t Short;
 
-struct String
-{
+struct String {
     Byte contents[STRING_LENGTH];
 };
 
-struct ByteArray
-{
+struct ByteArray {
     Byte contents[ARRAY_LENGTH];
 };
 
-struct BasePacket
-{
+struct BasePacket {
     virtual ~BasePacket() = default;
 
     Byte PacketID;

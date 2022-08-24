@@ -12,8 +12,8 @@
 #else
 #include <arpa/inet.h>
 #include <fcntl.h>
-#include <sys/socket.h>
 #include <netinet/tcp.h>
+#include <sys/socket.h>
 #include <unistd.h>
 #endif
 

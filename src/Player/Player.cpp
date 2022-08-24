@@ -146,10 +146,10 @@ Player::Player()
                              {7.0f / 256.0f, 7.0f / 256.0f}});
     heartFull->set_layer(-2);
 
-    airContainer = create_scopeptr<Graphics::G2D::Sprite>(icons_texture,
-        Rendering::Rectangle{ {148, 38}, {9, 9} }, Rendering::Rectangle{ {16.0f / 256.0f, (256.0f - 27.0f) / 256.0f},
-                             {9.0f / 256.0f, 9.0f / 256.0f} }
-        );
+    airContainer = create_scopeptr<Graphics::G2D::Sprite>(
+        icons_texture, Rendering::Rectangle{{148, 38}, {9, 9}},
+        Rendering::Rectangle{{16.0f / 256.0f, (256.0f - 27.0f) / 256.0f},
+                             {9.0f / 256.0f, 9.0f / 256.0f}});
     airContainer->set_layer(-2);
 
     heartHalf = create_scopeptr<Graphics::G2D::Sprite>(
@@ -358,8 +358,7 @@ void Player::update(float dt, World *wrld) {
             air += 1.0f;
             HP -= 2;
         }
-    }
-    else {
+    } else {
         air = 10.0f;
     }
 
@@ -418,13 +417,14 @@ auto Player::draw(World *wrld) -> void {
     auto ipos = glm::ivec3(static_cast<int>(pos.x), static_cast<int>(pos.y),
                            static_cast<int>(pos.z));
 
-    bool change =
-        in_inv_delta != in_inventory || in_chat_delta != in_chat ||
-        fps_count == 0 || prev_ipos != ipos || chat_size != chat->data.size() ||
-        selector_block_prev != selectedBlock ||
-        selector_idx_prev != selectorIDX ||
-        chat_text_size != chat_text.size() || in_tab ||
-        (wrld->client != nullptr && wrld->client->disconnected) || countChange || air != 10.0f;
+    bool change = in_inv_delta != in_inventory || in_chat_delta != in_chat ||
+                  fps_count == 0 || prev_ipos != ipos ||
+                  chat_size != chat->data.size() ||
+                  selector_block_prev != selectedBlock ||
+                  selector_idx_prev != selectorIDX ||
+                  chat_text_size != chat_text.size() || in_tab ||
+                  (wrld->client != nullptr && wrld->client->disconnected) ||
+                  countChange || air != 10.0f;
 
     if (change)
         playerHUD->clear();
@@ -455,7 +455,7 @@ auto Player::draw(World *wrld) -> void {
             playerHUD->draw_text(
                 playerHUD->get_block_name(itemSelections[selectorIDX].type),
                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
-                0, 5, CC_TEXT_BG_NONE,0, -3);
+                0, 5, CC_TEXT_BG_NONE, 0, -3);
 
         selector_block_prev = selectedBlock;
         selector_idx_prev = selectorIDX;
@@ -547,8 +547,7 @@ auto Player::draw(World *wrld) -> void {
             if (count > 1) {
                 playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
                                      CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
-                                     0, 0, false, -77 + i * 20,
-                                     -124);
+                                     0, 0, false, -77 + i * 20, -124);
             }
         }
 
@@ -558,7 +557,8 @@ auto Player::draw(World *wrld) -> void {
     if (air < 10) {
         for (int i = 0; i < air; i++) {
             airContainer->draw();
-            Rendering::RenderContext::get().matrix_translate({ 9.0f, 0.0f, 0.0f });
+            Rendering::RenderContext::get().matrix_translate(
+                {9.0f, 0.0f, 0.0f});
         }
     }
     Rendering::RenderContext::get().matrix_clear();

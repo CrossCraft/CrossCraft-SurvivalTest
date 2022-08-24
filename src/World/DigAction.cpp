@@ -178,12 +178,12 @@ auto DigAction::dig(std::any d) -> void {
                 } else {
                     w->timeLeftToBreak -= w->stored_dt;
 
-                    //int newL = w->timeLeftToBreak / 0.33f;
+                    // int newL = w->timeLeftToBreak / 0.33f;
                     //
-                    //if (newL != last) {
-                    //    w->sound_manager->play(blk, cast_pos);
-                    //    last = newL;
-                    //}
+                    // if (newL != last) {
+                    //     w->sound_manager->play(blk, cast_pos);
+                    //     last = newL;
+                    // }
                 }
             }
         }

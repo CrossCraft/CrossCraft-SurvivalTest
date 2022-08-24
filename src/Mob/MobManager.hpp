@@ -1,41 +1,39 @@
 #pragma once
-#include "Mob.hpp"
-#include <vector>
+#include "../Model/Armor.hpp"
 #include "../Model/Creeper.hpp"
 #include "../Model/Pig.hpp"
+#include "../Model/Sheep.hpp"
+#include "../Model/Skeleton.hpp"
+#include "../Model/Spider.hpp"
 #include "../Model/Steve.hpp"
 #include "../Model/Zombie.hpp"
-#include "../Model/Skeleton.hpp"
-#include "../Model/Sheep.hpp"
-#include "../Model/Armor.hpp"
-#include "../Model/Spider.hpp"
+#include "Mob.hpp"
+#include <vector>
 
-namespace CrossCraft
-{
-    using namespace Stardust_Celeste;
+namespace CrossCraft {
+using namespace Stardust_Celeste;
 
-    class Player;
-    class MobManager
-    {
-    public:
-        MobManager();
-        ~MobManager();
+class Player;
+class MobManager {
+  public:
+    MobManager();
+    ~MobManager();
 
-        void add_mob(Mob *mobData);
+    void add_mob(Mob *mobData);
 
-        void update(float dt, Player *p, World *w);
-        void draw();
+    void update(float dt, Player *p, World *w);
+    void draw();
 
-    private:
-        std::vector<Mob *> mobs;
+  private:
+    std::vector<Mob *> mobs;
 
-        ScopePtr<Creeper> creeper;
-        ScopePtr<Steve> steve;
-        ScopePtr<Skeleton> skeleton;
-        ScopePtr<Zombie> zombie;
-        ScopePtr<Pig> pig;
-        ScopePtr<Sheep> sheep;
-        ScopePtr<Armor> armor;
-        ScopePtr<Spider> spider;
-    };
-}
+    ScopePtr<Creeper> creeper;
+    ScopePtr<Steve> steve;
+    ScopePtr<Skeleton> skeleton;
+    ScopePtr<Zombie> zombie;
+    ScopePtr<Pig> pig;
+    ScopePtr<Sheep> sheep;
+    ScopePtr<Armor> armor;
+    ScopePtr<Spider> spider;
+};
+} // namespace CrossCraft

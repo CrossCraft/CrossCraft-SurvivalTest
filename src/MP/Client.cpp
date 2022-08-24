@@ -305,8 +305,8 @@ Client::Client(World *wrld, std::string ip, u16 port) {
                   mesh_indices.size());
 
     font_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
     fontRenderer = create_scopeptr<Graphics::G2D::FontRenderer>(
         font_texture, glm::vec2(16, 16));
 }

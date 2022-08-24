@@ -17,12 +17,12 @@ namespace CrossCraft {
 
 PauseMenu::PauseMenu() {
     gui_tex = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, true);
+        "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, true);
 
     font_texture = ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST,
-        false, false);
+        "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, false, false);
 
     unsel_sprite = create_scopeptr<Graphics::G2D::Sprite>(
         gui_tex, Rendering::Rectangle{{140, 144}, {200, 20}},

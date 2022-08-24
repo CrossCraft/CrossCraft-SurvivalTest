@@ -9,8 +9,9 @@ class SelectionBox {
 
     auto update_position(World *wrld) -> void;
     auto draw() -> void;
-    
-    auto draw_break(World* wrld) -> void;
+
+    auto draw_break(World *wrld) -> void;
+
   private:
     glm::ivec3 position;
 
@@ -19,9 +20,8 @@ class SelectionBox {
     std::vector<uint16_t> m_index[11];
     Rendering::Mesh blockMesh[11];
 
-
-    auto add_face_to_mesh(std::array<float, 12> data,
-        std::array<float, 8> uv, uint32_t lightVal,
-        glm::vec3 mypos, uint8_t type) -> void;
+    auto add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
+                          uint32_t lightVal, glm::vec3 mypos, uint8_t type)
+        -> void;
 };
 } // namespace CrossCraft

@@ -20,8 +20,8 @@ void Chat::update(double dt) {
     }
 
     for (auto &id : removal) {
-        if(id < data.size())
-        data.erase(data.begin() + id);
+        if (id < data.size())
+            data.erase(data.begin() + id);
     }
 }
 } // namespace CrossCraft

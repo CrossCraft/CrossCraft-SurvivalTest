@@ -13,10 +13,8 @@
 #include <glm.hpp>
 using namespace Stardust_Celeste;
 
-namespace CrossCraft
-{
-  class BlockRep
-  {
+namespace CrossCraft {
+class BlockRep {
   public:
     BlockRep();
     ~BlockRep();
@@ -46,5 +44,5 @@ namespace CrossCraft
 
     bool isSwinging;
     float swingTime;
-  };
+};
 } // namespace CrossCraft

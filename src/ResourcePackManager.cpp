@@ -212,7 +212,7 @@ auto ResourcePackManager::convert_old_resourcepacks() -> void {
 
             // Remove the old texture pack
             sceIoRemove(prefix.c_str());
-            
+
 #else
 
             renameCheck(prefix + "/assets/menu/logo.png",

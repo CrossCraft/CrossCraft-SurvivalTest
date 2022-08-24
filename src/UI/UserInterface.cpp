@@ -120,9 +120,7 @@ auto UserInterface::begin2D() -> void {
 
 auto UserInterface::end2D() -> void { textHelper->draw(); }
 
-auto UserInterface::rebuild() -> void {
-    textHelper->rebuild();
-}
+auto UserInterface::rebuild() -> void { textHelper->rebuild(); }
 
 auto get_color(char c) -> uint8_t {
     switch (c) {
@@ -166,8 +164,8 @@ auto get_color(char c) -> uint8_t {
 
 auto UserInterface::draw_text(std::string text, unsigned char color,
                               unsigned char x_align, unsigned char y_align,
-                              short x_line, short y_line, short bg_mode, int pXoff, int pYoff)
-    -> void {
+                              short x_line, short y_line, short bg_mode,
+                              int pXoff, int pYoff) -> void {
 
     short x_position = 0;
     short y_position = 0;

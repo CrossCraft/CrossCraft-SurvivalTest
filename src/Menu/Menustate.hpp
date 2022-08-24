@@ -1,23 +1,21 @@
 #include "../Config.hpp"
+#include "../MusicManager.hpp"
 #include "../ResourcePackManager.hpp"
 #include <Core/Application.hpp>
 #include <Graphics/2D/FontRenderer.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Stardust-Celeste.hpp>
 #include <Utilities/Input.hpp>
-#include "../MusicManager.hpp"
 
 using namespace Stardust_Celeste;
 
-namespace CrossCraft
-{
-  using namespace Stardust_Celeste;
-  /**
+namespace CrossCraft {
+using namespace Stardust_Celeste;
+/**
  * @brief Game State Class
  *
  */
-  class MenuState : public Core::ApplicationState
-  {
+class MenuState : public Core::ApplicationState {
   public:
     MenuState()
         : key_controller(nullptr), psp_controller(nullptr),
@@ -68,6 +66,6 @@ namespace CrossCraft
     bool startSP;
 
     bool textureMenu;
-  };
+};
 
 } // namespace CrossCraft

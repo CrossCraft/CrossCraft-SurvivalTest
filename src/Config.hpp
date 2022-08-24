@@ -61,8 +61,7 @@ struct Config {
                     std::stringstream str(line);
 
                     str >> config.key;
-                }
-                else if (line == "oldSky") {
+                } else if (line == "oldSky") {
                     std::getline(file, line);
                     std::stringstream str(line);
 
