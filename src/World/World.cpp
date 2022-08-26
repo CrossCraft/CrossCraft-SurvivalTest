@@ -35,6 +35,9 @@ World::World(std::shared_ptr<Player> p) {
     terrain_atlas = ResourcePackManager::get().load_texture(
         "assets/minecraft/textures/terrain.png", SC_TEX_FILTER_NEAREST,
         SC_TEX_FILTER_NEAREST, true, false, true);
+    particle_atlas = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/particles.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, true, false, true);
     p->terrain_atlas = terrain_atlas;
     p->wrldRef = this;
 
@@ -42,6 +45,7 @@ World::World(std::shared_ptr<Player> p) {
 
     clouds = create_scopeptr<Clouds>();
     psystem = create_scopeptr<BreakParticleSystem>(terrain_atlas);
+    dpsystem = create_scopeptr<DeathParticleSystem>(particle_atlas);
 
     // Zero the array
     worldData = reinterpret_cast<block_t *>(
@@ -73,81 +77,7 @@ World::World(std::shared_ptr<Player> p) {
     isBreaking = false;
     timeLeftToBreak = -1.0f;
     breaking = {-1, -1, -1};
-
     mobManager = create_scopeptr<MobManager>();
-
-    SteveData *sd = new SteveData();
-    sd->animationTime = 0.0f;
-    sd->head_rotation = {30.0f, 120.0f};
-    sd->pos = {128.0f, 50.0f, 128.0f};
-    sd->rot = {0.0f, 180.0f};
-    sd->mobType = MobType::Steve;
-    sd->size = {0.6f, 1.8f, 0.6f};
-    mobManager->add_mob(sd);
-
-    ArmorData *ad = new ArmorData();
-    ad->animationTime = 0.0f;
-    ad->head_rotation = {30.0f, 120.0f};
-    ad->pos = {128.0f, 50.0f, 128.0f};
-    ad->rot = {0.0f, 180.0f};
-    ad->mobType = MobType::Armor;
-    sd->size = {0.6f, 1.8f, 0.6f};
-    mobManager->add_mob(ad);
-
-    ZombieData *zd = new ZombieData();
-    zd->animationTime = 0.0f;
-    zd->head_rotation = {30.0f, 120.0f};
-    zd->pos = {128.0f, 50.0f, 129.0f};
-    zd->rot = {0.0f, 180.0f};
-    zd->mobType = MobType::Zombie;
-    zd->size = {0.6f, 1.8f, 0.6f};
-    mobManager->add_mob(zd);
-
-    SkeletonData *skd = new SkeletonData();
-    skd->animationTime = 0.0f;
-    skd->head_rotation = {30.0f, 120.0f};
-    skd->pos = {129.0f, 50.0f, 128.0f};
-    skd->rot = {0.0f, 180.0f};
-    skd->mobType = MobType::Skeleton;
-    skd->size = {0.6f, 1.8f, 0.6f};
-    mobManager->add_mob(skd);
-
-    CreeperData *cpd = new CreeperData();
-    cpd->animationTime = 0.0f;
-    cpd->head_rotation = {30.0f, 120.0f};
-    cpd->pos = {129.0f, 50.4625f, 129.0f};
-    cpd->rot = {0.0f, 180.0f};
-    cpd->mobType = MobType::Creeper;
-    cpd->size = {0.6f, 1.4625f, 0.6f};
-    mobManager->add_mob(cpd);
-
-    PigData *pd = new PigData();
-    pd->animationTime = 0.0f;
-    pd->head_rotation = {30.0f, 120.0f};
-    pd->pos = {129.0f, 50.0f, 130.0f};
-    pd->rot = {0.0f, 180.0f};
-    pd->mobType = MobType::Pig;
-    pd->size = {0.9f, 0.9f, 0.9f};
-    mobManager->add_mob(pd);
-
-    SheepData *shd = new SheepData();
-    shd->animationTime = 0.0f;
-    shd->head_rotation = {30.0f, 120.0f};
-    shd->pos = {129.0f, 50.25f, 127.0f};
-    shd->rot = {0.0f, 180.0f};
-    shd->mobType = MobType::Sheep;
-    shd->size = {0.9f, 0.9f, 0.9f};
-    shd->hasWool = true;
-    mobManager->add_mob(shd);
-
-    SpiderData *spd = new SpiderData();
-    spd->animationTime = 0.0f;
-    spd->head_rotation = {30.0f, 120.0f};
-    spd->pos = {131.0f, 50.8f, 128.5f};
-    spd->rot = {0.0f, 180.0f};
-    spd->mobType = MobType::Spider;
-    spd->size = {1.8f, 0.9f, 1.8f};
-    mobManager->add_mob(spd);
 }
 
 auto World::spawn() -> void {
@@ -266,6 +196,7 @@ void World::update(double dt) {
     sbox->update_position(this);
     clouds->update(dt);
     psystem->update(dt);
+    dpsystem->update(dt);
     drops->update(dt, player.get(), this);
     arrow->update(dt, player.get(), this);
     mobManager->update(dt, player.get(), this);
@@ -440,6 +371,7 @@ void World::draw() {
 
     clouds->draw();
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
+    dpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     mobManager->draw();
 

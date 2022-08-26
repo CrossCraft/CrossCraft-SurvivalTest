@@ -20,7 +20,8 @@
 #include "../Player/Player.hpp"
 #include "../Sound/SoundManager.hpp"
 #include "Clouds.hpp"
-#include "BreakParticles.hpp"
+#include "Particles/BreakParticles.hpp"
+#include "Particles/DeathParticles.hpp"
 #include <Utilities/Types.hpp>
 #include <glm.hpp>
 #include <map>
@@ -178,6 +179,7 @@ class World {
     ScopePtr<SoundManager> sound_manager;
     ScopePtr<Arrow> arrow;
 
+    ScopePtr<DeathParticleSystem> dpsystem;
   private:
     /**
      * @brief Get the needed chunks
@@ -194,6 +196,7 @@ class World {
     ScopePtr<MobManager> mobManager;
 
     unsigned int terrain_atlas;
+    unsigned int particle_atlas;
     float *hmap;
     float tick_counter;
 
