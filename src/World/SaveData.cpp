@@ -144,6 +144,7 @@ auto SaveData::load_world(World *wrld) -> bool {
 
         gzclose(save_file);
 
+        wrld->player->spawnPoint = wrld->player->pos;
         wrld->loaded = true;
     } else if (version == 6) {
         gzread(save_file, &wrld->world_size, sizeof(wrld->world_size));
@@ -176,6 +177,8 @@ auto SaveData::load_world(World *wrld) -> bool {
         }
 
         gzclose(save_file);
+
+        wrld->player->spawnPoint = wrld->player->pos;
 
         wrld->loaded = true;
     } else

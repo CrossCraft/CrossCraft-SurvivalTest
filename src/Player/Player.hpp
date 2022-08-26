@@ -39,6 +39,7 @@ class PlayerEntity : public Entity {
     float air;
     uint8_t arrows;
     uint16_t score;
+    bool isAlive;
 };
 
 struct SlotInfo {
@@ -77,6 +78,7 @@ class Player : public PlayerEntity {
     auto draw(World *wrld) -> void;
 
     auto spawn(World *wrld) -> void;
+    auto respawn(glm::vec3 spawnPoint) -> void;
 
     /**
      * @brief Get the position
@@ -134,6 +136,7 @@ class Player : public PlayerEntity {
     int in_cursor_x;
     int in_cursor_y;
     bool in_tab;
+    glm::vec3 spawnPoint;
     ScopePtr<Chat> chat;
     MP::Client *client_ref;
 
@@ -183,6 +186,7 @@ class Player : public PlayerEntity {
     bool on_ground, jumping;
 
     ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;
+    ScopePtr<Rendering::Primitive::Rectangle> death_rectangle;
     ScopePtr<UserInterface> playerHUD;
 
     bool in_inv_delta, in_chat_delta;

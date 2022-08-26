@@ -57,8 +57,10 @@ const std::string frag_source = R"(
         vec4 texColor = texture(tex, vec2(uv.x + scroll, uv.y));
         if(drawSky == 0)
             texColor *= vec4(1.0f / 255.0f) * color;
-        else 
+        else if(drawSky == 1)
             texColor = vec4(0.599765f, 0.796875f, 1.0f, 1.0f);
+        else if(drawSky == 2)
+            texColor = vec4(1.0f / 255.0f) * color;
 
         float dist = abs(position.z);
         const float fogMax = (12.0f * 16.0f * 0.8);
@@ -96,8 +98,10 @@ const std::string frag_source =
         float4 texColor = tex2D(tex, float2(vTexcoord.x + scroll, vTexcoord.y));
         if(drawSky == 0)
             texColor *= vColor;
-        else 
+        else if(drawSky == 1)
             texColor = float4(0.599765f, 0.796875f, 1.0f, 1.0f);
+        else if(drawSky == 2)
+            texColor = color;
 
         texColor = clamp(texColor, 0.0f, 1.0f);
 

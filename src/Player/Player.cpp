@@ -9,6 +9,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtx/projection.hpp>
 #include <gtx/rotate_vector.hpp>
+#include <Rendering/ShaderManager.hpp>
 
 #if PSP
 #include <malloc.h>
@@ -103,14 +104,18 @@ Player::Player()
 
     HP = 20;
     air = 10.0f;
-    arrows = 255;
+    arrows = 20;
     score = 0;
 
     sound_icd = 0;
 
     background_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(
-        Rendering::Rectangle{{126, 55}, {226, 167}},
-        Rendering::Color{0, 0, 0, 128}, 2);
+        Rendering::Rectangle{ {126, 55}, {226, 167} },
+        Rendering::Color{ 0, 0, 0, 128 }, 2);
+
+    death_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(
+        Rendering::Rectangle{ {0, 0}, {480, 272} },
+        Rendering::Color{ 127, 0, 0, 128 }, 2);
 
     item_box = create_scopeptr<Graphics::G2D::Sprite>(
         gui_texture, Rendering::Rectangle{{149, 1}, {182, 22}},
@@ -205,6 +210,29 @@ Player::Player()
 #endif
 }
 
+
+auto Player::respawn(glm::vec3 sp) -> void {
+    spawnPoint = sp;
+    pos = { sp.x + 0.5f, sp.y + 1, sp.z + 0.5f };
+    pos.y += 1.8f;
+    spawnPoint = pos;
+
+    cam.pos = pos;
+    model.pos = pos;
+
+    HP = 20;
+    arrows = 20;
+    air = 10.0f;
+    score = 0;
+    isAlive = true;
+
+    for (int i = 0; i < 9; i++) {
+        itemSelections[i] = SlotInfo{ -1, 0 };
+    }
+    itemSelections[8] = SlotInfo{ Block::TNT, 10 };
+}
+
+
 auto Player::spawn(World *wrld) -> void {
     bool spawned = false;
     int count = 30;
@@ -220,6 +248,7 @@ auto Player::spawn(World *wrld) -> void {
             if (blk != 0 && blk != 8) {
                 pos = {x + 0.5f, y + 1, z + 0.5f};
                 pos.y += 1.8f;
+                spawnPoint = pos;
 
                 cam.pos = pos;
                 model.pos = pos;
@@ -232,6 +261,7 @@ auto Player::spawn(World *wrld) -> void {
 
     pos = {128 + 0.5f, 40 + 1, 128 + 0.5f};
     pos.y += 1.8f;
+    spawnPoint = pos;
 }
 
 const float GRAVITY_ACCELERATION = 28.0f;
@@ -248,346 +278,396 @@ void Player::update(float dt, World *wrld) {
         fps_count = 0;
     }
 
-    glm::vec3 look = {0, 0, -1};
-    look = glm::rotateX(look, DEGTORAD(-rot.x));
-    look = glm::rotateY(look, DEGTORAD(-rot.y));
-
-    if (is_firing && arrows != 0) {
-        ArrowData data;
-        data.pos = pos;
-        data.pos.y -= (1.80f - 1.5965f);
-        data.vel = look * 24.0f;
-        data.rot = glm::vec2(rot.x, rot.y);
-        data.size = {0.1f, 0.0f, 0.1f};
-        data.lifeTime = 10.0f;
-        data.playerArrow = true;
-
-        wrld->arrow->add_arrow(data);
-        is_firing = false;
-        arrows--;
+    if (HP > 0) {
+        isAlive = true;
+    }
+    else {
+        isAlive = false;
     }
 
-    // listener->update(pos, vel, look, { 0, 1, 0 });
-    chat->update(dt);
+    if (isAlive) {
 
-    hasDir = false;
-    if (!in_pause)
-        rotate(dt, wrld->cfg.sense);
-    jump_icd -= dt;
+        glm::vec3 look = { 0, 0, -1 };
+        look = glm::rotateX(look, DEGTORAD(-rot.x));
+        look = glm::rotateY(look, DEGTORAD(-rot.y));
 
-    // Update position
-    float mag = (vel.x * vel.x + vel.z * vel.z);
-    if (mag > 0.0f) {
-        vel.x *= playerSpeed / mag;
-        vel.z *= playerSpeed / mag;
-    }
+        if (is_firing && arrows != 0) {
+            ArrowData data;
+            data.pos = pos;
+            data.pos.y -= (1.80f - 1.5965f);
+            data.vel = look * 24.0f;
+            data.rot = glm::vec2(rot.x, rot.y);
+            data.size = { 0.1f, 0.0f, 0.1f };
+            data.lifeTime = 10.0f;
+            data.playerArrow = true;
 
-    if (!is_underwater)
-        vel.y -= GRAVITY_ACCELERATION * dt;
-    else
-        vel.y -= GRAVITY_ACCELERATION * 0.3f * dt;
-    is_falling = true;
-
-    glm::vec3 testpos = pos + vel * dt;
-    if (testpos.x < 0.5f || testpos.x > wrld->world_size.x + 0.5f) {
-        vel.x = 0;
-        testpos = pos + vel * dt;
-    }
-    if (testpos.z < 0.5f || testpos.z > wrld->world_size.z + 0.5f) {
-        vel.z = 0;
-        testpos = pos + vel * dt;
-    }
-
-    model.pos = pos - glm::vec3(0.3f, 1.8f, 0.3f);
-
-    auto blk =
-        wrld->worldData[wrld->getIdx(testpos.x, testpos.y + 0.2f, testpos.z)];
-    if (blk == 8 || blk == 10)
-        is_head_water = true;
-    else
-        is_head_water = false;
-
-    blk = wrld->worldData[wrld->getIdx(testpos.x, testpos.y - 1.9f, testpos.z)];
-    if (blk == 8 || blk == 10)
-        is_underwater = true;
-    else
-        is_underwater = false;
-
-    sound_icd -= dt;
-    if (sound_icd < 0 && vel.x != 0 && vel.z != 0 && blk != 8 && blk != 10) {
-        wrld->sound_manager->play(blk, pos, true);
-        sound_icd = 0.38f;
-    }
-
-    blk = wrld->worldData[wrld->getIdx(testpos.x, testpos.y - 1.2f, testpos.z)];
-    if (blk == 8 || blk == 10)
-        water_cutoff = true;
-    else
-        water_cutoff = false;
-
-    test_collide(wrld, dt);
-
-    if (is_falling && !fallDamaging) {
-        fallDamaging = true;
-        startY = pos.y;
-    }
-
-    if (fallDamaging && !is_falling) {
-        fallDamaging = false;
-        float totalFall = std::roundf(startY - pos.y);
-
-        if (totalFall >= 0.0f) {
-            int tF = totalFall - 3;
-
-            if (tF > 0 && !water_cutoff)
-                HP -= tF;
+            wrld->arrow->add_arrow(data);
+            is_firing = false;
+            arrows--;
         }
-    }
 
-    auto vel2 = vel;
-    if (is_underwater || is_head_water || water_cutoff) {
-        vel.x *= 0.5f;
-        vel.z *= 0.5f;
-        vel.y *= 0.7f;
-    }
+        // listener->update(pos, vel, look, { 0, 1, 0 });
+        chat->update(dt);
 
-    if (is_head_water) {
-        air -= dt;
+        hasDir = false;
+        if (!in_pause)
+            rotate(dt, wrld->cfg.sense);
+        jump_icd -= dt;
 
-        if (air < -1.1f) {
-            air += 1.0f;
-            HP -= 2;
+        // Update position
+        float mag = (vel.x * vel.x + vel.z * vel.z);
+        if (mag > 0.0f) {
+            vel.x *= playerSpeed / mag;
+            vel.z *= playerSpeed / mag;
         }
-    } else {
-        air = 10.0f;
+
+        if (!is_underwater)
+            vel.y -= GRAVITY_ACCELERATION * dt;
+        else
+            vel.y -= GRAVITY_ACCELERATION * 0.3f * dt;
+        is_falling = true;
+
+        glm::vec3 testpos = pos + vel * dt;
+        if (testpos.x < 0.5f || testpos.x > wrld->world_size.x + 0.5f) {
+            vel.x = 0;
+            testpos = pos + vel * dt;
+        }
+        if (testpos.z < 0.5f || testpos.z > wrld->world_size.z + 0.5f) {
+            vel.z = 0;
+            testpos = pos + vel * dt;
+        }
+
+        model.pos = pos - glm::vec3(0.3f, 1.8f, 0.3f);
+
+        auto blk =
+            wrld->worldData[wrld->getIdx(testpos.x, testpos.y + 0.2f, testpos.z)];
+        if (blk == 8 || blk == 10)
+            is_head_water = true;
+        else
+            is_head_water = false;
+
+        blk = wrld->worldData[wrld->getIdx(testpos.x, testpos.y - 1.9f, testpos.z)];
+        if (blk == 8 || blk == 10)
+            is_underwater = true;
+        else
+            is_underwater = false;
+
+        sound_icd -= dt;
+        if (sound_icd < 0 && vel.x != 0 && vel.z != 0 && blk != 8 && blk != 10) {
+            wrld->sound_manager->play(blk, pos, true);
+            sound_icd = 0.38f;
+        }
+
+        blk = wrld->worldData[wrld->getIdx(testpos.x, testpos.y - 1.2f, testpos.z)];
+        if (blk == 8 || blk == 10)
+            water_cutoff = true;
+        else
+            water_cutoff = false;
+
+        test_collide(wrld, dt);
+
+        if (is_falling && !fallDamaging) {
+            fallDamaging = true;
+            startY = pos.y;
+        }
+
+        if (fallDamaging && !is_falling) {
+            fallDamaging = false;
+            float totalFall = std::roundf(startY - pos.y);
+
+            if (totalFall >= 0.0f) {
+                int tF = totalFall - 3;
+
+                if (tF > 0 && !water_cutoff)
+                    HP -= tF;
+            }
+        }
+
+        auto vel2 = vel;
+        if (is_underwater || is_head_water || water_cutoff) {
+            vel.x *= 0.5f;
+            vel.z *= 0.5f;
+            vel.y *= 0.7f;
+        }
+
+        if (is_head_water) {
+            air -= dt;
+
+            if (air < -1.1f) {
+                air += 1.0f;
+                HP -= 2;
+            }
+        }
+        else {
+            air = 10.0f;
+        }
+
+        pos += vel * dt;
+        vel = vel2;
+
+        blk = wrld->worldData[wrld->getIdx(pos.x, pos.y - 1.85f, pos.z)];
+
+        on_ground = (blk != 0 && blk != 8 && blk != 10);
+
+        if (on_ground)
+            if (jumping)
+                jumping = false;
+
+        if (vel.x != 0 || vel.z != 0) {
+            view_timer += dt;
+        }
+        else {
+            view_timer = 0;
+        }
+        view_bob = sinf(view_timer * 3.14159 * 3.0f) / 18.0f;
+        cube_bob = cosf(view_timer * 3.14159 * 5.0f) / 44.0f;
+
+        // Update camera
+        cam.pos = pos;
+        cam.pos.y += view_bob;
+        cam.pos.y -= (1.80f - 1.5965f);
+        cam.rot = glm::vec3(DEGTORAD(rot.x), DEGTORAD(rot.y), 0.f);
+        cam.update();
+
+        viewmat = glm::mat4(1.0f);
+        viewmat = glm::rotate(viewmat, DEGTORAD(rot.x), { 1, 0, 0 });
+        viewmat = glm::rotate(viewmat, DEGTORAD(rot.y), { 0, 1, 0 });
+        viewmat = glm::translate(viewmat, -pos);
+
+        if (in_pause) {
+            pauseMenu->update();
+        }
+
+        vel.x = 0.0f;
+        vel.z = 0.0f;
     }
-
-    pos += vel * dt;
-    vel = vel2;
-
-    blk = wrld->worldData[wrld->getIdx(pos.x, pos.y - 1.85f, pos.z)];
-
-    on_ground = (blk != 0 && blk != 8 && blk != 10);
-
-    if (on_ground)
-        if (jumping)
-            jumping = false;
-
-    if (vel.x != 0 || vel.z != 0) {
-        view_timer += dt;
-    } else {
-        view_timer = 0;
-    }
-    view_bob = sinf(view_timer * 3.14159 * 3.0f) / 18.0f;
-    cube_bob = cosf(view_timer * 3.14159 * 5.0f) / 44.0f;
-
-    // Update camera
-    cam.pos = pos;
-    cam.pos.y += view_bob;
-    cam.pos.y -= (1.80f - 1.5965f);
-    cam.rot = glm::vec3(DEGTORAD(rot.x), DEGTORAD(rot.y), 0.f);
-    cam.update();
-
-    viewmat = glm::mat4(1.0f);
-    viewmat = glm::rotate(viewmat, DEGTORAD(rot.x), {1, 0, 0});
-    viewmat = glm::rotate(viewmat, DEGTORAD(rot.y), {0, 1, 0});
-    viewmat = glm::translate(viewmat, -pos);
-
-    if (in_pause) {
-        pauseMenu->update();
-    }
-
-    vel.x = 0.0f;
-    vel.z = 0.0f;
-
     blockRep->update(dt);
 }
 
 auto Player::draw(World *wrld) -> void {
-    int selectedBlock;
-    selectedBlock = (in_cursor_x) + (in_cursor_y * 9);
+    if (isAlive) {
+        int selectedBlock;
+        selectedBlock = (in_cursor_x)+(in_cursor_y * 9);
 
-    blockRep->terrain_atlas = terrain_atlas;
+        blockRep->terrain_atlas = terrain_atlas;
 
-    if (wrld->client == nullptr || !wrld->client->disconnected)
-        blockRep->drawBlkHand(itemSelections[selectorIDX].type, wrld, cube_bob);
+        if (wrld->client == nullptr || !wrld->client->disconnected)
+            blockRep->drawBlkHand(itemSelections[selectorIDX].type, wrld, cube_bob);
 
-    playerHUD->begin2D();
+        playerHUD->begin2D();
 
-    auto ipos = glm::ivec3(static_cast<int>(pos.x), static_cast<int>(pos.y),
-                           static_cast<int>(pos.z));
+        auto ipos = glm::ivec3(static_cast<int>(pos.x), static_cast<int>(pos.y),
+            static_cast<int>(pos.z));
 
-    bool change = in_inv_delta != in_inventory || in_chat_delta != in_chat ||
-                  fps_count == 0 || prev_ipos != ipos ||
-                  chat_size != chat->data.size() ||
-                  selector_block_prev != selectedBlock ||
-                  selector_idx_prev != selectorIDX ||
-                  chat_text_size != chat_text.size() || in_tab ||
-                  (wrld->client != nullptr && wrld->client->disconnected) ||
-                  countChange || air != 10.0f;
+        bool change = in_inv_delta != in_inventory || in_chat_delta != in_chat ||
+            fps_count == 0 || prev_ipos != ipos ||
+            chat_size != chat->data.size() ||
+            selector_block_prev != selectedBlock ||
+            selector_idx_prev != selectorIDX ||
+            chat_text_size != chat_text.size() || in_tab ||
+            (wrld->client != nullptr && wrld->client->disconnected) ||
+            countChange || air != 10.0f;
 
-    if (change)
+        if (change)
+            playerHUD->clear();
+
+        if (change) {
+            if (wrld->client != nullptr) {
+                if (wrld->client->disconnected) {
+                    playerHUD->draw_text(wrld->client->disconnectReason,
+                        CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER,
+                        CC_TEXT_ALIGN_CENTER, 0, 0,
+                        CC_TEXT_BG_NONE);
+                }
+            }
+        }
+
+        if (is_head_water) {
+            water->draw();
+        }
+
+        if (change) {
+            if (in_inventory) {
+                playerHUD->draw_text("Select block", CC_TEXT_COLOR_WHITE,
+                    CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0,
+                    7, CC_TEXT_BG_NONE);
+            }
+
+            if (itemSelections[selectorIDX].type >= 0)
+                playerHUD->draw_text(
+                    playerHUD->get_block_name(itemSelections[selectorIDX].type),
+                    CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
+                    0, 5, CC_TEXT_BG_NONE, 0, -3);
+
+            selector_block_prev = selectedBlock;
+            selector_idx_prev = selectorIDX;
+            in_inv_delta = in_inventory;
+        }
+
+        if (change && in_tab && client_ref != nullptr) {
+            std::vector<std::string> names;
+            for (auto& [key, val] : client_ref->player_rep) {
+                names.push_back(val.name);
+            }
+
+            for (int i = 0; i < names.size(); i++) {
+                playerHUD->draw_text(names[i], CC_TEXT_COLOR_WHITE,
+                    CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
+                    (i % 3) * 20 - 20, (-i / 3) + 10,
+                    CC_TEXT_BG_NONE);
+            }
+        }
+
+        if (in_inventory || in_tab) {
+            if (in_tab) {
+                Rendering::RenderContext::get().matrix_scale({ 1.25f, 1.25f, 1.25f });
+                Rendering::RenderContext::get().matrix_translate(
+                    { -46.0f, -20.875f, 0.0f });
+                background_rectangle->draw();
+                Rendering::RenderContext::get().matrix_clear();
+            }
+            else {
+                background_rectangle->draw();
+            }
+        }
+        else {
+            crosshair->draw();
+        }
+
+        item_box->draw();
+        selector->draw();
+
+        if (change) {
+            playerHUD->draw_text("Position: " + std::to_string((int)ipos.x) + ", " +
+                std::to_string((int)ipos.y) + ", " +
+                std::to_string((int)ipos.z),
+                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_LEFT,
+                CC_TEXT_ALIGN_TOP, 0, 0, CC_TEXT_BG_DYNAMIC);
+
+            prev_ipos = ipos;
+        }
+
+        if (change)
+            playerHUD->draw_text("FPS: " + std::to_string(fps_display),
+                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                CC_TEXT_ALIGN_TOP, 0, 0, false);
+
+        if (change)
+            playerHUD->draw_text("&fScore: &e" + std::to_string(score),
+                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                CC_TEXT_ALIGN_TOP, 5, -1, false);
+
+        if (change)
+            playerHUD->draw_text("Arrows: " + std::to_string(arrows),
+                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                CC_TEXT_ALIGN_CENTER, -29, -10, false);
+
+        if (change) {
+            int i = 9;
+            for (int x = chat->data.size() - 1; x >= 0; x--) {
+                auto& p = chat->data.at(x);
+                if (i < 0)
+                    break;
+
+                playerHUD->draw_text(p.text, CC_TEXT_COLOR_WHITE,
+                    CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_CENTER, 0,
+                    -i - 2, CC_TEXT_BG_NONE);
+                i--;
+            }
+            chat_size = chat->data.size();
+        }
+
+        if (in_chat && change) {
+            playerHUD->draw_text("> " + chat_text, CC_TEXT_COLOR_WHITE,
+                CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_BOTTOM, 0, 0, 5);
+        }
+
+        chat_text_size = chat_text.size();
+        in_chat_delta = in_chat;
+
+        if (change) {
+            for (int i = 0; i < 9; i++) {
+                int count = (int)itemSelections[i].quantity;
+                if (count > 1) {
+                    playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
+                        CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
+                        0, 0, false, -77 + i * 20, -124);
+                }
+            }
+
+            countChange = false;
+        }
+
+        if (air < 10) {
+            for (int i = 0; i < air; i++) {
+                airContainer->draw();
+                Rendering::RenderContext::get().matrix_translate(
+                    { 9.0f, 0.0f, 0.0f });
+            }
+        }
+        Rendering::RenderContext::get().matrix_clear();
+
+        if (change)
+            playerHUD->rebuild();
+
+        for (int i = 0; i < 10; i++) {
+            heartBG->draw();
+            if (HP - i * 2 > 0) {
+                auto diff = HP - i * 2;
+                if (diff > 1 || diff == 0) {
+                    heartFull->draw();
+                }
+                else {
+                    heartHalf->draw();
+                }
+            }
+            Rendering::RenderContext::get().matrix_translate({ 9.0f, 0.0f, 0.0f });
+        }
+        Rendering::RenderContext::get().matrix_clear();
+        playerHUD->end2D();
+
+        if (wrld->client == nullptr || !wrld->client->disconnected) {
+            for (int i = 0; i < 9; i++)
+                blockRep->drawBlk(itemSelections[i].type, i, 0, 4, 9.0f);
+        }
+
+        if (in_pause) {
+            pauseMenu->draw();
+        }
+    }
+    else {
+        playerHUD->begin2D();
         playerHUD->clear();
 
-    if (change) {
-        if (wrld->client != nullptr) {
-            if (wrld->client->disconnected) {
-                playerHUD->draw_text(wrld->client->disconnectReason,
-                                     CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER,
-                                     CC_TEXT_ALIGN_CENTER, 0, 0,
-                                     CC_TEXT_BG_NONE);
-            }
-        }
-    }
+        playerHUD->draw_text("You died!", CC_TEXT_COLOR_RED, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, 0, 0, 0, 0);
+        playerHUD->draw_text("Score: " + std::to_string(score), CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, -1, 0, 0, 0);
 
-    if (is_head_water) {
-        water->draw();
-    }
+        playerHUD->draw_text("Respawn", CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, -4, 0, 0, -6);
 
-    if (change) {
-        if (in_inventory) {
-            playerHUD->draw_text("Select block", CC_TEXT_COLOR_WHITE,
-                                 CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0,
-                                 7, CC_TEXT_BG_NONE);
-        }
-
-        if (itemSelections[selectorIDX].type >= 0)
-            playerHUD->draw_text(
-                playerHUD->get_block_name(itemSelections[selectorIDX].type),
-                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
-                0, 5, CC_TEXT_BG_NONE, 0, -3);
-
-        selector_block_prev = selectedBlock;
-        selector_idx_prev = selectorIDX;
-        in_inv_delta = in_inventory;
-    }
-
-    if (change && in_tab && client_ref != nullptr) {
-        std::vector<std::string> names;
-        for (auto &[key, val] : client_ref->player_rep) {
-            names.push_back(val.name);
-        }
-
-        for (int i = 0; i < names.size(); i++) {
-            playerHUD->draw_text(names[i], CC_TEXT_COLOR_WHITE,
-                                 CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
-                                 (i % 3) * 20 - 20, (-i / 3) + 10,
-                                 CC_TEXT_BG_NONE);
-        }
-    }
-
-    if (in_inventory || in_tab) {
-        if (in_tab) {
-            Rendering::RenderContext::get().matrix_scale({1.25f, 1.25f, 1.25f});
-            Rendering::RenderContext::get().matrix_translate(
-                {-46.0f, -20.875f, 0.0f});
-            background_rectangle->draw();
-            Rendering::RenderContext::get().matrix_clear();
-        } else {
-            background_rectangle->draw();
-        }
-    } else {
-        crosshair->draw();
-    }
-
-    item_box->draw();
-    selector->draw();
-
-    if (change) {
-        playerHUD->draw_text("Position: " + std::to_string((int)ipos.x) + ", " +
-                                 std::to_string((int)ipos.y) + ", " +
-                                 std::to_string((int)ipos.z),
-                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_LEFT,
-                             CC_TEXT_ALIGN_TOP, 0, 0, CC_TEXT_BG_DYNAMIC);
-
-        prev_ipos = ipos;
-    }
-
-    if (change)
-        playerHUD->draw_text("FPS: " + std::to_string(fps_display),
-                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                             CC_TEXT_ALIGN_TOP, 0, 0, false);
-
-    if (change)
-        playerHUD->draw_text("&fScore: &e" + std::to_string(score),
-                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                             CC_TEXT_ALIGN_TOP, 5, -1, false);
-
-    if (change)
-        playerHUD->draw_text("Arrows: " + std::to_string(arrows),
-                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                             CC_TEXT_ALIGN_CENTER, -29, -10, false);
-
-    if (change) {
-        int i = 9;
-        for (int x = chat->data.size() - 1; x >= 0; x--) {
-            auto &p = chat->data.at(x);
-            if (i < 0)
-                break;
-
-            playerHUD->draw_text(p.text, CC_TEXT_COLOR_WHITE,
-                                 CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_CENTER, 0,
-                                 -i - 2, CC_TEXT_BG_NONE);
-            i--;
-        }
-        chat_size = chat->data.size();
-    }
-
-    if (in_chat && change) {
-        playerHUD->draw_text("> " + chat_text, CC_TEXT_COLOR_WHITE,
-                             CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_BOTTOM, 0, 0, 5);
-    }
-
-    chat_text_size = chat_text.size();
-    in_chat_delta = in_chat;
-
-    if (change) {
-        for (int i = 0; i < 9; i++) {
-            int count = (int)itemSelections[i].quantity;
-            if (count > 1) {
-                playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
-                                     CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
-                                     0, 0, false, -77 + i * 20, -124);
-            }
-        }
-
-        countChange = false;
-    }
-
-    if (air < 10) {
-        for (int i = 0; i < air; i++) {
-            airContainer->draw();
-            Rendering::RenderContext::get().matrix_translate(
-                {9.0f, 0.0f, 0.0f});
-        }
-    }
-    Rendering::RenderContext::get().matrix_clear();
-
-    if (change)
         playerHUD->rebuild();
+    
+#if BUILD_PLAT != BUILD_PSP
+        auto progID =
+            Rendering::ShaderManager::get().get_current_shader().programID;
+        auto location = glGetUniformLocation(progID, "drawSky");
+        glUniform1i(location, 2);
+#endif
 
-    for (int i = 0; i < 10; i++) {
-        heartBG->draw();
-        if (HP - i * 2 > 0) {
-            auto diff = HP - i * 2;
-            if (diff > 1 || diff == 0) {
-                heartFull->draw();
-            } else {
-                heartHalf->draw();
-            }
-        }
-        Rendering::RenderContext::get().matrix_translate({9.0f, 0.0f, 0.0f});
-    }
-    Rendering::RenderContext::get().matrix_clear();
-    playerHUD->end2D();
+        death_rectangle->draw();
 
-    if (wrld->client == nullptr || !wrld->client->disconnected) {
-        for (int i = 0; i < 9; i++)
-            blockRep->drawBlk(itemSelections[i].type, i, 0, 4, 9.0f);
-    }
+#if BUILD_PLAT != BUILD_PSP
+        glUniform1i(location, 0);
+#endif
 
-    if (in_pause) {
-        pauseMenu->draw();
+        Rendering::RenderContext::get().matrix_translate({ 0, -64, 0 });
+        Rendering::TextureManager::get().bind_texture(pauseMenu->gui_tex);
+
+        pauseMenu->sel_sprite->draw();
+        Rendering::RenderContext::get().matrix_clear();
+    
+
+
+        playerHUD->end2D();
     }
 }
 

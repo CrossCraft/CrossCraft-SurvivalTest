@@ -20,7 +20,6 @@ class PauseMenu {
 
     int selIdx = -1;
 
-  private:
     uint32_t gui_tex;
     uint32_t font_texture;
 

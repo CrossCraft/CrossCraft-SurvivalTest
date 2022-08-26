@@ -251,6 +251,9 @@ auto Player::press_down(std::any d) -> void {
         if (p->in_cursor_x >= 6 && p->in_cursor_y == 4)
             p->in_cursor_y = 0;
     }
+    else if (!p->isAlive) {
+        p->respawn(p->spawnPoint);
+    }
 }
 
 auto Player::press_left(std::any d) -> void {
