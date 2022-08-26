@@ -29,6 +29,8 @@ class Mob : public Entity {
     bool isAlive;
     bool despawned;
 
+    uint8_t armorVal;
+
     static Mob* make_mob(MobType type);
 
     virtual void update(float dt, Player *p, World *w) = 0;

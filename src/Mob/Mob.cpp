@@ -20,6 +20,7 @@ namespace CrossCraft{
                 sd->HP = 20;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = rand() % 3;
 
                 return sd;
             }
@@ -33,6 +34,7 @@ namespace CrossCraft{
                 sd->HP = 20;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = rand() % 3;
 
                 return sd;
             }
@@ -46,6 +48,7 @@ namespace CrossCraft{
                 sd->HP = 20;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = rand() % 3;
 
                 return sd;
             }
@@ -59,6 +62,7 @@ namespace CrossCraft{
                 sd->HP = 20;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = 0;
 
                 return sd;
             }
@@ -72,6 +76,7 @@ namespace CrossCraft{
                 sd->HP = 20;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = 0;
 
                 return sd;
             }
@@ -85,6 +90,7 @@ namespace CrossCraft{
                 sd->HP = 10;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = 0;
 
                 return sd;
             }
@@ -98,6 +104,8 @@ namespace CrossCraft{
                 sd->HP = 8;
                 sd->isAlive = true;
                 sd->despawned = false;
+                sd->armorVal = 1;
+                sd->hasWool = true;
 
                 return sd;
             }
