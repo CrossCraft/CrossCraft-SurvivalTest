@@ -9,8 +9,7 @@ enum class MobType {
     Creeper = 0x03,
     Spider = 0x04,
     Pig = 0x05,
-    Sheep = 0x06,
-    Armor = 0x07
+    Sheep = 0x06
 };
 
 class Player;
@@ -25,6 +24,12 @@ class Mob : public Entity {
     bool inRange;
     bool isAnimating;
     float animationTime;
+
+    int8_t HP;
+    bool isAlive;
+    bool despawned;
+
+    static Mob* make_mob(MobType type);
 
     virtual void update(float dt, Player *p, World *w) = 0;
 };

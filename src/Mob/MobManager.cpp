@@ -25,13 +25,67 @@ MobManager::~MobManager() {
 
 void MobManager::add_mob(Mob *mobData) { mobs.push_back(mobData); }
 
+const int MOB_DIST_NEAR = 24.0f;
+const int MOB_CAP = 20;
+const int MOB_DIST_FAR = 64.0f;
+
 void MobManager::update(float dt, Player *p, World *w) {
-    for (auto m : mobs) {
+
+    if(mobs.size() < MOB_CAP){
+        Mob* mobData = Mob::make_mob((MobType)(rand() % 7));
+
+        auto pos = p->pos;
+        int rx = rand() % 49 - 24;
+        int rz = rand() % 49 - 24;
+
+        if (rx < 0)
+            rx -= 12;
+        else
+            rx += 12;
+
+        if (rz < 0)
+            rz -= 12;
+        else
+            rz += 12;
+
+        pos.x += rx;
+        pos.z += rz;
+
+        for(int i = 63; i >= 0; i--){
+            auto idx = w->getIdx(pos.x, i, pos.z);
+            auto blk = w->worldData[idx];
+
+            if(blk != 0){
+                pos.y = i + 3;
+                break;
+            }
+        }
+
+        mobData->pos = pos;
+
+        mobs.push_back(mobData);
+    }
+
+    int toRemove = -1;
+
+    for (int i = 0; i < mobs.size(); i++) {
+        auto& m = mobs[i];
+
         auto diff = p->pos - m->pos;
         auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
 
-        if (len > 24.0f)
+        if (len > 24.0f && len < 64.0f)
             m->inRange = false;
+        else if (len > 64.0f){
+            m->inRange = false;
+
+            m->HP -= 1;
+            if(m->HP < 0 && toRemove == -1){
+                m->despawned = true;
+                m->isAlive = false;
+                toRemove = i;
+            }
+        }
         else
             m->inRange = true;
 
@@ -45,6 +99,11 @@ void MobManager::update(float dt, Player *p, World *w) {
             m->isAnimating = false;
 
         m->update(dt, p, w);
+    }
+
+    if(toRemove != -1){
+        delete mobs[toRemove];
+        mobs.erase(mobs.begin() + toRemove);
     }
 }
 void MobManager::draw() {
@@ -75,10 +134,6 @@ void MobManager::draw() {
 
         case MobType::Sheep:
             sheep->draw((SheepData *)m);
-            break;
-
-        case MobType::Armor:
-            armor->draw((ArmorData *)m);
             break;
 
         case MobType::Spider:
