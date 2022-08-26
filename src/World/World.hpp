@@ -20,7 +20,7 @@
 #include "../Player/Player.hpp"
 #include "../Sound/SoundManager.hpp"
 #include "Clouds.hpp"
-#include "Particles.hpp"
+#include "BreakParticles.hpp"
 #include <Utilities/Types.hpp>
 #include <glm.hpp>
 #include <map>
@@ -189,7 +189,7 @@ class World {
     glm::ivec2 pchunk_pos;
 
     ScopePtr<SelectionBox> sbox;
-    ScopePtr<ParticleSystem> psystem;
+    ScopePtr<BreakParticleSystem> psystem;
     ScopePtr<Drops> drops;
     ScopePtr<MobManager> mobManager;
 

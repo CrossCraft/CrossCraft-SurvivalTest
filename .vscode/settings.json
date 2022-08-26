@@ -86,7 +86,8 @@
         "complex": "cpp",
         "csignal": "cpp",
         "future": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "variant": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureOnOpen": false,

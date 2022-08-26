@@ -4,16 +4,16 @@ using namespace Stardust_Celeste;
 
 namespace CrossCraft {
 
-struct Particle {
+struct BreakParticle {
     glm::vec3 position;
     std::array<float, 8> uv;
     glm::vec3 velocity;
 };
 
-class ParticleSystem {
+class BreakParticleSystem {
   public:
-    ParticleSystem(uint32_t tex);
-    ~ParticleSystem();
+    BreakParticleSystem(uint32_t tex);
+    ~BreakParticleSystem();
 
     void initialize(uint32_t type, glm::vec3 pos);
     void generate();
@@ -28,7 +28,7 @@ class ParticleSystem {
     std::vector<Rendering::Vertex> m_verts;
     std::vector<uint16_t> m_index;
 
-    std::vector<Particle> particles;
+    std::vector<BreakParticle> particles;
 
     Rendering::Mesh mesh;
 };

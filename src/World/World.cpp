@@ -41,7 +41,7 @@ World::World(std::shared_ptr<Player> p) {
     NoiseUtil::initialize();
 
     clouds = create_scopeptr<Clouds>();
-    psystem = create_scopeptr<ParticleSystem>(terrain_atlas);
+    psystem = create_scopeptr<BreakParticleSystem>(terrain_atlas);
 
     // Zero the array
     worldData = reinterpret_cast<block_t *>(

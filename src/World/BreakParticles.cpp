@@ -1,18 +1,18 @@
-#include "Particles.hpp"
+#include "BreakParticles.hpp"
 #include "../Chunk/ChunkUtil.hpp"
 
 namespace CrossCraft {
 
 template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
-ParticleSystem::ParticleSystem(uint32_t tex) : texture(tex) { idx_counter = 0; }
-ParticleSystem::~ParticleSystem() {
+BreakParticleSystem::BreakParticleSystem(uint32_t tex) : texture(tex) { idx_counter = 0; }
+BreakParticleSystem::~BreakParticleSystem() {
     m_verts.clear();
     m_index.clear();
 }
 
 auto rand_pos() -> float { return ((rand() % 16) - 8) * (1.0f / 16.0f); }
 float timer = 0.0f;
-auto bind_texture(Particle &particle, uint32_t type) -> void {
+auto bind_texture(BreakParticle &particle, uint32_t type) -> void {
     particle.uv = getTexCoord(type, 0xFFCCCCCC);
 
     const float UV_SIZE = (2.0f / 16.0f) / 16.0f;
@@ -38,12 +38,12 @@ auto bind_texture(Particle &particle, uint32_t type) -> void {
     particle.uv[7] = uv_offset.y;
 }
 
-void ParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
+void BreakParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
     particles.clear();
     srand(pos.x + pos.y + pos.z);
     for (int i = 0; i < 32; i++) {
 
-        Particle particle;
+        BreakParticle particle;
         particle.position = pos;
         particle.position.x += rand_pos();
         particle.position.y += rand_pos();
@@ -59,7 +59,7 @@ void ParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
     timer = 0.0f;
 }
 
-void ParticleSystem::generate() {
+void BreakParticleSystem::generate() {
     mesh.delete_data();
     idx_counter = 0;
     m_verts.clear();
@@ -121,7 +121,7 @@ void ParticleSystem::generate() {
                   m_index.size());
 }
 
-void ParticleSystem::update(double dt) {
+void BreakParticleSystem::update(double dt) {
 
     timer += dt;
 
@@ -134,7 +134,7 @@ void ParticleSystem::update(double dt) {
         generate();
     }
 }
-void ParticleSystem::draw(glm::vec3 rot) {
+void BreakParticleSystem::draw(glm::vec3 rot) {
     if (timer < 1.0f) {
         Rendering::TextureManager::get().bind_texture(texture);
 #if BUILD_PC || BUILD_PLAT == BUILD_VITA
