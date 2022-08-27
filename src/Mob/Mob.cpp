@@ -20,7 +20,7 @@ namespace CrossCraft{
                 sd->HP = 20;
                 sd->isAlive = true;
                 sd->despawned = false;
-                sd->armorVal = rand() % 3;
+                sd->armorVal = 0;
 
                 return sd;
             }
