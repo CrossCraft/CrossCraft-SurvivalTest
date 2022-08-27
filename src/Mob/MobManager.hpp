@@ -33,7 +33,6 @@ class MobManager {
     ScopePtr<Zombie> zombie;
     ScopePtr<Pig> pig;
     ScopePtr<Sheep> sheep;
-    ScopePtr<Armor> armor;
     ScopePtr<Spider> spider;
 };
 } // namespace CrossCraft

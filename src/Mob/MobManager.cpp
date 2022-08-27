@@ -10,7 +10,6 @@ MobManager::MobManager() {
     creeper = create_scopeptr<Creeper>();
     pig = create_scopeptr<Pig>();
     sheep = create_scopeptr<Sheep>();
-    armor = create_scopeptr<Armor>();
     spider = create_scopeptr<Spider>();
 
     mobs.clear();

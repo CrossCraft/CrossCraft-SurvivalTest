@@ -1,6 +1,7 @@
 #include "Skeleton.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "Armor.hpp"
 #include <yaml-cpp/yaml.h>
 namespace CrossCraft {
 
@@ -40,6 +41,17 @@ void Skeleton::draw(SkeletonData *sd) {
     torso.draw({0.0f, -0.25f, 0.0f}, {0, 0, 0}, {1, 1, 1});
     leg.draw({0.0f, -1.0f, 0.125f}, {0, 180, sval}, {-1, 1, 1});
     leg.draw({0.0f, -1.0f, -0.125f}, {0, 0, sval}, {1, 1, 1});
+
+
+    ArmorData adata;
+    adata.helmet = (sd->armorVal >= 1);
+    adata.torso = (sd->armorVal >= 2);
+    adata.zombie = false;
+
+    sd->pos.y += 0.125f;
+    Armor::get().draw(sd, adata);
+    sd->pos.y -= 0.125f;
+
     ctx->matrix_clear();
 }
 } // namespace CrossCraft

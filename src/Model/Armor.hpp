@@ -5,10 +5,10 @@
 
 namespace CrossCraft {
 using namespace Stardust_Celeste;
-class ArmorData : public PassiveMob {
-  public:
-    ArmorData() = default;
-    ~ArmorData() = default;
+struct ArmorData{
+  bool helmet;
+  bool torso;
+  bool zombie;
 };
 
 class Armor {
@@ -16,7 +16,12 @@ class Armor {
     Armor();
     ~Armor();
 
-    void draw(ArmorData *sd);
+    void draw(Mob* mobdata, ArmorData& sd);
+
+    inline static auto get() -> Armor & {
+        static Armor armor;
+        return armor;
+    }
 
   private:
     uint32_t tex;
