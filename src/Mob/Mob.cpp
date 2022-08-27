@@ -49,6 +49,7 @@ namespace CrossCraft{
                 sd->isAlive = true;
                 sd->despawned = false;
                 sd->armorVal = rand() % 3;
+                sd->fireTime = 0.0f;
 
                 return sd;
             }

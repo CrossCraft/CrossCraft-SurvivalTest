@@ -10,6 +10,9 @@ class SkeletonData : public AggressiveMob {
   public:
     SkeletonData() = default;
     ~SkeletonData() = default;
+
+    void update(float dt, Player* p, World* w);
+    float fireTime;
 };
 
 class Skeleton {

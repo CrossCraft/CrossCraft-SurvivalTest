@@ -3,7 +3,13 @@
 #include "../Utils.hpp"
 #include "Armor.hpp"
 #include <yaml-cpp/yaml.h>
+#include "../Player/Player.hpp"
+#include <gtc/matrix_transform.hpp>
+#include <gtx/projection.hpp>
+#include <gtx/rotate_vector.hpp>
 namespace CrossCraft {
+
+    template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 
 Skeleton::Skeleton() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -53,5 +59,32 @@ void Skeleton::draw(SkeletonData *sd) {
     sd->pos.y -= 0.125f;
 
     ctx->matrix_clear();
+}
+void SkeletonData::update(float dt, Player* p, World* w)
+{
+    AggressiveMob::update(dt, p, w);
+
+    auto diff = p->pos - pos;
+    auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
+
+    if (len < 8.0f) {
+        fireTime -= dt;
+
+        if (fireTime < 0) {
+            fireTime = 1.5f;
+
+            //Spawn arrow
+            ArrowData aData;
+            aData.pos = pos + glm::vec3(diff.x / 8.0f, 0.0f, diff.y / 8.0f);
+            aData.pos.y -= (1.80f - 1.5965f);
+            aData.rot = { -rot.x, -rot.y - 90.0f};
+            aData.size = { 0.1f, 0.0f, 0.1f };
+            aData.lifeTime = 15.0f;
+            aData.playerArrow = false;
+
+            aData.vel = glm::normalize(diff) * 16.0f;
+             w->arrow->add_arrow(aData);
+        }
+    }
 }
 } // namespace CrossCraft
