@@ -118,7 +118,7 @@ void Arrow::update(float dt, Player *p, World *w) {
         auto diff = p->pos - d.pos;
         auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-        if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f && d.playerArrow) {
+        if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f && d.playerArrow && d.vel.x == 0 && d.vel.y == 0 && d.vel.z == 0) {
             p->arrows++;
             toRemove = i;
         } else if (len < 4.0f && d.playerArrow) {
