@@ -30,6 +30,7 @@ const int MOB_DIST_FAR = 64.0f;
 
 void MobManager::update(float dt, Player *p, World *w) {
 
+    // Spawn
     if(mobs.size() < MOB_CAP){
         Mob* mobData = Mob::make_mob((MobType)(rand() % 7));
 
@@ -64,11 +65,28 @@ void MobManager::update(float dt, Player *p, World *w) {
 
         mobs.push_back(mobData);
     }
-
     int toRemove = -1;
 
+    // Update
     for (int i = 0; i < mobs.size(); i++) {
         auto& m = mobs[i];
+
+        // Self-collide physics
+        for (int c = 0; c < mobs.size(); c++) {
+            if (c == i)
+                continue;
+            auto m2 = mobs[c];
+
+            auto diff = m->pos - m2->pos;
+            auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
+
+            if (len < 0.6f) {
+                m->vel.x += diff.x / 2.0f;
+                m->vel.z += diff.z / 2.0f;
+                m2->vel.x -= diff.x / 2.0f;
+                m2->vel.z -= diff.z / 2.0f;
+            }
+        }
 
         auto diff = p->pos - m->pos;
         auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
@@ -100,6 +118,7 @@ void MobManager::update(float dt, Player *p, World *w) {
         m->update(dt, p, w);
     }
 
+    // Remove
     if(toRemove != -1){
         delete mobs[toRemove];
         mobs.erase(mobs.begin() + toRemove);
