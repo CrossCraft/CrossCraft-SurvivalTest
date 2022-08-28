@@ -8,5 +8,6 @@ class PassiveMob : public Mob {
     PassiveMob() = default;
     virtual ~PassiveMob() = default;
     void update(float dt, Player *p, World *w);
+    void OnDeath(World *w, bool playerKill);
 };
 } // namespace CrossCraft

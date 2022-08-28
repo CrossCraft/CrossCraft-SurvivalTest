@@ -89,4 +89,23 @@ void SkeletonData::update(float dt, Player *p, World *w) {
         }
     }
 }
+
+void SkeletonData::OnDeath(World *w, bool playerKill) {
+    Mob::OnDeath(w, playerKill);
+
+    for (int i = 0; i < 6 + rand() % 3; i++) {
+        ArrowData aData;
+        aData.pos = pos;
+        aData.pos.y -= (1.80f - 1.5965f);
+        aData.rot = {rand() % 180 - 90, rand() % 360};
+        aData.size = {0.1f, 0.0f, 0.1f};
+        aData.lifeTime = 15.0f;
+        aData.playerArrow = true;
+
+        aData.vel = glm::normalize(
+                        glm::vec3(rand() % 5 - 2, rand() % 3, rand() % 5 - 2)) *
+                    16.0f;
+        w->arrow->add_arrow(aData);
+    }
+}
 } // namespace CrossCraft

@@ -180,6 +180,8 @@ class World {
     ScopePtr<Arrow> arrow;
 
     ScopePtr<DeathParticleSystem> dpsystem;
+    ScopePtr<Drops> drops;
+
   private:
     /**
      * @brief Get the needed chunks
@@ -192,7 +194,6 @@ class World {
 
     ScopePtr<SelectionBox> sbox;
     ScopePtr<BreakParticleSystem> psystem;
-    ScopePtr<Drops> drops;
     ScopePtr<MobManager> mobManager;
 
     unsigned int terrain_atlas;

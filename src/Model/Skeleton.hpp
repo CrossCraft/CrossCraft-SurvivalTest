@@ -11,7 +11,8 @@ class SkeletonData : public AggressiveMob {
     SkeletonData() = default;
     ~SkeletonData() = default;
 
-    void update(float dt, Player* p, World* w);
+    void update(float dt, Player *p, World *w);
+    void OnDeath(World *w, bool playerKill);
     float fireTime;
 };
 

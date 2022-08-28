@@ -50,4 +50,19 @@ void PassiveMob::update(float dt, Player *p, World *w) {
 
     vel.y -= 16.0f * dt;
 }
+
+void PassiveMob::OnDeath(World *w, bool playerKill) {
+    Mob::OnDeath(w, playerKill);
+
+    DropData d;
+    memset(&d, 0, sizeof(DropData));
+    d.pos = pos;
+    d.size = {0.25f, 0.25f, 0.25f};
+    d.vel = {0.0f, 2.0f, 0.0f};
+    d.type = Block::Mushroom1;
+    d.quantity = rand() % 2 + 1;
+
+    w->drops->add_drop(d);
+}
+
 } // namespace CrossCraft
