@@ -31,8 +31,8 @@ const int MOB_DIST_FAR = 64.0f;
 void MobManager::update(float dt, Player *p, World *w) {
 
     // Spawn
-    if(mobs.size() < MOB_CAP){
-        Mob* mobData = Mob::make_mob((MobType)(rand() % 7));
+    if (mobs.size() < MOB_CAP) {
+        Mob *mobData = Mob::make_mob((MobType)(rand() % 7));
 
         auto pos = p->pos;
         int rx = rand() % 49 - 24;
@@ -51,11 +51,11 @@ void MobManager::update(float dt, Player *p, World *w) {
         pos.x += rx;
         pos.z += rz;
 
-        for(int i = 63; i >= 0; i--){
+        for (int i = 63; i >= 0; i--) {
             auto idx = w->getIdx(pos.x, i, pos.z);
             auto blk = w->worldData[idx];
 
-            if(blk != 0){
+            if (blk != 0) {
                 pos.y = i + 3;
                 break;
             }
@@ -69,7 +69,7 @@ void MobManager::update(float dt, Player *p, World *w) {
 
     // Update
     for (int i = 0; i < mobs.size(); i++) {
-        auto& m = mobs[i];
+        auto &m = mobs[i];
 
         // Self-collide physics
         for (int c = 0; c < mobs.size(); c++) {
@@ -93,17 +93,16 @@ void MobManager::update(float dt, Player *p, World *w) {
 
         if (len > 24.0f && len < 64.0f)
             m->inRange = false;
-        else if (len > 64.0f){
+        else if (len > 64.0f) {
             m->inRange = false;
 
             m->HP -= 1;
-            if(m->HP < 0 && toRemove == -1){
+            if (m->HP < 0 && toRemove == -1) {
                 m->despawned = true;
                 m->isAlive = false;
                 toRemove = i;
             }
-        }
-        else
+        } else
             m->inRange = true;
 
         if (m->vel.x != 0 && m->vel.z != 0 && !m->isAnimating) {
@@ -115,11 +114,21 @@ void MobManager::update(float dt, Player *p, World *w) {
         if (m->animationTime < 0)
             m->isAnimating = false;
 
+        if (!m->isAlive) {
+            m->deathTime += dt;
+            m->rot.x += 180.0f * dt;
+            if (m->deathTime > 0.5) {
+                w->dpsystem->initialize(0, m->pos);
+                if (toRemove == -1)
+                    toRemove = i;
+            }
+        }
+
         m->update(dt, p, w);
     }
 
     // Remove
-    if(toRemove != -1){
+    if (toRemove != -1) {
         delete mobs[toRemove];
         mobs.erase(mobs.begin() + toRemove);
     }

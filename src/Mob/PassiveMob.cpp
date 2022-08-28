@@ -4,6 +4,9 @@
 
 namespace CrossCraft {
 void PassiveMob::update(float dt, Player *p, World *w) {
+    if (!isAlive)
+        return;
+
     is_falling = true;
     dirChangeTime -= dt;
 

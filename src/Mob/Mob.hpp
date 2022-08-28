@@ -28,11 +28,15 @@ class Mob : public Entity {
     int8_t HP;
     bool isAlive;
     bool despawned;
+    float deathTime;
+
+    int8_t Score;
 
     uint8_t armorVal;
 
-    static Mob* make_mob(MobType type);
+    static Mob *make_mob(MobType type);
 
+    virtual void OnDeath(World *w, bool playerKill);
     virtual void update(float dt, Player *p, World *w) = 0;
 };
 } // namespace CrossCraft

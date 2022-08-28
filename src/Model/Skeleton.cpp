@@ -1,15 +1,15 @@
 #include "Skeleton.hpp"
+#include "../Player/Player.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
 #include "Armor.hpp"
-#include <yaml-cpp/yaml.h>
-#include "../Player/Player.hpp"
 #include <gtc/matrix_transform.hpp>
 #include <gtx/projection.hpp>
 #include <gtx/rotate_vector.hpp>
+#include <yaml-cpp/yaml.h>
 namespace CrossCraft {
 
-    template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
+template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 
 Skeleton::Skeleton() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -48,7 +48,6 @@ void Skeleton::draw(SkeletonData *sd) {
     leg.draw({0.0f, -1.0f, 0.125f}, {0, 180, sval}, {-1, 1, 1});
     leg.draw({0.0f, -1.0f, -0.125f}, {0, 0, sval}, {1, 1, 1});
 
-
     ArmorData adata;
     adata.helmet = (sd->armorVal >= 1);
     adata.torso = (sd->armorVal >= 2);
@@ -60,9 +59,12 @@ void Skeleton::draw(SkeletonData *sd) {
 
     ctx->matrix_clear();
 }
-void SkeletonData::update(float dt, Player* p, World* w)
-{
+void SkeletonData::update(float dt, Player *p, World *w) {
+
     AggressiveMob::update(dt, p, w);
+
+    if (!isAlive)
+        return;
 
     auto diff = p->pos - pos;
     auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
@@ -73,17 +75,17 @@ void SkeletonData::update(float dt, Player* p, World* w)
         if (fireTime < 0) {
             fireTime = 1.5f;
 
-            //Spawn arrow
+            // Spawn arrow
             ArrowData aData;
             aData.pos = pos + glm::vec3(diff.x / 8.0f, 0.0f, diff.y / 8.0f);
             aData.pos.y -= (1.80f - 1.5965f);
-            aData.rot = { -rot.x, -rot.y - 90.0f};
-            aData.size = { 0.1f, 0.0f, 0.1f };
+            aData.rot = {-rot.x, -rot.y - 90.0f};
+            aData.size = {0.1f, 0.0f, 0.1f};
             aData.lifeTime = 15.0f;
             aData.playerArrow = false;
 
             aData.vel = glm::normalize(diff) * 16.0f;
-             w->arrow->add_arrow(aData);
+            w->arrow->add_arrow(aData);
         }
     }
 }

@@ -3,6 +3,9 @@
 #include <gtx/vector_angle.hpp>
 namespace CrossCraft {
 void AggressiveMob::update(float dt, Player *p, World *w) {
+    if (!isAlive)
+        return;
+
     is_falling = true;
 
     auto blk = w->worldData[w->getIdx(pos.x, pos.y - 1.2f, pos.z)];
