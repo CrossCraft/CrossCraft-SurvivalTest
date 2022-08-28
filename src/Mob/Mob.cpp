@@ -36,6 +36,7 @@ Mob *Mob::make_mob(MobType type) {
         sd->isAlive = true;
         sd->despawned = false;
         sd->armorVal = rand() % 3;
+        sd->Score = 80;
 
         return sd;
     }
@@ -51,6 +52,7 @@ Mob *Mob::make_mob(MobType type) {
         sd->despawned = false;
         sd->armorVal = rand() % 3;
         sd->fireTime = 0.0f;
+        sd->Score = 120;
 
         return sd;
     }
@@ -65,6 +67,7 @@ Mob *Mob::make_mob(MobType type) {
         sd->isAlive = true;
         sd->despawned = false;
         sd->armorVal = 0;
+        sd->Score = 200;
 
         return sd;
     }
@@ -79,6 +82,7 @@ Mob *Mob::make_mob(MobType type) {
         sd->isAlive = true;
         sd->despawned = false;
         sd->armorVal = 0;
+        sd->Score = 105;
 
         return sd;
     }
@@ -93,6 +97,7 @@ Mob *Mob::make_mob(MobType type) {
         sd->isAlive = true;
         sd->despawned = false;
         sd->armorVal = 0;
+        sd->Score = 10;
 
         return sd;
     }
@@ -108,6 +113,7 @@ Mob *Mob::make_mob(MobType type) {
         sd->despawned = false;
         sd->armorVal = 1;
         sd->hasWool = true;
+        sd->Score = 10;
 
         return sd;
     }
@@ -123,7 +129,5 @@ void Mob::OnDeath(World *w, bool playerKill) {
     if (playerKill) {
         w->player->score += Score;
     }
-
-    
 }
 } // namespace CrossCraft
