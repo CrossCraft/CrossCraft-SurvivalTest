@@ -30,7 +30,7 @@ auto get_break_time(uint8_t blk) -> float {
     case Block::Sand:
     case Block::Glass:
     case Block::Leaves:
-        return 0.6f;
+        return 0.4f;
 
     case Block::Iron_Ore:
     case Block::Iron:
@@ -124,16 +124,28 @@ auto DigAction::dig(std::any d) -> void {
                     // We found a working block -- create break particles
                     w->psystem->initialize(blk, cast_pos);
 
-                    DropData d;
-                    memset(&d, 0, sizeof(DropData));
-                    d.pos = cast_pos;
-                    d.size = {0.25f, 0.25f, 0.25f};
-                    d.vel = {0.0f, 2.0f, 0.0f};
-                    lookup(blk, d);
+                    if (blk != Block::TNT) {
 
-                    if (d.quantity > 0)
-                        w->drops->add_drop(d);
+                        DropData d;
+                        memset(&d, 0, sizeof(DropData));
+                        d.pos = cast_pos;
+                        d.size = {0.25f, 0.25f, 0.25f};
+                        d.vel = {0.0f, 2.0f, 0.0f};
+                        lookup(blk, d);
 
+                        if (d.quantity > 0)
+                            w->drops->add_drop(d);
+
+                    } else {
+                        TNTData data;
+                        data.pos = ivec;
+                        data.rot = {0, 0};
+                        data.size = {0.1f, 0.1f, 0.1f};
+                        data.vel = {0.1f, 5.0f, 0.1f};
+                        data.fuse = 2.0f;
+
+                        w->tnt->add_TNT(data);
+                    }
                     uint16_t x = ivec.x / 16;
                     uint16_t y = ivec.z / 16;
                     uint32_t id = x << 16 | (y & 0x00FF);

@@ -13,6 +13,7 @@
 #include "../Config.hpp"
 #include "../Entity/Arrow.hpp"
 #include "../Entity/Drops.hpp"
+#include "../Entity/TNT.hpp"
 #include "../MP/Client.hpp"
 #include "../Mob/MobManager.hpp"
 #include "../Model/Steve.hpp"
@@ -56,6 +57,7 @@ class ChunkStack;
 class Drops;
 class Arrow;
 class MobManager;
+class TNT;
 
 /**
  * @brief The world
@@ -157,6 +159,8 @@ class World {
      */
     auto add_update(glm::ivec3 ivec) -> void;
 
+    auto explode(glm::ivec3 pos) -> void;
+
     auto spawn() -> void;
 
     std::map<int, ChunkStack *> chunks;
@@ -181,6 +185,7 @@ class World {
 
     ScopePtr<DeathParticleSystem> dpsystem;
     ScopePtr<Drops> drops;
+    ScopePtr<TNT> tnt;
 
   private:
     /**

@@ -66,6 +66,8 @@ World::World(std::shared_ptr<Player> p) {
     sbox = create_scopeptr<SelectionBox>();
     drops = create_scopeptr<Drops>();
     arrow = create_scopeptr<Arrow>();
+    tnt = create_scopeptr<TNT>();
+    tnt->terrain_atlas = terrain_atlas;
     drops->terrain_atlas = terrain_atlas;
 
     sound_manager = create_scopeptr<SoundManager>();
@@ -200,6 +202,7 @@ void World::update(double dt) {
     drops->update(dt, player.get(), this);
     arrow->update(dt, player.get(), this);
     mobManager->update(dt, player.get(), this);
+    tnt->update(dt, player.get(), this);
 
     tick_counter += dt;
     stored_dt = dt;
@@ -370,11 +373,12 @@ void World::draw() {
     }
 
     clouds->draw();
+    tnt->draw();
+
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
     dpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     mobManager->draw();
-
     sbox->draw();
 
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
@@ -474,6 +478,74 @@ auto World::update_nearby_blocks(glm::ivec3 ivec) -> void {
     add_update({ivec.x + 1, ivec.y, ivec.z});
     add_update({ivec.x, ivec.y, ivec.z + 1});
     add_update({ivec.x, ivec.y, ivec.z - 1});
+}
+
+auto World::explode(glm::ivec3 pos) -> void {
+    const float EXPLOSION_RADIUS = 3.0f;
+
+    std::map<int, int> surroundUpdate;
+    std::map<int, int> genUpdate;
+
+    for (int y = pos.y - EXPLOSION_RADIUS; y <= pos.y + EXPLOSION_RADIUS; y++) {
+        for (int z = pos.z - EXPLOSION_RADIUS; z <= pos.z + EXPLOSION_RADIUS;
+             z++) {
+            for (int x = pos.x - EXPLOSION_RADIUS;
+                 x <= pos.x + EXPLOSION_RADIUS; x++) {
+
+                auto diff = glm::vec3((float)x - pos.x, (float)y - pos.y,
+                                      (float)z - pos.z);
+                auto len =
+                    sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+
+                if (len >= EXPLOSION_RADIUS)
+                    continue;
+
+                auto idx = getIdx(x, y, z);
+                auto blk = worldData[idx];
+
+                if (blk == Block::Air || blk == Block::Water ||
+                    blk == Block::Lava || blk == Block::Bedrock)
+                    continue;
+
+                worldData[idx] = Block::Air;
+
+                if (blk == Block::TNT) {
+                    TNTData data;
+                    data.pos = {x, y, z};
+                    data.rot = {0, 0};
+                    data.size = {0.1f, 0.1f, 0.1f};
+                    data.vel = {0.1f, 4.0f, 0.1f};
+                    data.fuse = (float)(rand() % 40 + 1) / 20.0f;
+
+                    tnt->add_TNT(data);
+                }
+
+                update_lighting(x, z);
+                update_nearby_blocks({x, y, z});
+
+                uint16_t xx = x / 16;
+                uint16_t yy = z / 16;
+                uint32_t id = xx << 16 | (yy & 0x00FF);
+
+                if (genUpdate.find(x) == genUpdate.end()) {
+                    genUpdate.emplace(id, 0);
+                }
+
+                if (surroundUpdate.find(x) == surroundUpdate.end()) {
+                    surroundUpdate.emplace(x, z);
+                }
+            }
+        }
+    }
+
+    for (auto &[id, n] : genUpdate) {
+        if (chunks.find(id) != chunks.end())
+            chunks[id]->generate(this);
+    }
+
+    for (auto &[x, z] : surroundUpdate) {
+        update_surroundings(x, z);
+    }
 }
 
 } // namespace CrossCraft
