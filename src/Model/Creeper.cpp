@@ -1,8 +1,14 @@
 #include "Creeper.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "../World/World.hpp"
 #include <yaml-cpp/yaml.h>
 namespace CrossCraft {
+
+void CreeperData::OnDeath(World *w, bool playerKill) {
+    Mob::OnDeath(w, playerKill);
+    w->explode(pos);
+}
 
 Creeper::Creeper() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(

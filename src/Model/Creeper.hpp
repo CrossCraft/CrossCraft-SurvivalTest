@@ -10,6 +10,7 @@ class CreeperData : public AggressiveMob {
   public:
     CreeperData() = default;
     ~CreeperData() = default;
+    void OnDeath(World *w, bool playerKill);
 };
 
 class Creeper {
