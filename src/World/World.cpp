@@ -7,6 +7,7 @@
 #include <Rendering/Rendering.hpp>
 #include <Utilities/Input.hpp>
 #include <iostream>
+#include "../Entity/DropLookup.hpp"
 
 #if PSP
 #include <pspctrl.h>
@@ -518,6 +519,17 @@ auto World::explode(glm::ivec3 pos) -> void {
                     data.fuse = (float)(rand() % 40 + 1) / 20.0f;
 
                     tnt->add_TNT(data);
+                }
+                else {
+                    DropData d;
+                    memset(&d, 0, sizeof(DropData));
+                    d.pos = { (float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f};
+                    d.size = { 0.25f, 0.25f, 0.25f };
+                    d.vel = { 0.0f, 2.0f, 0.0f };
+                    lookup(blk, d);
+
+                    if (d.quantity > 0)
+                        drops->add_drop(d);
                 }
 
                 update_lighting(x, z);

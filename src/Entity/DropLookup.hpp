@@ -4,7 +4,7 @@
 
 namespace CrossCraft {
 
-void lookup(uint8_t broken, DropData &d) {
+inline void lookup(uint8_t broken, DropData &d) {
     switch (broken) {
 
     case Block::Grass: {
