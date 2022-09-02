@@ -47,7 +47,9 @@ World::World(std::shared_ptr<Player> p) {
     clouds = create_scopeptr<Clouds>();
     psystem = create_scopeptr<BreakParticleSystem>(terrain_atlas);
     dpsystem = create_scopeptr<DeathParticleSystem>(particle_atlas);
-
+    wpsystem = create_scopeptr<WeatherParticleSystem>(ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/rain.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, true, false, true));
     // Zero the array
     worldData = reinterpret_cast<block_t *>(
         calloc((uint64_t)world_size.x * (uint64_t)world_size.y *
@@ -159,7 +161,7 @@ const auto CHUNKS_PER_SECOND = 96.0f;
 #endif
 
 #if PSP
-const auto RENDER_DISTANCE_DIAMETER = 6.0f;
+const auto RENDER_DISTANCE_DIAMETER = 5.0f;
 #elif BUILD_PLAT == BUILD_VITA
 const auto RENDER_DISTANCE_DIAMETER = 8.0f;
 #else
@@ -191,7 +193,7 @@ auto World::get_needed_chunks() -> std::vector<glm::ivec2> {
     }
     return needed_chunks;
 }
-
+int numTicks = 0;
 void World::update(double dt) {
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
@@ -213,7 +215,11 @@ void World::update(double dt) {
     if (client == nullptr) {
         if (tick_counter > 0.5f) {
             tick_counter = 0;
+            numTicks++;
 
+            if (numTicks % 2) {
+                wpsystem->initialize(0, player->pos);
+            }
             for (auto &[key, value] : chunks) {
                 // Random tick
                 for (int i = 0; i < 30; i++)
@@ -227,6 +233,7 @@ void World::update(double dt) {
         }
     }
 
+    wpsystem->update(dt);
     auto ppos = player->get_pos();
     glm::ivec2 new_pos = {static_cast<int>(ppos.x) / 16,
                           static_cast<int>(ppos.z) / 16};
@@ -378,6 +385,7 @@ void World::draw() {
 
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
     dpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
+    wpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     mobManager->draw();
     sbox->draw();

@@ -23,6 +23,7 @@
 #include "Clouds.hpp"
 #include "Particles/BreakParticles.hpp"
 #include "Particles/DeathParticles.hpp"
+#include "Particles/WeatherParticles.hpp"
 #include <Utilities/Types.hpp>
 #include <glm.hpp>
 #include <map>
@@ -184,6 +185,7 @@ class World {
     ScopePtr<Arrow> arrow;
 
     ScopePtr<DeathParticleSystem> dpsystem;
+    ScopePtr<WeatherParticleSystem> wpsystem;
     ScopePtr<Drops> drops;
     ScopePtr<TNT> tnt;
 
