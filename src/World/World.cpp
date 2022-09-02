@@ -218,7 +218,7 @@ void World::update(double dt) {
             numTicks++;
 
             if (numTicks % 2) {
-                wpsystem->initialize(0, player->pos);
+                //wpsystem->initialize(0, player->pos);
             }
             for (auto &[key, value] : chunks) {
                 // Random tick
@@ -233,7 +233,7 @@ void World::update(double dt) {
         }
     }
 
-    wpsystem->update(dt);
+    //wpsystem->update(dt);
     auto ppos = player->get_pos();
     glm::ivec2 new_pos = {static_cast<int>(ppos.x) / 16,
                           static_cast<int>(ppos.z) / 16};
@@ -385,7 +385,7 @@ void World::draw() {
 
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
     dpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
-    wpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
+    //wpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     mobManager->draw();
     sbox->draw();
