@@ -70,6 +70,7 @@ void MobManager::update(float dt, Player *p, World *w) {
     // Update
     for (int i = 0; i < mobs.size(); i++) {
         auto &m = mobs[i];
+        m->hitCD -= dt;
 
         // Self-collide physics
         for (int c = 0; c < mobs.size(); c++) {

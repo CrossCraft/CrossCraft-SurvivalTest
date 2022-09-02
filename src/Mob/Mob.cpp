@@ -130,4 +130,28 @@ void Mob::OnDeath(World *w, bool playerKill) {
         w->player->score += Score;
     }
 }
+
+void Entity::OnHit(World* w, int damage, glm::vec3 from, bool player) {
+
+}
+
+
+void Mob::OnHit(World* w, int damage, glm::vec3 from, bool player) {
+    if (!isAlive)
+        return;
+
+    if (hitCD > 0)
+        return;
+
+    HP -= damage;
+    if (HP < 0) {
+        isAlive = false;
+        OnDeath(w, player);
+    }
+    hitCD = 0.3f;
+    pos.x += from.x * 0.16f;
+    pos.z += from.z * 0.16f;
+}
+
+
 } // namespace CrossCraft

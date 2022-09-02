@@ -49,6 +49,22 @@ void TNT::update(float dt, Player *p, World *w) {
     for (int i = 0; i < tnt_list.size(); i++) {
         auto &t = tnt_list[i];
         t.fuse -= dt;
+        t.immune -= dt;
+
+        if (t.Killed && toRemove == -1) {
+            toRemove = i;
+            
+            DropData d;
+            memset(&d, 0, sizeof(DropData));
+            d.pos = t.pos;
+            d.size = { 0.25f, 0.25f, 0.25f };
+            d.vel = { 0.0f, 2.0f, 0.0f };
+            d.type = Block::TNT;
+            d.quantity = 1;
+            w->drops->add_drop(d);
+
+            break;
+        }
 
         if (t.fuse < 0 && toRemove == -1) {
             toRemove = i;
@@ -121,5 +137,12 @@ auto TNT::add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
     m_index.push_back(idx_counter + 0);
     idx_counter += 4;
 }
+
+
+void TNTData::OnHit(World* w, int damage, glm::vec3 from, bool player) {
+    if(player)
+        Killed = true;
+}
+
 
 } // namespace CrossCraft

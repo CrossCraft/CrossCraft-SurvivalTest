@@ -98,6 +98,35 @@ auto DigAction::dig(std::any d) -> void {
         if (!validate_ivec3(ivec, w->world_size))
             continue;
 
+        //Check Player hit MOB
+        for (auto& m : w->mobManager->mobs) {
+            auto diff = m->pos - cast_pos;
+
+            auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
+            auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+
+            if (lenS < 0.6f) {
+                if (lenF < 1.5f) {
+                    m->OnHit(w, 2, default_vec, true);
+                    return;
+                }
+            }
+        }
+        //Check TNT
+        for (auto& m : w->tnt->tnt_list) {
+            auto diff = m.pos - cast_pos;
+
+            auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
+            auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+
+            if (lenS < 0.6f) {
+                if (lenF < 1.5f) {
+                    m.OnHit(w, 2, default_vec, true);
+                    return;
+                }
+            }
+        }
+
         // Get Block
         u32 idx = w->getIdx(ivec.x, ivec.y, ivec.z);
         auto blk = w->worldData[idx];
@@ -143,6 +172,8 @@ auto DigAction::dig(std::any d) -> void {
                         data.size = {0.1f, 0.1f, 0.1f};
                         data.vel = {0.1f, 5.0f, 0.1f};
                         data.fuse = 2.0f;
+                        data.immune = 0.25f;
+                        data.Killed = false;
 
                         w->tnt->add_TNT(data);
                     }

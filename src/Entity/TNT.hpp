@@ -18,7 +18,10 @@ class Player;
 struct TNTData : public Entity {
     bool inRange;
     float fuse;
+    bool Killed;
+    float immune;
     void doPhysics(float dt, World *w);
+    void OnHit(World* w, int damage, glm::vec3 from, bool player);
 };
 
 class TNT {
@@ -33,8 +36,8 @@ class TNT {
 
     uint32_t terrain_atlas;
 
-  private:
     std::vector<TNTData> tnt_list;
+  private:
 
     auto add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
                           uint32_t lightVal, glm::vec3 pos, uint8_t type)

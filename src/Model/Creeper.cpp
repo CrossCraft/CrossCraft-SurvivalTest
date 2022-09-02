@@ -7,6 +7,7 @@ namespace CrossCraft {
 
 void CreeperData::OnDeath(World *w, bool playerKill) {
     Mob::OnDeath(w, playerKill);
+    pos.y -= 1.4625f;
     w->explode(pos);
 }
 

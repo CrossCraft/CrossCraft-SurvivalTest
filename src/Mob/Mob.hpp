@@ -29,6 +29,7 @@ class Mob : public Entity {
     bool isAlive;
     bool despawned;
     float deathTime;
+    float hitCD;
 
     int8_t Score;
 
@@ -38,5 +39,6 @@ class Mob : public Entity {
 
     virtual void OnDeath(World *w, bool playerKill);
     virtual void update(float dt, Player *p, World *w) = 0;
+    void OnHit(World* w, int damage, glm::vec3 from, bool player);
 };
 } // namespace CrossCraft

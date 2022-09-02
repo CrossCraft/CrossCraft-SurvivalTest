@@ -24,8 +24,8 @@ class MobManager {
     void update(float dt, Player *p, World *w);
     void draw();
 
+    std::vector<Mob*> mobs;
   private:
-    std::vector<Mob *> mobs;
 
     ScopePtr<Creeper> creeper;
     ScopePtr<Steve> steve;
