@@ -152,6 +152,8 @@ class Player : public PlayerEntity {
     World *wrldRef;
 
     ScopePtr<BlockRep> blockRep;
+    float hitCD;
+    void OnHit(World* w, int damage, glm::vec3 from, bool player);
 
   private:
     const float playerSpeed = 4.3f;

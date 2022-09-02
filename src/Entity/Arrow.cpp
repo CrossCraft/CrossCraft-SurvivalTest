@@ -108,6 +108,46 @@ void Arrow::update(float dt, Player *p, World *w) {
     int toRemove = -1;
     for (int i = 0; i < arrows.size(); i++) {
         auto &d = arrows[i];
+
+        //Check Arrow hit Mob
+            for (auto& m : w->mobManager->mobs) {
+                auto diff = m->pos - d.pos;
+
+                auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
+                auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+                
+                if (!d.playerArrow && m->mobType == MobType::Skeleton)
+                    continue;
+
+                if (toRemove == -1) {
+                    if (lenS < 0.6f) {
+                        if (lenF < 1.5f) {
+                            toRemove = i;
+                            m->OnHit(w, 8, glm::normalize(diff) * 5.0f, d.playerArrow);
+                            goto Out;
+                        }
+                    }
+                }
+            }
+
+        //Check Arrow Hit player
+        if (!d.playerArrow) {
+            auto diff = p->pos - d.pos;
+
+            auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
+            auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+
+            if (toRemove == -1) {
+                if (lenS < 0.6f) {
+                    if (lenF < 1.5f) {
+                        toRemove = i;
+                        p->OnHit(w, 3, glm::normalize(diff) * 5.0f, true);
+                        goto Out;
+                    }
+                }
+            }
+        }
+
         d.doPhysics(dt, w);
         d.lifeTime -= dt;
 
@@ -132,6 +172,7 @@ void Arrow::update(float dt, Player *p, World *w) {
         }
     }
 
+    Out:
     if (toRemove >= 0) {
         arrows.erase(arrows.begin() + toRemove);
     }

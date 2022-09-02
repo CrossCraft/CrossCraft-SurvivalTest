@@ -106,6 +106,7 @@ Player::Player()
     air = 10.0f;
     arrows = 20;
     score = 0;
+    hitCD = 0.0f;
 
     sound_icd = 0;
 
@@ -277,6 +278,7 @@ void Player::update(float dt, World *wrld) {
         fps_display = fps_count;
         fps_count = 0;
     }
+    hitCD -= dt;
 
     if (HP > 0) {
         isAlive = true;
@@ -670,5 +672,23 @@ auto Player::draw(World *wrld) -> void {
         playerHUD->end2D();
     }
 }
+
+
+void Player::OnHit(World* w, int damage, glm::vec3 from, bool player) {
+    if (!isAlive)
+        return;
+
+    if (hitCD > 0)
+        return;
+
+    HP -= damage;
+    if (HP < 0) {
+        isAlive = false;
+    }
+    hitCD = 0.6f;
+    pos.x += from.x * 0.16f;
+    pos.z += from.z * 0.16f;
+}
+
 
 } // namespace CrossCraft

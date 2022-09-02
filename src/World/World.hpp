@@ -186,6 +186,7 @@ class World {
 
     ScopePtr<DeathParticleSystem> dpsystem;
     ScopePtr<WeatherParticleSystem> wpsystem;
+    ScopePtr<MobManager> mobManager;
     ScopePtr<Drops> drops;
     ScopePtr<TNT> tnt;
 
@@ -201,7 +202,6 @@ class World {
 
     ScopePtr<SelectionBox> sbox;
     ScopePtr<BreakParticleSystem> psystem;
-    ScopePtr<MobManager> mobManager;
 
     unsigned int terrain_atlas;
     unsigned int particle_atlas;

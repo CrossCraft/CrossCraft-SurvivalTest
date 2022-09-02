@@ -90,6 +90,16 @@ void MobManager::update(float dt, Player *p, World *w) {
         }
 
         auto diff = p->pos - m->pos;
+
+        auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
+        auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+
+        if (lenS < 0.6f) {
+            if (lenF < 1.5f) {
+                p->OnHit(w, 4, glm::normalize(diff) * 3.0f, false);
+            }
+        }
+
         auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
 
         if (len > 24.0f && len < 64.0f)
