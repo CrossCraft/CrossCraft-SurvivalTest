@@ -96,7 +96,8 @@ void MobManager::update(float dt, Player *p, World *w) {
 
         if (lenS < 0.6f) {
             if (lenF < 1.5f) {
-                p->OnHit(w, 4, glm::normalize(diff) * 3.0f, false);
+                if(m->mobType == MobType::Creeper || m->mobType == MobType::Zombie || m->mobType == MobType::Spider)
+                    p->OnHit(w, 4, glm::normalize(diff) * 3.0f, false);
             }
         }
 
