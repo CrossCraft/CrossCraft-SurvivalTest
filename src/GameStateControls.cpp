@@ -161,10 +161,6 @@ void GameState::bind_controls() {
         {Player::move_right, world->player.get()});
 
     key_controller->add_command(
-        {(int)Input::Keys::R, KeyFlag::Press | KeyFlag::Held},
-        {Player::respawn, RespawnRequest{world->player.get(), world.get()}});
-
-    key_controller->add_command(
         {(int)Input::Keys::Space, KeyFlag::Press | KeyFlag::Held},
         {Player::move_up, world->player.get()});
     key_controller->add_command(

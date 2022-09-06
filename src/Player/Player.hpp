@@ -107,8 +107,6 @@ class Player : public PlayerEntity {
     static auto press_left(std::any p) -> void;
     static auto press_right(std::any p) -> void;
 
-    static auto respawn(std::any p) -> void;
-
     static auto change_selector(std::any p) -> void;
     static auto inc_selector(std::any p) -> void;
     static auto dec_selector(std::any p) -> void;
@@ -203,11 +201,6 @@ class Player : public PlayerEntity {
 struct SelData {
     Player *player;
     int selIDX;
-};
-
-struct RespawnRequest {
-    Player *player;
-    World *wrld;
 };
 
 } // namespace CrossCraft

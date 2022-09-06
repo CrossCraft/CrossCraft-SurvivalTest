@@ -174,13 +174,6 @@ auto Player::move_right(std::any d) -> void {
     }
 }
 
-auto Player::respawn(std::any d) -> void {
-    auto p = std::any_cast<RespawnRequest>(d);
-
-    if (!p.player->in_inventory && !p.player->in_chat)
-        p.player->spawn(p.wrld);
-}
-
 auto Player::move_up(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
@@ -310,27 +303,9 @@ auto Player::dec_selector(std::any d) -> void {
     p->selector->set_position({148 + 20 * p->selectorIDX, 4});
 }
 
-auto Player::toggle_inv(std::any d) -> void {
-    //    auto p = std::any_cast<Player *>(d);
-    //    if (!p->in_chat && !p->in_pause) {
-    //        p->in_inventory = !p->in_inventory;
-    //
-    //#if BUILD_PC
-    //        if (p->in_inventory)
-    //            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-    //                             GLFW_CURSOR_NORMAL);
-    //        else
-    //            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-    //                             GLFW_CURSOR_DISABLED);
-    //
-    //        Utilities::Input::set_cursor_center();
-    //#endif
-    //}
-}
+auto Player::toggle_inv(std::any d) -> void {}
 
-auto Player::move_down(std::any d) -> void {
-    // TODO: Sneak
-}
+auto Player::move_down(std::any d) -> void {}
 
 auto Player::rotate(float dt, float sense) -> void {
     using namespace Utilities::Input;
@@ -390,196 +365,7 @@ auto Player::rotate(float dt, float sense) -> void {
         set_cursor_center();
     }
 }
-#if BUILD_PLAT == BUILD_PSP
 
-auto ShowOSK(unsigned short *descritpion, unsigned short *outtext,
-             int maxtextinput) -> int {
-    // osk params
-    SceUtilityOskData oskData;
-    SceUtilityOskParams oskParams;
-    // init osk data
-    memset(&oskData, 0, sizeof(SceUtilityOskData));
-    oskData.language =
-        PSP_UTILITY_OSK_LANGUAGE_DEFAULT; // Use system default for text input
-    oskData.lines = 1;
-    oskData.unk_24 = 1;
-    oskData.inputtype = PSP_UTILITY_OSK_INPUTTYPE_ALL; // Allow all input types
-    oskData.desc = descritpion;
-    // oskData.intext = intext[i];
-    oskData.outtextlength = maxtextinput;
-    oskData.outtextlimit = 32; // Limit input to 32 characters
-    oskData.outtext = outtext;
-
-    // init osk dialog
-    memset(&oskParams, 0, sizeof(SceUtilityOskParams));
-    oskParams.base.size = sizeof(oskParams);
-    sceUtilityGetSystemParamInt(PSP_SYSTEMPARAM_ID_INT_LANGUAGE,
-                                &oskParams.base.language);
-    sceUtilityGetSystemParamInt(PSP_SYSTEMPARAM_ID_INT_UNKNOWN,
-                                &oskParams.base.buttonSwap);
-    oskParams.base.graphicsThread = 17;
-    oskParams.base.accessThread = 19;
-    oskParams.base.fontThread = 18;
-    oskParams.base.soundThread = 16;
-    oskParams.datacount = 1;
-    oskParams.data = &oskData;
-
-    sceUtilityOskInitStart(&oskParams);
-
-    bool done = true;
-
-    while (done) {
-        sceGuStart(GU_DIRECT, Stardust_Celeste::Rendering::list);
-        sceGuClear(GU_COLOR_BUFFER_BIT);
-        sceGuFinish();
-        sceGuSync(0, 0);
-
-        sceGuClear(GU_COLOR_BUFFER_BIT);
-
-        switch (sceUtilityOskGetStatus()) {
-        case PSP_UTILITY_DIALOG_INIT:
-            break;
-
-        case PSP_UTILITY_DIALOG_VISIBLE:
-            sceUtilityOskUpdate(1);
-            break;
-
-        case PSP_UTILITY_DIALOG_QUIT:
-            sceUtilityOskShutdownStart();
-            break;
-
-        case PSP_UTILITY_DIALOG_FINISHED:
-            break;
-
-        case PSP_UTILITY_DIALOG_NONE:
-            done = false;
-
-        default:
-            break;
-        }
-
-        sceDisplayWaitVblankStart();
-        sceGuSwapBuffers();
-    }
-
-    if (oskData.result == PSP_UTILITY_OSK_RESULT_CANCELLED)
-        return -1;
-
-    return 0;
-}
-#elif BUILD_PLAT == BUILD_VITA
-
-auto ShowOSK(unsigned short *descritpion, unsigned short *outtext,
-             int maxtextinput) -> int {
-
-    SceImeDialogParam param;
-    sceImeDialogParamInit(&param);
-
-    param.supportedLanguages = 0x0001FFFF;
-    param.languagesForced = true;
-    param.type = SCE_IME_TYPE_BASIC_LATIN;
-    param.title = descritpion;
-    param.textBoxMode = SCE_IME_DIALOG_TEXTBOX_MODE_DEFAULT;
-    param.inputTextBuffer = outtext;
-    param.maxTextLength = maxtextinput;
-    sceImeDialogInit(&param);
-
-    bool done = true;
-
-    int result = 0;
-    while (done) {
-        auto status = sceImeDialogGetStatus();
-
-        if (status == SCE_COMMON_DIALOG_STATUS_FINISHED) {
-            SceImeDialogResult res;
-            memset(&res, 0, sizeof(SceImeDialogResult));
-            sceImeDialogGetResult(&res);
-
-            if (res.button != SCE_IME_DIALOG_BUTTON_ENTER) {
-                result = -1;
-            }
-            done = false;
-        }
-
-        vglSwapBuffers(true);
-    }
-
-    sceImeDialogTerm();
-    return result;
-}
-#endif
-
-auto Player::psp_chat() -> void {
-
-#if PSP
-    if (client_ref != nullptr) {
-
-        unsigned short test2[64];
-        memset(test2, 0, 64 * sizeof(short));
-        std::string message = "";
-
-        unsigned short desc[5] = {'C', 'h', 'a', 't', '\0'};
-
-        if (ShowOSK(desc, test2, 64) != -1) {
-            for (int j = 0; test2[j]; j++) {
-                unsigned c = test2[j];
-
-                if (32 <= c && c <= 127) // print ascii only
-                    message += c;
-            }
-        } else {
-            return;
-        }
-        sceKernelDcacheWritebackInvalidateAll();
-
-        auto ptr = create_refptr<MP::Outgoing::Message>();
-        ptr->PacketID = MP::Outgoing::eMessage;
-        memset(ptr->Message.contents, 0x20, STRING_LENGTH);
-        memcpy(ptr->Message.contents, message.c_str(),
-               chat_text.length() < STRING_LENGTH ? message.length()
-                                                  : STRING_LENGTH);
-
-        client_ref->packetsOut.push_back(
-            MP::Outgoing::createOutgoingPacket(ptr.get()));
-
-        SC_APP_INFO("Message Sent: {}", message);
-    }
-#elif BUILD_PLAT == BUILD_VITA
-    if (client_ref != nullptr) {
-
-        unsigned short test2[64];
-        memset(test2, 0, 64 * sizeof(short));
-        std::string message = "";
-
-        unsigned short desc[5] = {'C', 'h', 'a', 't', '\0'};
-
-        SC_APP_INFO("Calling OSK!");
-        if (ShowOSK(desc, test2, 64) != -1) {
-            for (int j = 0; test2[j] && j < 64; j++) {
-                unsigned c = test2[j];
-
-                if (32 <= c && c <= 127) // print ascii only
-                    message += c;
-            }
-            SC_APP_INFO("RES {}", message);
-        } else {
-            SC_APP_INFO("FAILED!");
-            return;
-        }
-
-        auto ptr = create_refptr<MP::Outgoing::Message>();
-        ptr->PacketID = MP::Outgoing::eMessage;
-        memset(ptr->Message.contents, 0x20, STRING_LENGTH);
-        memcpy(ptr->Message.contents, message.c_str(),
-               chat_text.length() < STRING_LENGTH ? message.length()
-                                                  : STRING_LENGTH);
-
-        client_ref->packetsOut.push_back(
-            MP::Outgoing::createOutgoingPacket(ptr.get()));
-
-        SC_APP_INFO("Message Sent: {}", message);
-    }
-#endif
-}
+auto Player::psp_chat() -> void {}
 
 } // namespace CrossCraft
