@@ -197,32 +197,30 @@ auto SaveData::load_world(World *wrld) -> bool {
 
 auto SaveData::save(std::any p) -> void {
     auto wrld = std::any_cast<World *>(p);
-    if (wrld->client == nullptr) {
-        SC_APP_DEBUG("SAVING!");
+    SC_APP_DEBUG("SAVING!");
 
-        gzFile save_file =
-            gzopen((PLATFORM_FILE_PREFIX + "save.ccc").c_str(), "wb");
+    gzFile save_file =
+        gzopen((PLATFORM_FILE_PREFIX + "save.ccc").c_str(), "wb");
 
-        if (save_file != nullptr) {
-            const int save_version = 6;
-            gzwrite(save_file, &save_version, 1 * sizeof(int));
-            gzwrite(save_file, &wrld->world_size, sizeof(wrld->world_size));
-            gzwrite(save_file, wrld->worldData, 256 * 64 * 256);
+    if (save_file != nullptr) {
+        const int save_version = 6;
+        gzwrite(save_file, &save_version, 1 * sizeof(int));
+        gzwrite(save_file, &wrld->world_size, sizeof(wrld->world_size));
+        gzwrite(save_file, wrld->worldData, 256 * 64 * 256);
 
-            // PLAYER DATA
-            gzwrite(save_file, &wrld->player->pos, sizeof(glm::vec3));
-            gzwrite(save_file, &wrld->player->HP, sizeof(uint8_t));
-            gzwrite(save_file, &wrld->player->arrows, sizeof(uint8_t));
-            gzwrite(save_file, &wrld->player->score, sizeof(uint16_t));
-            gzwrite(save_file, &wrld->player->air, sizeof(int8_t));
+        // PLAYER DATA
+        gzwrite(save_file, &wrld->player->pos, sizeof(glm::vec3));
+        gzwrite(save_file, &wrld->player->HP, sizeof(uint8_t));
+        gzwrite(save_file, &wrld->player->arrows, sizeof(uint8_t));
+        gzwrite(save_file, &wrld->player->score, sizeof(uint16_t));
+        gzwrite(save_file, &wrld->player->air, sizeof(int8_t));
 
-            for (int i = 0; i < 9; i++) {
-                gzwrite(save_file, &wrld->player->itemSelections[i],
-                        sizeof(SlotInfo));
-            }
-
-            gzclose(save_file);
+        for (int i = 0; i < 9; i++) {
+            gzwrite(save_file, &wrld->player->itemSelections[i],
+                    sizeof(SlotInfo));
         }
+
+        gzclose(save_file);
     }
 }
 

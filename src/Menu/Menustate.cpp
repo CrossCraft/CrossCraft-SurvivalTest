@@ -138,10 +138,6 @@ void MenuState::on_update(Core::Application *app, double dt) {
         app->set_state(create_refptr<GameState>());
         return;
     }
-    if (startMP) {
-        app->set_state(create_refptr<GameState>(true));
-        return;
-    }
     Utilities::Input::update();
 
     scaleTimer += dt * 4.6;

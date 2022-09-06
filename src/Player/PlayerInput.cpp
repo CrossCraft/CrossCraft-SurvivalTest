@@ -1,6 +1,5 @@
 #include "../BlockConst.hpp"
 #include "../Chunk/ChunkUtil.hpp"
-#include "../MP/OutPackets.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../World/SaveData.hpp"
 #include "Player.hpp"
@@ -107,18 +106,6 @@ auto Player::enter_chat_slash(std::any d) -> void {
 auto Player::submit_chat(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
 
-    if (p->client_ref != nullptr && chat_text.length() > 0) {
-        auto ptr = create_refptr<MP::Outgoing::Message>();
-        ptr->PacketID = MP::Outgoing::eMessage;
-        memset(ptr->Message.contents, 0x20, STRING_LENGTH);
-        memcpy((char *)ptr->Message.contents, chat_text.c_str(),
-               chat_text.size() < STRING_LENGTH ? chat_text.size()
-                                                : STRING_LENGTH);
-
-        p->client_ref->packetsOut.push_back(
-            MP::Outgoing::createOutgoingPacket(ptr.get()));
-    }
-
     p->in_chat = false;
     chat_text = "";
 
@@ -190,7 +177,7 @@ auto Player::move_right(std::any d) -> void {
 auto Player::respawn(std::any d) -> void {
     auto p = std::any_cast<RespawnRequest>(d);
 
-    if (!p.player->in_inventory && !p.player->in_chat && !p.wrld->client)
+    if (!p.player->in_inventory && !p.player->in_chat)
         p.player->spawn(p.wrld);
 }
 
@@ -250,8 +237,7 @@ auto Player::press_down(std::any d) -> void {
 
         if (p->in_cursor_x >= 6 && p->in_cursor_y == 4)
             p->in_cursor_y = 0;
-    }
-    else if (!p->isAlive) {
+    } else if (!p->isAlive) {
         p->respawn(p->spawnPoint);
     }
 }

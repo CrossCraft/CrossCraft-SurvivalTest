@@ -10,7 +10,6 @@
  */
 #pragma once
 #include "../Entity/Entity.hpp"
-#include "../MP/Client.hpp"
 #include "../UI/TextHelper.hpp"
 #include "../UI/UserInterface.hpp"
 #include "../World/World.hpp"
@@ -138,7 +137,6 @@ class Player : public PlayerEntity {
     bool in_tab;
     glm::vec3 spawnPoint;
     ScopePtr<Chat> chat;
-    MP::Client *client_ref;
 
     bool is_firing;
 
@@ -153,7 +151,7 @@ class Player : public PlayerEntity {
 
     ScopePtr<BlockRep> blockRep;
     float hitCD;
-    void OnHit(World* w, int damage, glm::vec3 from, bool player);
+    void OnHit(World *w, int damage, glm::vec3 from, bool player);
 
   private:
     const float playerSpeed = 4.3f;

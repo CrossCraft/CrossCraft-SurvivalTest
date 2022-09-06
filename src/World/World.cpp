@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "../Entity/DropLookup.hpp"
 #include "../ResourcePackManager.hpp"
 #include "Generation/NoiseUtil.hpp"
 #include "Generation/WorldGenUtil.hpp"
@@ -7,7 +8,6 @@
 #include <Rendering/Rendering.hpp>
 #include <Utilities/Input.hpp>
 #include <iostream>
-#include "../Entity/DropLookup.hpp"
 
 #if PSP
 #include <pspctrl.h>
@@ -31,7 +31,6 @@ World::World(std::shared_ptr<Player> p) {
     pchunk_pos = {-1, -1};
     world_size = {256, 64, 256};
     hmap = nullptr;
-    client = nullptr;
     loaded = false;
     terrain_atlas = ResourcePackManager::get().load_texture(
         "assets/minecraft/textures/terrain.png", SC_TEX_FILTER_NEAREST,
@@ -47,9 +46,10 @@ World::World(std::shared_ptr<Player> p) {
     clouds = create_scopeptr<Clouds>();
     psystem = create_scopeptr<BreakParticleSystem>(terrain_atlas);
     dpsystem = create_scopeptr<DeathParticleSystem>(particle_atlas);
-    wpsystem = create_scopeptr<WeatherParticleSystem>(ResourcePackManager::get().load_texture(
-        "assets/minecraft/textures/rain.png", SC_TEX_FILTER_NEAREST,
-        SC_TEX_FILTER_NEAREST, true, false, true));
+    wpsystem = create_scopeptr<WeatherParticleSystem>(
+        ResourcePackManager::get().load_texture(
+            "assets/minecraft/textures/rain.png", SC_TEX_FILTER_NEAREST,
+            SC_TEX_FILTER_NEAREST, true, false, true));
     // Zero the array
     worldData = reinterpret_cast<block_t *>(
         calloc((uint64_t)world_size.x * (uint64_t)world_size.y *
@@ -212,28 +212,26 @@ void World::update(double dt) {
 
     break_icd -= dt;
     place_icd -= dt;
-    if (client == nullptr) {
-        if (tick_counter > 0.5f) {
-            tick_counter = 0;
-            numTicks++;
+    if (tick_counter > 0.5f) {
+        tick_counter = 0;
+        numTicks++;
 
-            if (numTicks % 2) {
-                //wpsystem->initialize(0, player->pos);
-            }
-            for (auto &[key, value] : chunks) {
-                // Random tick
-                for (int i = 0; i < 30; i++)
-                    value->rtick_update(this);
+        if (numTicks % 2) {
+            // wpsystem->initialize(0, player->pos);
+        }
+        for (auto &[key, value] : chunks) {
+            // Random tick
+            for (int i = 0; i < 30; i++)
+                value->rtick_update(this);
 
-                // Chunk Updates
-                value->chunk_update(this);
+            // Chunk Updates
+            value->chunk_update(this);
 
-                value->post_update(this);
-            }
+            value->post_update(this);
         }
     }
 
-    //wpsystem->update(dt);
+    // wpsystem->update(dt);
     auto ppos = player->get_pos();
     glm::ivec2 new_pos = {static_cast<int>(ppos.x) / 16,
                           static_cast<int>(ppos.z) / 16};
@@ -385,7 +383,7 @@ void World::draw() {
 
     psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
     dpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
-    //wpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
+    // wpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     mobManager->draw();
     sbox->draw();
@@ -463,7 +461,7 @@ auto World::update_lighting(int x, int z) -> void {
 
 auto World::set_block(short x, short y, short z, uint8_t mode, uint8_t block)
     -> void {
-    client->set_block(x, y, z, mode, block);
+    worldData[getIdx(x, y, z)] = block;
 }
 
 auto World::add_update(glm::ivec3 ivec) -> void {
@@ -527,13 +525,12 @@ auto World::explode(glm::ivec3 pos) -> void {
                     data.fuse = (float)(rand() % 40 + 1) / 20.0f;
 
                     tnt->add_TNT(data);
-                }
-                else {
+                } else {
                     DropData d;
                     memset(&d, 0, sizeof(DropData));
-                    d.pos = { (float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f};
-                    d.size = { 0.25f, 0.25f, 0.25f };
-                    d.vel = { 0.0f, 2.0f, 0.0f };
+                    d.pos = {(float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f};
+                    d.size = {0.25f, 0.25f, 0.25f};
+                    d.vel = {0.0f, 2.0f, 0.0f};
                     lookup(blk, d);
 
                     if (d.quantity > 0)

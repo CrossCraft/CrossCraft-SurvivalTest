@@ -159,16 +159,7 @@ void GameState::on_start() {
 #endif
     }
 
-    if (forced_mp) {
-        // Connect to Multiplayer
-#if BUILD_PLAT == BUILD_PSP
-        Network::NetworkDriver::get().initGUI();
-#endif
-        client = create_scopeptr<MP::Client>(world.get(), world->cfg.ip,
-                                             world->cfg.port);
-        world->client = client.get();
-        world->player->client_ref = client.get();
-    } else {
+    {
         // Try Load Save -- if fails, do generation
 
         FILE *fptr = fopen((PLATFORM_FILE_PREFIX + "save.ccc").c_str(), "r");
@@ -211,22 +202,10 @@ void GameState::quit(std::any d) {
 }
 
 void GameState::on_update(Core::Application *app, double dt) {
-
     MusicManager::get().update(dt);
 
-    if (client.get() != nullptr)
-        client->update(dt);
-
-    if (client.get() == nullptr || client->is_ready) {
-        Input::update();
-        world->update(dt);
-    }
+    Input::update();
+    world->update(dt);
 }
-void GameState::on_draw(Core::Application *app, double dt) {
-    if (client.get() != nullptr)
-        client->draw();
-
-    if (client.get() == nullptr || client->is_ready)
-        world->draw();
-}
+void GameState::on_draw(Core::Application *app, double dt) { world->draw(); }
 } // namespace CrossCraft

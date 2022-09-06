@@ -14,7 +14,6 @@
 #include "../Entity/Arrow.hpp"
 #include "../Entity/Drops.hpp"
 #include "../Entity/TNT.hpp"
-#include "../MP/Client.hpp"
 #include "../Mob/MobManager.hpp"
 #include "../Model/Steve.hpp"
 #include "../Model/Zombie.hpp"
@@ -169,8 +168,6 @@ class World {
 
     auto set_block(short x, short y, short z, uint8_t mode, uint8_t block)
         -> void;
-
-    MP::Client *client;
 
     glm::vec3 world_size;
     bool loaded;

@@ -1,5 +1,4 @@
 #pragma once
-#include "../MP/Client.hpp"
 #include "../UI/TextHelper.hpp"
 #include "../UI/UserInterface.hpp"
 #include "../World/World.hpp"

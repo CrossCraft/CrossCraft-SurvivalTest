@@ -13,7 +13,6 @@
 #include <stdio.h>
 
 #include "Config.hpp"
-#include "MP/Client.hpp"
 #include "World/World.hpp"
 
 using namespace Stardust_Celeste;
@@ -31,9 +30,9 @@ class GameState : public Core::ApplicationState {
      *
      * @param forceMP Forced Multiplayer (MP Connect)
      */
-    GameState(bool forceMP = false)
+    GameState()
         : key_controller(nullptr), psp_controller(nullptr),
-          mouse_controller(nullptr), forced_mp(forceMP){};
+          mouse_controller(nullptr){};
 
     /**
      * @brief Destroy the Game State object
@@ -77,18 +76,10 @@ class GameState : public Core::ApplicationState {
     static void quit(std::any d);
 
     /**
-     * @brief Multiplayer Client if Needed
-     *
-     */
-    ScopePtr<MP::Client> client;
-
-    /**
      * @brief Game World
      *
      */
     ScopePtr<World> world;
-
-    bool forced_mp;
 
     /**
      * @brief Game Controllers
