@@ -31,8 +31,8 @@ class GameState : public Core::ApplicationState {
      * @param forceMP Forced Multiplayer (MP Connect)
      */
     GameState()
-        : key_controller(nullptr), psp_controller(nullptr),
-          mouse_controller(nullptr){};
+        : psp_controller(nullptr), vita_controller(nullptr),
+          key_controller(nullptr), mouse_controller(nullptr){};
 
     /**
      * @brief Destroy the Game State object

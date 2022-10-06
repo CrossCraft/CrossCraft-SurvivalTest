@@ -209,7 +209,7 @@ auto UserInterface::draw_text(std::string text, unsigned char color,
 
     bool color_change = false;
     int position = 0;
-    for (int i = 0; i < text.length(); i++) {
+    for (size_t i = 0; i < text.length(); i++) {
         auto c = text[i];
 
         if (c == '&') {

@@ -5,7 +5,7 @@
 namespace CrossCraft {
 
 ChunkMesh::ChunkMesh(int x, int y, int z)
-    : cX(x), cY(y), cZ(z), rtcounter(0), needsRegen(0) {
+    : needsRegen(0), cX(x), cY(y), cZ(z), rtcounter(0) {
     blank = false;
 }
 
@@ -53,12 +53,10 @@ void ChunkMesh::rtick(World *wrld) {
 
     auto idx2 = wrld->getIdx(x, y, z);
     auto blk2 = Block::Air;
-    if (idx2 >= 0)
-        blk2 = wrld->worldData[idx2];
+    blk2 = wrld->worldData[idx2];
 
     auto blk = Block::Air;
-    if (idx >= 0)
-        blk = wrld->worldData[idx];
+    blk = wrld->worldData[idx];
 
     auto blk2_is_valid_grass =
         (blk2 == Block::Air || blk2 == Block::Sapling ||

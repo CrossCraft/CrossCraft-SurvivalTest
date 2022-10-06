@@ -98,12 +98,13 @@ auto DigAction::dig(std::any d) -> void {
         if (!validate_ivec3(ivec, w->world_size))
             continue;
 
-        //Check Player hit MOB
-        for (auto& m : w->mobManager->mobs) {
+        // Check Player hit MOB
+        for (auto &m : w->mobManager->mobs) {
             auto diff = m->pos - cast_pos;
 
             auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
-            auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+            auto lenF =
+                sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
             if (lenS < 0.6f) {
                 if (lenF < 1.5f) {
@@ -112,12 +113,13 @@ auto DigAction::dig(std::any d) -> void {
                 }
             }
         }
-        //Check TNT
-        for (auto& m : w->tnt->tnt_list) {
+        // Check TNT
+        for (auto &m : w->tnt->tnt_list) {
             auto diff = m.pos - cast_pos;
 
             auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
-            auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+            auto lenF =
+                sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
             if (lenS < 0.6f) {
                 if (lenF < 1.5f) {
@@ -156,7 +158,8 @@ auto DigAction::dig(std::any d) -> void {
                     if (blk != Block::TNT) {
 
                         DropData d;
-                        memset(&d, 0, sizeof(DropData));
+                        d.inRange = false;
+                        d.animTime = 0.0f;
                         d.pos = cast_pos;
                         d.size = {0.25f, 0.25f, 0.25f};
                         d.vel = {0.0f, 2.0f, 0.0f};
@@ -167,6 +170,7 @@ auto DigAction::dig(std::any d) -> void {
 
                     } else {
                         TNTData data;
+                        data.inRange = false;
                         data.pos = ivec;
                         data.rot = {0, 0};
                         data.size = {0.1f, 0.1f, 0.1f};

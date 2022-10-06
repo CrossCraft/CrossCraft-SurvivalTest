@@ -77,6 +77,7 @@ void SkeletonData::update(float dt, Player *p, World *w) {
 
             // Spawn arrow
             ArrowData aData;
+            aData.inRange = false;
             aData.pos = pos + glm::vec3(diff.x / 8.0f, 0.0f, diff.y / 8.0f);
             aData.pos.y -= (1.80f - 1.5965f);
             aData.rot = {-rot.x, -rot.y - 90.0f};
@@ -95,6 +96,7 @@ void SkeletonData::OnDeath(World *w, bool playerKill) {
 
     for (int i = 0; i < 6 + rand() % 3; i++) {
         ArrowData aData;
+        aData.inRange = false;
         aData.pos = pos;
         aData.pos.y -= (1.80f - 1.5965f);
         aData.rot = {rand() % 180 - 90, rand() % 360};

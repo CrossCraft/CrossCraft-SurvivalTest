@@ -189,8 +189,8 @@ class Player : public PlayerEntity {
 
     bool in_inv_delta, in_chat_delta;
     glm::ivec3 prev_ipos;
-    int chat_size;
-    int chat_text_size;
+    size_t chat_size;
+    size_t chat_text_size;
     int selector_block_prev, selector_idx_prev;
 
     float fps_timer;

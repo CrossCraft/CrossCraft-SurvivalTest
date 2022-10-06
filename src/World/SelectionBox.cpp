@@ -226,8 +226,6 @@ auto SelectionBox::update_position(World *wrld) -> void {
                                static_cast<s32>(cast_pos.z));
 
         u32 idx = wrld->getIdx(ivec.x, ivec.y, ivec.z);
-        if (idx < 0)
-            return;
 
         auto blk = wrld->worldData[idx];
 

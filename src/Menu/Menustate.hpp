@@ -18,9 +18,9 @@ using namespace Stardust_Celeste;
 class MenuState : public Core::ApplicationState {
   public:
     MenuState()
-        : key_controller(nullptr), psp_controller(nullptr),
-          mouse_controller(nullptr), shouldQuit(false), startMP(false),
-          startSP(false){};
+        : psp_controller(nullptr), vita_controller(nullptr),
+          key_controller(nullptr), mouse_controller(nullptr), shouldQuit(false),
+          startMP(false), startSP(false){};
     ~MenuState();
 
     void on_start();

@@ -68,12 +68,12 @@ void MobManager::update(float dt, Player *p, World *w) {
     int toRemove = -1;
 
     // Update
-    for (int i = 0; i < mobs.size(); i++) {
+    for (size_t i = 0; i < mobs.size(); i++) {
         auto &m = mobs[i];
         m->hitCD -= dt;
 
         // Self-collide physics
-        for (int c = 0; c < mobs.size(); c++) {
+        for (size_t c = 0; c < mobs.size(); c++) {
             if (c == i)
                 continue;
             auto m2 = mobs[c];
@@ -96,7 +96,9 @@ void MobManager::update(float dt, Player *p, World *w) {
 
         if (lenS < 0.6f) {
             if (lenF < 1.5f) {
-                if(m->mobType == MobType::Creeper || m->mobType == MobType::Zombie || m->mobType == MobType::Spider)
+                if (m->mobType == MobType::Creeper ||
+                    m->mobType == MobType::Zombie ||
+                    m->mobType == MobType::Spider)
                     p->OnHit(w, 4, glm::normalize(diff) * 3.0f, false);
             }
         }

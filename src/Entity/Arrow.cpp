@@ -106,36 +106,39 @@ void Arrow::add_arrow(ArrowData data) { arrows.push_back(data); }
 
 void Arrow::update(float dt, Player *p, World *w) {
     int toRemove = -1;
-    for (int i = 0; i < arrows.size(); i++) {
+    for (size_t i = 0; i < arrows.size(); i++) {
         auto &d = arrows[i];
 
-        //Check Arrow hit Mob
-            for (auto& m : w->mobManager->mobs) {
-                auto diff = m->pos - d.pos;
+        // Check Arrow hit Mob
+        for (auto &m : w->mobManager->mobs) {
+            auto diff = m->pos - d.pos;
 
-                auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
-                auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
-                
-                if (!d.playerArrow && m->mobType == MobType::Skeleton)
-                    continue;
+            auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
+            auto lenF =
+                sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
-                if (toRemove == -1) {
-                    if (lenS < 0.6f) {
-                        if (lenF < 1.5f) {
-                            toRemove = i;
-                            m->OnHit(w, 8, glm::normalize(diff) * 5.0f, d.playerArrow);
-                            goto Out;
-                        }
+            if (!d.playerArrow && m->mobType == MobType::Skeleton)
+                continue;
+
+            if (toRemove == -1) {
+                if (lenS < 0.6f) {
+                    if (lenF < 1.5f) {
+                        toRemove = i;
+                        m->OnHit(w, 8, glm::normalize(diff) * 5.0f,
+                                 d.playerArrow);
+                        goto Out;
                     }
                 }
             }
+        }
 
-        //Check Arrow Hit player
+        // Check Arrow Hit player
         if (!d.playerArrow) {
             auto diff = p->pos - d.pos;
 
             auto lenS = sqrtf(diff.x * diff.x + diff.z * diff.z);
-            auto lenF = sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+            auto lenF =
+                sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
             if (toRemove == -1) {
                 if (lenS < 0.6f) {
@@ -158,7 +161,8 @@ void Arrow::update(float dt, Player *p, World *w) {
         auto diff = p->pos - d.pos;
         auto len = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-        if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f && d.playerArrow && d.vel.x == 0 && d.vel.y == 0 && d.vel.z == 0) {
+        if (len < 2.0f && toRemove < 0 && d.lifeTime <= 9.5f && d.playerArrow &&
+            d.vel.x == 0 && d.vel.y == 0 && d.vel.z == 0) {
             p->arrows++;
             toRemove = i;
         } else if (len < 4.0f && d.playerArrow) {
@@ -172,7 +176,7 @@ void Arrow::update(float dt, Player *p, World *w) {
         }
     }
 
-    Out:
+Out:
     if (toRemove >= 0) {
         arrows.erase(arrows.begin() + toRemove);
     }
@@ -200,11 +204,12 @@ void Arrow::draw() {
         Rendering::RenderContext::get().matrix_translate(
             glm::vec3(-0.5f, -0.5f, -0.5f));
 
-        if (a.inRange)
+        if (a.inRange) {
             if (a.playerArrow)
                 blockMesh.draw();
             else
                 blockMesh2.draw();
+        }
 
 #ifndef PSP
         glEnable(GL_CULL_FACE);

@@ -55,7 +55,8 @@ void PassiveMob::OnDeath(World *w, bool playerKill) {
     Mob::OnDeath(w, playerKill);
 
     DropData d;
-    memset(&d, 0, sizeof(DropData));
+    d.inRange = false;
+    d.animTime = 0.0f;
     d.pos = pos;
     d.size = {0.25f, 0.25f, 0.25f};
     d.vel = {0.0f, 2.0f, 0.0f};

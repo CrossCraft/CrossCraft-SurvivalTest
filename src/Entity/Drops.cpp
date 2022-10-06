@@ -108,7 +108,7 @@ int Drops::try_pickup(DropData &d, Player *p) {
 void Drops::update(float dt, Player *p, World *w) {
     int toRemove = -1;
 start:
-    for (int i = 0; i < drops.size(); i++) {
+    for (size_t i = 0; i < drops.size(); i++) {
         auto &d = drops[i];
 
         d.animTime += dt;
@@ -128,7 +128,7 @@ start:
         } else {
             // Merge check
             int mergeList = -1;
-            for (int c = 0; c < drops.size(); c++) {
+            for (size_t c = 0; c < drops.size(); c++) {
                 if (c != i) {
                     auto diff = d.pos - drops[c].pos;
                     auto newLen =

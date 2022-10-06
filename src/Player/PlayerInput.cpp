@@ -240,11 +240,12 @@ auto Player::press_left(std::any d) -> void {
     if (p->in_inventory && !p->in_chat) {
         p->in_cursor_x -= 1;
 
-        if (p->in_cursor_x <= -1)
+        if (p->in_cursor_x <= -1) {
             if (p->in_cursor_y == 4)
                 p->in_cursor_x = 5;
             else
                 p->in_cursor_x = 8;
+        }
     } else {
         dec_selector(d);
     }

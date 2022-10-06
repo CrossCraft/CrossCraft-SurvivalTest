@@ -10,7 +10,7 @@ void Chat::add_message(std::string str) { data.push_back({str, 10.0f}); }
 void Chat::update(double dt) {
     std::vector<int> removal;
 
-    for (int i = 0; i < data.size(); i++) {
+    for (size_t i = 0; i < data.size(); i++) {
         auto &p = data.at(i);
 
         p.timer -= dt;
@@ -20,7 +20,7 @@ void Chat::update(double dt) {
     }
 
     for (auto &id : removal) {
-        if (id < data.size())
+        if (static_cast<size_t>(id) < data.size())
             data.erase(data.begin() + id);
     }
 }

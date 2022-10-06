@@ -410,7 +410,7 @@ auto World::update_surroundings(int x, int z) -> void {
         xMod = false;
     }
 
-    if (xMod && nX >= 0 && nX < 16) {
+    if (xMod && nX < 16) {
         uint32_t idxx = nX << 16 | (cY & 0x00FF);
         if (chunks.find(idxx) != chunks.end())
             chunks[idxx]->generate(this);
@@ -426,7 +426,7 @@ auto World::update_surroundings(int x, int z) -> void {
         zMod = false;
     }
 
-    if (zMod && nY >= 0 && nY < 16) {
+    if (zMod && nY < 16) {
         uint32_t idzz = 0 | cX << 16 | (nY & 0x00FF);
         if (chunks.find(idzz) != chunks.end())
             chunks[idzz]->generate(this);
@@ -518,6 +518,9 @@ auto World::explode(glm::ivec3 pos) -> void {
 
                 if (blk == Block::TNT) {
                     TNTData data;
+                    data.Killed = false;
+                    data.immune = false;
+                    data.inRange = false;
                     data.pos = {x, y, z};
                     data.rot = {0, 0};
                     data.size = {0.1f, 0.1f, 0.1f};
@@ -527,7 +530,8 @@ auto World::explode(glm::ivec3 pos) -> void {
                     tnt->add_TNT(data);
                 } else {
                     DropData d;
-                    memset(&d, 0, sizeof(DropData));
+                    d.inRange = false;
+                    d.animTime = 0.0f;
                     d.pos = {(float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f};
                     d.size = {0.25f, 0.25f, 0.25f};
                     d.vel = {0.0f, 2.0f, 0.0f};

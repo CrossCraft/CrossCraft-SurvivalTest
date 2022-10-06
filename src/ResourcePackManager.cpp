@@ -333,7 +333,7 @@ auto ResourcePackManager::extract_zip(std::string path) -> int {
     std::string dirname = path.substr(0, path.find(".zip")) + "/";
     std::filesystem::create_directory(dirname);
 
-    for (int i = 0; i < global_info.number_entry; i++) {
+    for (size_t i = 0; i < global_info.number_entry; i++) {
         unz_file_info file_info;
         char filename[512];
 
@@ -365,7 +365,7 @@ auto ResourcePackManager::extract_zip(std::string path) -> int {
         unzCloseCurrentFile(zF);
 
         // Go the the next entry listed in the zip file.
-        if ((i + 1) < global_info.number_entry)
+        if (static_cast<size_t>(i + 1) < global_info.number_entry)
             unzGoToNextFile(zF);
     }
 

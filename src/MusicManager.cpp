@@ -32,7 +32,7 @@ auto MusicManager::update(float dt) -> void {
         int r = rand() % tracks.size();
         auto file_path = ResourcePackManager::get().get_file(tracks[r]);
         SC_APP_INFO("FILE {}", file_path);
-        music = create_scopeptr<Audio::Clip>(file_path, true);
+        music = create_scopeptr<Audio::Clip>(std::move(file_path), true);
         music->play();
         timer = 420.0f + rand() % 360;
     }

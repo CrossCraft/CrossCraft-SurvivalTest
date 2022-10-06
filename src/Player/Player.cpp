@@ -64,18 +64,18 @@ extern std::string chat_text;
 extern Player *player_ptr;
 
 Player::Player()
-    : cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
+    : itemSelections{SlotInfo{-1, 0},
+                     SlotInfo{-1, 0},
+                     SlotInfo{-1, 0},
+                     SlotInfo{-1, 0},
+                     SlotInfo{-1, 0},
+                     SlotInfo{-1, 0},
+                     SlotInfo{Block::Mushroom2, 10},
+                     SlotInfo{Block::Mushroom1, 10},
+                     SlotInfo{Block::TNT, 10}},
+      cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
           255.0f),
-      model(pos, {0.6, 1.8, 0.6}), itemSelections{
-                                       SlotInfo{-1, 0},
-                                       SlotInfo{-1, 0},
-                                       SlotInfo{-1, 0},
-                                       SlotInfo{-1, 0},
-                                       SlotInfo{-1, 0},
-                                       SlotInfo{-1, 0},
-                                       SlotInfo{Block::Mushroom2, 10},
-                                       SlotInfo{Block::Mushroom1, 10},
-                                       SlotInfo{Block::TNT, 10}} {
+      model(pos, {0.6, 1.8, 0.6}) {
     gui_texture = ResourcePackManager::get().load_texture(
         "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST,
         SC_TEX_FILTER_NEAREST, false, true);
@@ -288,6 +288,7 @@ void Player::update(float dt, World *wrld) {
 
         if (is_firing && arrows != 0) {
             ArrowData data;
+            data.inRange = false;
             data.pos = pos;
             data.pos.y -= (1.80f - 1.5965f);
             data.vel = look * 24.0f;

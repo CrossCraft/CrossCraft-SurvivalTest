@@ -346,7 +346,7 @@ void MenuState::on_draw(Core::Application *app, double dt) {
             {240 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
             white, -20);
 
-        for (int i = 0; i < 6; i++) {
+        for (size_t i = 0; i < 6; i++) {
             bool do_not_select;
             if (ResourcePackManager::get().pack_names.size() > i) {
                 auto name = ResourcePackManager::get().pack_names[i];
@@ -362,7 +362,7 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                     do_not_select = true;
                 } else {
                     do_not_select = false;
-                    if (selIdx == i + 1) {
+                    if (selIdx == static_cast<int>(i + 1)) {
                         sel_sprite->draw();
                     } else {
                         unsel_sprite->draw();
@@ -371,7 +371,7 @@ void MenuState::on_draw(Core::Application *app, double dt) {
 
                 Rendering::RenderContext::get().matrix_clear();
 
-                if (selIdx != i + 1 || do_not_select == true) {
+                if (selIdx != (int)(i + 1) || do_not_select == true) {
                     fontRenderer->add_text(
                         name,
                         {241 - fontRenderer->calculate_size(name) / 2,
@@ -529,11 +529,11 @@ void MenuState::down(std::any m) {
     } else {
 
         mstate->selIdx++;
-        int total_idx = ResourcePackManager::get().pack_names.size();
+        size_t total_idx = ResourcePackManager::get().pack_names.size();
         if (total_idx > 6)
             total_idx = 6;
 
-        if (mstate->selIdx > total_idx)
+        if (mstate->selIdx > (int)total_idx)
             mstate->selIdx = 0;
     }
 }

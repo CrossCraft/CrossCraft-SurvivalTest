@@ -30,7 +30,7 @@ auto water_can_flow(glm::ivec3 ivec, World *wrld) -> bool {
         for (auto j = ivec.y - 2; j <= ivec.y + 2; j++) {
             for (auto k = ivec.z - 2; k <= ivec.z + 2; k++) {
                 auto idx = wrld->getIdx(i, j, k);
-                if (idx >= 0 && wrld->worldData[idx] == Block::Sponge)
+                if (wrld->worldData[idx] == Block::Sponge)
                     return false;
             }
         }
@@ -233,8 +233,6 @@ bool ChunkStack::check_visible(World *wrld, glm::vec3 posCheck, int cY) {
                                static_cast<s32>(cast_pos.z));
 
         u32 idx = wrld->getIdx(ivec.x, ivec.y, ivec.z);
-        if (idx < 0)
-            return false;
 
         auto blk = wrld->worldData[idx];
 
