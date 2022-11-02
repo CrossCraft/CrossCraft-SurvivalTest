@@ -28,7 +28,7 @@ extern char list[0x100000] __attribute__((aligned(64)));
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-namespace Stardust_Celeste::Rendering {
+namespace GI {
 extern GLFWwindow *window;
 }
 #endif
@@ -73,8 +73,7 @@ Player::Player()
                      SlotInfo{Block::Mushroom2, 10},
                      SlotInfo{Block::Mushroom1, 10},
                      SlotInfo{Block::TNT, 10}},
-      cam(pos, glm::vec3(rot.x, rot.y, 0), DEGTORAD(70.0f), 16.0f / 9.0f, 0.1f,
-          255.0f),
+      cam(pos, glm::vec3(rot.x, rot.y, 0), 70.0f, 16.0f / 9.0f, 0.1f, 255.0f),
       model(pos, {0.6, 1.8, 0.6}) {
     gui_texture = ResourcePackManager::get().load_texture(
         "assets/minecraft/textures/gui/gui.png", SC_TEX_FILTER_NEAREST,
@@ -204,8 +203,7 @@ Player::Player()
     countChange = true;
 
 #if BUILD_PC
-    glfwSetCharCallback(Stardust_Celeste::Rendering::window,
-                        character_callback);
+    glfwSetCharCallback(GI::window, character_callback);
 #endif
 }
 

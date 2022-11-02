@@ -13,6 +13,6 @@ struct Model {
     uint16_t idx_counter;
     std::vector<Rendering::Vertex> m_verts;
     std::vector<uint16_t> m_index;
-    Rendering::Mesh blockMesh;
+    Rendering::Mesh<Rendering::Vertex> blockMesh;
 };
 } // namespace CrossCraft

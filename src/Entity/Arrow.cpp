@@ -41,64 +41,73 @@ Arrow::Arrow() {
 
     idx_counter = 0;
 
-    m_verts.push_back(
+    blockMesh.vertices.push_back(
         Rendering::Vertex{0.5f, 0.0f, c, xFace1[0], xFace1[1], xFace1[2]});
-    m_verts.push_back(Rendering::Vertex{0.5f, 5.0f / 32.0f, c, xFace1[3],
-                                        xFace1[4], xFace1[5]});
-    m_verts.push_back(Rendering::Vertex{0.0f, 5.0f / 32.0f, c, xFace1[6],
-                                        xFace1[7], xFace1[8]});
-    m_verts.push_back(
+    blockMesh.vertices.push_back(Rendering::Vertex{
+        0.5f, 5.0f / 32.0f, c, xFace1[3], xFace1[4], xFace1[5]});
+    blockMesh.vertices.push_back(Rendering::Vertex{
+        0.0f, 5.0f / 32.0f, c, xFace1[6], xFace1[7], xFace1[8]});
+    blockMesh.vertices.push_back(
         Rendering::Vertex{0.0f, 0.0f, c, xFace1[9], xFace1[10], xFace1[11]});
 
-    m_verts.push_back(
+    blockMesh.vertices.push_back(
         Rendering::Vertex{0.5f, 0.0f, c, xFace2[0], xFace2[1], xFace2[2]});
-    m_verts.push_back(Rendering::Vertex{0.5f, 5.0f / 32.0f, c, xFace2[3],
-                                        xFace2[4], xFace2[5]});
-    m_verts.push_back(Rendering::Vertex{0.0f, 5.0f / 32.0f, c, xFace2[6],
-                                        xFace2[7], xFace2[8]});
-    m_verts.push_back(
+    blockMesh.vertices.push_back(Rendering::Vertex{
+        0.5f, 5.0f / 32.0f, c, xFace2[3], xFace2[4], xFace2[5]});
+    blockMesh.vertices.push_back(Rendering::Vertex{
+        0.0f, 5.0f / 32.0f, c, xFace2[6], xFace2[7], xFace2[8]});
+    blockMesh.vertices.push_back(
         Rendering::Vertex{0.0f, 0.0f, c, xFace2[9], xFace2[10], xFace2[11]});
 
-    m_verts2.push_back(Rendering::Vertex{0.5f, 10.0f / 32.0f, c, xFace1[0],
-                                         xFace1[1], xFace1[2]});
-    m_verts2.push_back(Rendering::Vertex{0.5f, 15.0f / 32.0f, c, xFace1[3],
-                                         xFace1[4], xFace1[5]});
-    m_verts2.push_back(Rendering::Vertex{0.0f, 15.0f / 32.0f, c, xFace1[6],
-                                         xFace1[7], xFace1[8]});
-    m_verts2.push_back(Rendering::Vertex{0.0f, 10.0f / 32.0f, c, xFace1[9],
-                                         xFace1[10], xFace1[11]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.5f, 10.0f / 32.0f, c, xFace1[0], xFace1[1], xFace1[2]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.5f, 15.0f / 32.0f, c, xFace1[3], xFace1[4], xFace1[5]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.0f, 15.0f / 32.0f, c, xFace1[6], xFace1[7], xFace1[8]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.0f, 10.0f / 32.0f, c, xFace1[9], xFace1[10], xFace1[11]});
 
-    m_verts2.push_back(Rendering::Vertex{0.5f, 10.0f / 32.0f, c, xFace2[0],
-                                         xFace2[1], xFace2[2]});
-    m_verts2.push_back(Rendering::Vertex{0.5f, 15.0f / 32.0f, c, xFace2[3],
-                                         xFace2[4], xFace2[5]});
-    m_verts2.push_back(Rendering::Vertex{0.0f, 15.0f / 32.0f, c, xFace2[6],
-                                         xFace2[7], xFace2[8]});
-    m_verts2.push_back(Rendering::Vertex{0.0f, 10.0f / 32.0f, c, xFace2[9],
-                                         xFace2[10], xFace2[11]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.5f, 10.0f / 32.0f, c, xFace2[0], xFace2[1], xFace2[2]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.5f, 15.0f / 32.0f, c, xFace2[3], xFace2[4], xFace2[5]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.0f, 15.0f / 32.0f, c, xFace2[6], xFace2[7], xFace2[8]});
+    blockMesh2.vertices.push_back(Rendering::Vertex{
+        0.0f, 10.0f / 32.0f, c, xFace2[9], xFace2[10], xFace2[11]});
 
     // Push Back Indices
-    m_index.push_back(0);
-    m_index.push_back(1);
-    m_index.push_back(2);
-    m_index.push_back(2);
-    m_index.push_back(3);
-    m_index.push_back(0);
+    blockMesh.indices.push_back(0);
+    blockMesh.indices.push_back(1);
+    blockMesh.indices.push_back(2);
+    blockMesh.indices.push_back(2);
+    blockMesh.indices.push_back(3);
+    blockMesh.indices.push_back(0);
+    blockMesh2.indices.push_back(0);
+    blockMesh2.indices.push_back(1);
+    blockMesh2.indices.push_back(2);
+    blockMesh2.indices.push_back(2);
+    blockMesh2.indices.push_back(3);
+    blockMesh2.indices.push_back(0);
     idx_counter += 4;
 
-    m_index.push_back(idx_counter + 0);
-    m_index.push_back(idx_counter + 1);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 3);
-    m_index.push_back(idx_counter + 0);
+    blockMesh.indices.push_back(idx_counter + 0);
+    blockMesh.indices.push_back(idx_counter + 1);
+    blockMesh.indices.push_back(idx_counter + 2);
+    blockMesh.indices.push_back(idx_counter + 2);
+    blockMesh.indices.push_back(idx_counter + 3);
+    blockMesh.indices.push_back(idx_counter + 0);
+    blockMesh2.indices.push_back(idx_counter + 0);
+    blockMesh2.indices.push_back(idx_counter + 1);
+    blockMesh2.indices.push_back(idx_counter + 2);
+    blockMesh2.indices.push_back(idx_counter + 2);
+    blockMesh2.indices.push_back(idx_counter + 3);
+    blockMesh2.indices.push_back(idx_counter + 0);
     idx_counter += 4;
 
-    blockMesh.add_data(m_verts.data(), m_verts.size(), m_index.data(),
-                       m_index.size());
-
-    blockMesh2.add_data(m_verts2.data(), m_verts2.size(), m_index.data(),
-                        m_index.size());
+    blockMesh.setup_buffer();
+    blockMesh2.setup_buffer();
 }
 Arrow::~Arrow() {}
 

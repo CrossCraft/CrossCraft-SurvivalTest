@@ -16,9 +16,7 @@ class SelectionBox {
     glm::ivec3 position;
 
     uint16_t idx_counter[11];
-    std::vector<Rendering::Vertex> m_verts[11];
-    std::vector<uint16_t> m_index[11];
-    Rendering::Mesh blockMesh[11];
+    Rendering::Mesh<Rendering::Vertex> blockMesh[11];
 
     auto add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
                           uint32_t lightVal, glm::vec3 mypos, uint8_t type)

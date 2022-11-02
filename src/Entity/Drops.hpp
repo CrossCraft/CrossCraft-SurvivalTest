@@ -48,6 +48,6 @@ class Drops {
     uint16_t idx_counter[50];
     std::vector<Rendering::Vertex> m_verts[50];
     std::vector<uint16_t> m_index[50];
-    Rendering::Mesh blockMesh[50];
+    Rendering::FixedMesh<Rendering::Vertex, 24, 36> blockMesh[50];
 };
 } // namespace CrossCraft

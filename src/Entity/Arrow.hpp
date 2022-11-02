@@ -36,8 +36,6 @@ class Arrow {
     uint32_t texture;
     std::vector<ArrowData> arrows;
     uint16_t idx_counter;
-    std::vector<Rendering::Vertex> m_verts, m_verts2;
-    std::vector<uint16_t> m_index;
-    Rendering::Mesh blockMesh, blockMesh2;
+    Rendering::Mesh<Rendering::Vertex> blockMesh, blockMesh2;
 };
 } // namespace CrossCraft

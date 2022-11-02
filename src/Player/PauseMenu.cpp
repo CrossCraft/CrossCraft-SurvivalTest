@@ -8,7 +8,7 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-namespace Stardust_Celeste::Rendering {
+namespace GI {
 extern GLFWwindow *window;
 }
 #endif
@@ -54,14 +54,14 @@ PauseMenu::~PauseMenu() {}
 
 auto PauseMenu::enter() -> void {
 #if BUILD_PC
-    glfwSetInputMode(Rendering::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 #endif
 
     selIdx = 0;
 }
 auto PauseMenu::exit() -> void {
 #if BUILD_PC
-    glfwSetInputMode(Rendering::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     Utilities::Input::set_cursor_center();
 #endif
 
@@ -100,7 +100,7 @@ auto PauseMenu::draw() -> void {
 
     Rendering::RenderContext::get().matrix_clear();
 
-    fontRenderer->clear();
+    fontRenderer->clear_tiles();
 
     fontRenderer->add_text(
         "Game Menu", {240 - fontRenderer->calculate_size("Game Menu") / 2, 216},
@@ -178,11 +178,7 @@ auto PauseMenu::draw() -> void {
             CC_TEXT_COLOR_SELECT_BACK, -10);
     }
 
-    fontRenderer->rebuild();
-
-#if PSP
-    sceKernelDcacheWritebackInvalidateAll();
-#endif // PSP
+    fontRenderer->generate_map();
 
     fontRenderer->draw();
 }

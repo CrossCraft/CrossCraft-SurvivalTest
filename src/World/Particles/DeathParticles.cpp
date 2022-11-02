@@ -4,11 +4,8 @@
 namespace CrossCraft {
 
 template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
-DeathParticleSystem::DeathParticleSystem(uint32_t tex) : texture(tex) { idx_counter = 0; }
-DeathParticleSystem::~DeathParticleSystem() {
-    m_verts.clear();
-    m_index.clear();
-}
+DeathParticleSystem::DeathParticleSystem(uint32_t tex) : texture(tex) {}
+DeathParticleSystem::~DeathParticleSystem() {}
 
 auto rand_pos2() -> float { return ((rand() % 16) - 8) * (1.0f / 16.0f); }
 float timer2 = 0.0f;
@@ -38,7 +35,7 @@ void DeathParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
         particle.position.x += rand_pos2();
         particle.position.y += rand_pos2();
         particle.position.z += rand_pos2();
-        particle.velocity = { 0, 0, 0 };
+        particle.velocity = {0, 0, 0};
 
         particle.velocity.y = ((float)(rand() % 14) / 14.0f) + 1.0f;
 
@@ -52,9 +49,6 @@ void DeathParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
 
 void DeathParticleSystem::generate() {
     mesh.delete_data();
-    idx_counter = 0;
-    m_verts.clear();
-    m_index.clear();
 
     if (particles.size() <= 0)
         return;
@@ -64,52 +58,34 @@ void DeathParticleSystem::generate() {
     Rendering::Color c;
     c.color = 0xFFFFFFFF;
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[0],
-        particles[0].uv[1],
-        c,
-        cFace[0] * 2.0f,
-        cFace[1] * 2.0f,
-        cFace[2] * 2.0f,
-    });
+    mesh.vertices[0] = Rendering::Vertex{
+        particles[0].uv[0], particles[0].uv[1], c,
+        cFace[0] * 2.0f,    cFace[1] * 2.0f,    cFace[2] * 2.0f,
+    };
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[2],
-        particles[0].uv[3],
-        c,
-        cFace[3] * 2.0f,
-        cFace[4] * 2.0f,
-        cFace[5] * 2.0f,
-    });
+    mesh.vertices[1] = Rendering::Vertex{
+        particles[0].uv[2], particles[0].uv[3], c,
+        cFace[3] * 2.0f,    cFace[4] * 2.0f,    cFace[5] * 2.0f,
+    };
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[4],
-        particles[0].uv[5],
-        c,
-        cFace[6] * 2.0f,
-        cFace[7] * 2.0f,
-        cFace[8] * 2.0f,
-    });
+    mesh.vertices[2] = Rendering::Vertex{
+        particles[0].uv[4], particles[0].uv[5], c,
+        cFace[6] * 2.0f,    cFace[7] * 2.0f,    cFace[8] * 2.0f,
+    };
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[6],
-        particles[0].uv[7],
-        c,
-        cFace[9] * 2.0f,
-        cFace[10] * 2.0f,
-        cFace[11] * 2.0f,
-    });
+    mesh.vertices[3] = Rendering::Vertex{
+        particles[0].uv[6], particles[0].uv[7], c,
+        cFace[9] * 2.0f,    cFace[10] * 2.0f,   cFace[11] * 2.0f,
+    };
 
-    m_index.push_back(idx_counter);
-    m_index.push_back(idx_counter + 1);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 3);
-    m_index.push_back(idx_counter + 0);
-    idx_counter += 4;
+    mesh.indices[0] = 0;
+    mesh.indices[1] = 1;
+    mesh.indices[2] = 2;
+    mesh.indices[3] = 2;
+    mesh.indices[4] = 3;
+    mesh.indices[5] = 0;
 
-    mesh.add_data(m_verts.data(), m_verts.size(), m_index.data(),
-                  m_index.size());
+    mesh.setup_buffer();
 }
 
 void DeathParticleSystem::update(double dt) {

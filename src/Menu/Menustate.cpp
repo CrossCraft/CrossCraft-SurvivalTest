@@ -202,8 +202,8 @@ void MenuState::on_draw(Core::Application *app, double dt) {
             Rendering::RenderContext::get().matrix_clear();
         }
 
-    fontRenderer->clear();
-    splashRenderer->clear();
+    fontRenderer->clear_tiles();
+    splashRenderer->clear_tiles();
     if (!textureMenu) {
         // Singleplayer
         if (selIdx != 0) {
@@ -421,8 +421,8 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
     }
-    fontRenderer->rebuild();
-    splashRenderer->rebuild();
+    fontRenderer->generate_map();
+    splashRenderer->generate_map();
 
     fontRenderer->draw();
 

@@ -221,8 +221,7 @@ auto Drops::setup_model(uint8_t type) -> void {
                          LIGHT_SIDE_Z, p, type);
     }
 
-    blockMesh[type].add_data(m_verts[type].data(), m_verts[type].size(),
-                             m_index[type].data(), m_index[type].size());
+    blockMesh[type].setup_buffer();
 }
 
 } // namespace CrossCraft

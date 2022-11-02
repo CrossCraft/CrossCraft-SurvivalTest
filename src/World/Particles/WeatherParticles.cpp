@@ -4,11 +4,8 @@
 namespace CrossCraft {
 
 template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
-WeatherParticleSystem::WeatherParticleSystem(uint32_t tex) : texture(tex) { idx_counter = 0; }
-WeatherParticleSystem::~WeatherParticleSystem() {
-    m_verts.clear();
-    m_index.clear();
-}
+WeatherParticleSystem::WeatherParticleSystem(uint32_t tex) : texture(tex) {}
+WeatherParticleSystem::~WeatherParticleSystem() {}
 
 auto bind_texture(WeatherParticle &particle, uint32_t type) -> void {
     // x, h, w, h, w, y, x, y
@@ -35,7 +32,7 @@ void WeatherParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
             for (int z = -3; z <= 3; z++) {
                 WeatherParticle particle;
                 particle.position = pos + glm::vec3(x, y * 4, z);
-                particle.velocity = { 0, -1, 0 };
+                particle.velocity = {0, -1, 0};
 
                 bind_texture(particle, type);
 
@@ -48,9 +45,6 @@ void WeatherParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
 
 void WeatherParticleSystem::generate() {
     mesh.delete_data();
-    idx_counter = 0;
-    m_verts.clear();
-    m_index.clear();
 
     if (particles.size() <= 0)
         return;
@@ -60,52 +54,31 @@ void WeatherParticleSystem::generate() {
     Rendering::Color c;
     c.color = 0xFFFFFFFF;
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[0],
-        particles[0].uv[1],
-        c,
-        cFace[0],
-        cFace[1],
-        cFace[2],
-    });
+    mesh.vertices[0] = Rendering::Vertex{
+        particles[0].uv[0], particles[0].uv[1], c, cFace[0], cFace[1], cFace[2],
+    };
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[2],
-        particles[0].uv[3],
-        c,
-        cFace[3],
-        cFace[4],
-        cFace[5],
-    });
+    mesh.vertices[1] = Rendering::Vertex{
+        particles[0].uv[2], particles[0].uv[3], c, cFace[3], cFace[4], cFace[5],
+    };
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[4],
-        particles[0].uv[5],
-        c,
-        cFace[6],
-        cFace[7],
-        cFace[8],
-    });
+    mesh.vertices[2] = Rendering::Vertex{
+        particles[0].uv[4], particles[0].uv[5], c, cFace[6], cFace[7], cFace[8],
+    };
 
-    m_verts.push_back(Rendering::Vertex{
-        particles[0].uv[6],
-        particles[0].uv[7],
-        c,
-        cFace[9],
-        cFace[10],
-        cFace[11],
-    });
+    mesh.vertices[3] = Rendering::Vertex{
+        particles[0].uv[6], particles[0].uv[7], c,
+        cFace[9],           cFace[10],          cFace[11],
+    };
 
-    m_index.push_back(idx_counter);
-    m_index.push_back(idx_counter + 1);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 3);
-    m_index.push_back(idx_counter + 0);
-    idx_counter += 4;
+    mesh.indices[0] = 0;
+    mesh.indices[1] = 1;
+    mesh.indices[2] = 2;
+    mesh.indices[3] = 2;
+    mesh.indices[4] = 3;
+    mesh.indices[5] = 0;
 
-    mesh.add_data(m_verts.data(), m_verts.size(), m_index.data(),
-                  m_index.size());
+    mesh.setup_buffer();
 }
 
 void WeatherParticleSystem::update(double dt) {
@@ -133,9 +106,8 @@ void WeatherParticleSystem::draw(glm::vec3 rot) {
         for (auto &p : particles) {
 
             Rendering::RenderContext::get().matrix_translate(p.position);
-            Rendering::RenderContext::get().matrix_rotate({ 0, -rot.y, 0 });
-            Rendering::RenderContext::get().matrix_scale(
-                {1.0f, 4.0f, 1.0f});
+            Rendering::RenderContext::get().matrix_rotate({0, -rot.y, 0});
+            Rendering::RenderContext::get().matrix_scale({1.0f, 4.0f, 1.0f});
             mesh.bind();
             mesh.draw();
 

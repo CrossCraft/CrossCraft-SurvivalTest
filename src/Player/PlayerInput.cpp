@@ -28,7 +28,7 @@ extern char list[0x100000] __attribute__((aligned(64)));
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-namespace Stardust_Celeste::Rendering {
+namespace GI {
 extern GLFWwindow *window;
 }
 #endif
@@ -70,11 +70,9 @@ auto Player::enter_chat(std::any d) -> void {
 
 #if BUILD_PC
         if (p->in_chat)
-            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-                             GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         else
-            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-                             GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         Utilities::Input::set_cursor_center();
 #endif
@@ -93,11 +91,9 @@ auto Player::enter_chat_slash(std::any d) -> void {
 
 #if BUILD_PC
         if (p->in_chat)
-            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-                             GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         else
-            glfwSetInputMode(Rendering::window, GLFW_CURSOR,
-                             GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         Utilities::Input::set_cursor_center();
 #endif
@@ -110,7 +106,7 @@ auto Player::submit_chat(std::any d) -> void {
     chat_text = "";
 
 #if BUILD_PC
-    glfwSetInputMode(Rendering::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(GI::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     Utilities::Input::set_cursor_center();
 #endif
 }

@@ -17,10 +17,6 @@ TNT::TNT() {
     tnt_list.clear();
 
     idx_counter = 0;
-    m_verts.clear();
-    m_verts.shrink_to_fit();
-    m_index.clear();
-    m_index.shrink_to_fit();
     blockMesh.delete_data();
 
     glm::vec3 p = {0, 0, 0};
@@ -36,8 +32,7 @@ TNT::TNT() {
                      LIGHT_SIDE_Z, p, 0);
     add_face_to_mesh(backFace, getTexCoord(Block::TNT, LIGHT_SIDE_Z),
                      LIGHT_SIDE_Z, p, 0);
-    blockMesh.add_data(m_verts.data(), m_verts.size(), m_index.data(),
-                       m_index.size());
+    blockMesh.setup_buffer();
 }
 TNT::~TNT() { tnt_list.clear(); }
 
@@ -126,16 +121,16 @@ auto TNT::add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
         vert.y = data[idx++] + mypos.y;
         vert.z = data[idx++] + mypos.z;
 
-        m_verts.push_back(vert);
+        blockMesh.vertices.push_back(vert);
     }
 
     // Push Back Indices
-    m_index.push_back(idx_counter);
-    m_index.push_back(idx_counter + 1);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 2);
-    m_index.push_back(idx_counter + 3);
-    m_index.push_back(idx_counter + 0);
+    blockMesh.indices.push_back(idx_counter);
+    blockMesh.indices.push_back(idx_counter + 1);
+    blockMesh.indices.push_back(idx_counter + 2);
+    blockMesh.indices.push_back(idx_counter + 2);
+    blockMesh.indices.push_back(idx_counter + 3);
+    blockMesh.indices.push_back(idx_counter + 0);
     idx_counter += 4;
 }
 

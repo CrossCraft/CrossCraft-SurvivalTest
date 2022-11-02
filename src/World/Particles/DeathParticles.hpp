@@ -24,12 +24,8 @@ class DeathParticleSystem {
   private:
     unsigned int texture;
 
-    uint16_t idx_counter;
-    std::vector<Rendering::Vertex> m_verts;
-    std::vector<uint16_t> m_index;
-
     std::vector<DeathParticle> particles;
 
-    Rendering::Mesh mesh;
+    Rendering::FixedMesh<Rendering::Vertex, 4, 6> mesh;
 };
 } // namespace CrossCraft

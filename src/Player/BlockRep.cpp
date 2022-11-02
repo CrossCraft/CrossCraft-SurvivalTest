@@ -11,10 +11,10 @@ BlockRep::BlockRep() {
     }
 
     idx_counter[50] = 0;
-    m_verts[50].clear();
-    m_verts[50].shrink_to_fit();
-    m_index[50].clear();
-    m_index[50].shrink_to_fit();
+    blockMesh[50].vertices.clear();
+    blockMesh[50].vertices.shrink_to_fit();
+    blockMesh[50].indices.clear();
+    blockMesh[50].indices.shrink_to_fit();
     blockMesh[50].delete_data();
 
     glm::vec3 p = {0, 0, 0};
@@ -25,92 +25,91 @@ BlockRep::BlockRep() {
     // THE HAND
 
     // Right
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.25f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{44.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{40.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{40.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.25f});
 
     // Front
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{48.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{48.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{44.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.25f});
 
     // Left
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{52.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{52.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{48.0f / 64.0f, 1.0f, c, 0.0f, 0.75f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{48.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.0f, 0.0f});
 
     // Back
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{56.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{56.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{52.0f / 64.0f, 1.0f, c, 0.25f, 0.75f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{52.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.0f, 0.0f});
 
     // Far end
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{44.0f / 64.0f, 16.0f / 32.0f, c, 0.0f, 0.75f, 0.0f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{44.0f / 64.0f, 20.0f / 32.0f, c, 0.0f, 0.75f, 0.25f});
-    m_verts[50].push_back(Rendering::Vertex{48.0f / 64.0f, 20.0f / 32.0f, c,
-                                            0.25f, 0.75f, 0.25f});
-    m_verts[50].push_back(
+    blockMesh[50].vertices.push_back(Rendering::Vertex{
+        48.0f / 64.0f, 20.0f / 32.0f, c, 0.25f, 0.75f, 0.25f});
+    blockMesh[50].vertices.push_back(
         Rendering::Vertex{48.0f / 64.0f, 16.0f / 32.0f, c, 0.25f, 0.75f, 0.0f});
 
-    m_index[50].push_back(0);
-    m_index[50].push_back(1);
-    m_index[50].push_back(2);
-    m_index[50].push_back(2);
-    m_index[50].push_back(3);
-    m_index[50].push_back(0);
+    blockMesh[50].indices.push_back(0);
+    blockMesh[50].indices.push_back(1);
+    blockMesh[50].indices.push_back(2);
+    blockMesh[50].indices.push_back(2);
+    blockMesh[50].indices.push_back(3);
+    blockMesh[50].indices.push_back(0);
 
-    m_index[50].push_back(4);
-    m_index[50].push_back(5);
-    m_index[50].push_back(6);
-    m_index[50].push_back(6);
-    m_index[50].push_back(7);
-    m_index[50].push_back(4);
+    blockMesh[50].indices.push_back(4);
+    blockMesh[50].indices.push_back(5);
+    blockMesh[50].indices.push_back(6);
+    blockMesh[50].indices.push_back(6);
+    blockMesh[50].indices.push_back(7);
+    blockMesh[50].indices.push_back(4);
 
-    m_index[50].push_back(8);
-    m_index[50].push_back(9);
-    m_index[50].push_back(10);
-    m_index[50].push_back(10);
-    m_index[50].push_back(11);
-    m_index[50].push_back(8);
+    blockMesh[50].indices.push_back(8);
+    blockMesh[50].indices.push_back(9);
+    blockMesh[50].indices.push_back(10);
+    blockMesh[50].indices.push_back(10);
+    blockMesh[50].indices.push_back(11);
+    blockMesh[50].indices.push_back(8);
 
-    m_index[50].push_back(12);
-    m_index[50].push_back(13);
-    m_index[50].push_back(14);
-    m_index[50].push_back(14);
-    m_index[50].push_back(15);
-    m_index[50].push_back(12);
+    blockMesh[50].indices.push_back(12);
+    blockMesh[50].indices.push_back(13);
+    blockMesh[50].indices.push_back(14);
+    blockMesh[50].indices.push_back(14);
+    blockMesh[50].indices.push_back(15);
+    blockMesh[50].indices.push_back(12);
 
-    m_index[50].push_back(16);
-    m_index[50].push_back(17);
-    m_index[50].push_back(18);
-    m_index[50].push_back(18);
-    m_index[50].push_back(19);
-    m_index[50].push_back(16);
+    blockMesh[50].indices.push_back(16);
+    blockMesh[50].indices.push_back(17);
+    blockMesh[50].indices.push_back(18);
+    blockMesh[50].indices.push_back(18);
+    blockMesh[50].indices.push_back(19);
+    blockMesh[50].indices.push_back(16);
 
-    blockMesh[50].add_data(m_verts[50].data(), m_verts[50].size(),
-                           m_index[50].data(), m_index[50].size());
+    blockMesh[50].setup_buffer();
 }
 BlockRep::~BlockRep() {}
 
@@ -133,25 +132,21 @@ auto BlockRep::add_face_to_mesh(std::array<float, 12> data,
         vert.y = data[idx++] + mypos.y;
         vert.z = data[idx++] + mypos.z;
 
-        m_verts[type].push_back(vert);
+        blockMesh[type].vertices.push_back(vert);
     }
 
     // Push Back Indices
-    m_index[type].push_back(idx_counter[type]);
-    m_index[type].push_back(idx_counter[type] + 1);
-    m_index[type].push_back(idx_counter[type] + 2);
-    m_index[type].push_back(idx_counter[type] + 2);
-    m_index[type].push_back(idx_counter[type] + 3);
-    m_index[type].push_back(idx_counter[type] + 0);
+    blockMesh[type].indices.push_back(idx_counter[type]);
+    blockMesh[type].indices.push_back(idx_counter[type] + 1);
+    blockMesh[type].indices.push_back(idx_counter[type] + 2);
+    blockMesh[type].indices.push_back(idx_counter[type] + 2);
+    blockMesh[type].indices.push_back(idx_counter[type] + 3);
+    blockMesh[type].indices.push_back(idx_counter[type] + 0);
     idx_counter[type] += 4;
 }
 
 auto BlockRep::setup_model(uint8_t type) -> void {
     idx_counter[type] = 0;
-    m_verts[type].clear();
-    m_verts[type].shrink_to_fit();
-    m_index[type].clear();
-    m_index[type].shrink_to_fit();
     blockMesh[type].delete_data();
 
     glm::vec3 p = {0, 0, 0};
@@ -178,8 +173,7 @@ auto BlockRep::setup_model(uint8_t type) -> void {
                          LIGHT_SIDE_Z, p, type);
     }
 
-    blockMesh[type].add_data(m_verts[type].data(), m_verts[type].size(),
-                             m_index[type].data(), m_index[type].size());
+    blockMesh[type].setup_buffer();
 }
 
 auto BlockRep::update(float dt) -> void {
@@ -283,14 +277,13 @@ auto BlockRep::drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void {
 
     // manipulate the model on the fly to tint when under a shadow
     if (on_shaded_block) {
-        for (auto &vert : m_verts[type]) {
+        for (auto &vert : blockMesh[type].vertices) {
             vert.color.rgba.r *= 0.6;
             vert.color.rgba.g *= 0.6;
             vert.color.rgba.b *= 0.6;
         }
         blockMesh[type].delete_data();
-        blockMesh[type].add_data(m_verts[type].data(), m_verts[type].size(),
-                                 m_index[type].data(), m_index[type].size());
+        blockMesh[type].setup_buffer();
     }
 
 #if BUILD_PC || BUILD_PLAT == BUILD_VITA
@@ -312,14 +305,13 @@ auto BlockRep::drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void {
 
     // revert back
     if (on_shaded_block) {
-        for (auto &vert : m_verts[type]) {
+        for (auto &vert : blockMesh[type].vertices) {
             vert.color.rgba.r /= 0.6;
             vert.color.rgba.g /= 0.6;
             vert.color.rgba.b /= 0.6;
         }
         blockMesh[type].delete_data();
-        blockMesh[type].add_data(m_verts[type].data(), m_verts[type].size(),
-                                 m_index[type].data(), m_index[type].size());
+        blockMesh[type].setup_buffer();
     }
 
     ctx->matrix_clear();

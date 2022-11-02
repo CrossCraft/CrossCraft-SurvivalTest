@@ -6,111 +6,110 @@ template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 namespace CrossCraft {
 SelectionBox::SelectionBox() {
     idx_counter[0] = 0;
-    m_verts[0].clear();
-    m_verts[0].shrink_to_fit();
-    m_index[0].clear();
-    m_index[0].shrink_to_fit();
+    blockMesh[0].vertices.clear();
+    blockMesh[0].vertices.shrink_to_fit();
+    blockMesh[0].indices.clear();
+    blockMesh[0].indices.shrink_to_fit();
     blockMesh[0].delete_data();
 
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
 
-    m_index[0].push_back(0);
-    m_index[0].push_back(1);
-    m_index[0].push_back(2);
-    m_index[0].push_back(3);
-    m_index[0].push_back(0);
+    blockMesh[0].indices.push_back(0);
+    blockMesh[0].indices.push_back(1);
+    blockMesh[0].indices.push_back(2);
+    blockMesh[0].indices.push_back(3);
+    blockMesh[0].indices.push_back(0);
 
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
 
-    m_index[0].push_back(4);
-    m_index[0].push_back(5);
-    m_index[0].push_back(6);
-    m_index[0].push_back(7);
-    m_index[0].push_back(4);
+    blockMesh[0].indices.push_back(4);
+    blockMesh[0].indices.push_back(5);
+    blockMesh[0].indices.push_back(6);
+    blockMesh[0].indices.push_back(7);
+    blockMesh[0].indices.push_back(4);
 
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
 
-    m_index[0].push_back(8);
-    m_index[0].push_back(9);
-    m_index[0].push_back(10);
-    m_index[0].push_back(11);
-    m_index[0].push_back(8);
+    blockMesh[0].indices.push_back(8);
+    blockMesh[0].indices.push_back(9);
+    blockMesh[0].indices.push_back(10);
+    blockMesh[0].indices.push_back(11);
+    blockMesh[0].indices.push_back(8);
 
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
 
-    m_index[0].push_back(12);
-    m_index[0].push_back(13);
-    m_index[0].push_back(14);
-    m_index[0].push_back(15);
-    m_index[0].push_back(12);
+    blockMesh[0].indices.push_back(12);
+    blockMesh[0].indices.push_back(13);
+    blockMesh[0].indices.push_back(14);
+    blockMesh[0].indices.push_back(15);
+    blockMesh[0].indices.push_back(12);
 
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 0});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 0});
 
-    m_index[0].push_back(16);
-    m_index[0].push_back(17);
-    m_index[0].push_back(18);
-    m_index[0].push_back(19);
-    m_index[0].push_back(16);
+    blockMesh[0].indices.push_back(16);
+    blockMesh[0].indices.push_back(17);
+    blockMesh[0].indices.push_back(18);
+    blockMesh[0].indices.push_back(19);
+    blockMesh[0].indices.push_back(16);
 
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
-    m_verts[0].push_back(
+    blockMesh[0].vertices.push_back(
         Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
 
-    m_index[0].push_back(20);
-    m_index[0].push_back(21);
-    m_index[0].push_back(22);
-    m_index[0].push_back(23);
-    m_index[0].push_back(20);
+    blockMesh[0].indices.push_back(20);
+    blockMesh[0].indices.push_back(21);
+    blockMesh[0].indices.push_back(22);
+    blockMesh[0].indices.push_back(23);
+    blockMesh[0].indices.push_back(20);
 
-    blockMesh[0].add_data(m_verts[0].data(), m_verts[0].size(),
-                          m_index[0].data(), m_index[0].size());
+    blockMesh[0].setup_buffer();
 
     for (int i = 1; i < 11; i++) {
         idx_counter[i] = 0;
-        m_verts[i].clear();
-        m_verts[i].shrink_to_fit();
-        m_index[i].clear();
-        m_index[i].shrink_to_fit();
+        blockMesh[i].vertices.clear();
+        blockMesh[i].vertices.shrink_to_fit();
+        blockMesh[i].indices.clear();
+        blockMesh[i].indices.shrink_to_fit();
         blockMesh[i].delete_data();
 
         auto p = glm::vec3(0, 0, 0);
@@ -128,8 +127,7 @@ SelectionBox::SelectionBox() {
         add_face_to_mesh(backFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
                          p, i);
 
-        blockMesh[i].add_data(m_verts[i].data(), m_verts[i].size(),
-                              m_index[i].data(), m_index[i].size());
+        blockMesh[i].setup_buffer();
     }
 };
 
@@ -152,16 +150,16 @@ auto SelectionBox::add_face_to_mesh(std::array<float, 12> data,
         vert.y = data[idx++] + mypos.y;
         vert.z = data[idx++] + mypos.z;
 
-        m_verts[type].push_back(vert);
+        blockMesh[type].vertices.push_back(vert);
     }
 
     // Push Back Indices
-    m_index[type].push_back(idx_counter[type]);
-    m_index[type].push_back(idx_counter[type] + 1);
-    m_index[type].push_back(idx_counter[type] + 2);
-    m_index[type].push_back(idx_counter[type] + 2);
-    m_index[type].push_back(idx_counter[type] + 3);
-    m_index[type].push_back(idx_counter[type] + 0);
+    blockMesh[type].indices.push_back(idx_counter[type]);
+    blockMesh[type].indices.push_back(idx_counter[type] + 1);
+    blockMesh[type].indices.push_back(idx_counter[type] + 2);
+    blockMesh[type].indices.push_back(idx_counter[type] + 2);
+    blockMesh[type].indices.push_back(idx_counter[type] + 3);
+    blockMesh[type].indices.push_back(idx_counter[type] + 0);
     idx_counter[type] += 4;
 }
 
@@ -251,7 +249,7 @@ auto SelectionBox::draw() -> void {
     auto ctx = &Rendering::RenderContext::get();
 
     ctx->matrix_translate(glm::vec3(position.x, position.y, position.z));
-    blockMesh[0].draw_lines();
+    // blockMesh[0].draw_lines();
 
     ctx->matrix_clear();
     return;

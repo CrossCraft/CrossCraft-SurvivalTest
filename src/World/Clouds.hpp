@@ -22,15 +22,11 @@ class Clouds {
     float scroll;
 
     uint16_t idx_counter;
-    std::vector<Rendering::Vertex> m_verts;
-    std::vector<uint16_t> m_index;
-    Rendering::Mesh mesh;
+    Rendering::Mesh<Rendering::Vertex> mesh;
 
 #ifdef PSP
     uint16_t idx_counter2;
-    std::vector<Rendering::Vertex> m_verts2;
-    std::vector<uint16_t> m_index2;
-    Rendering::Mesh mesh2;
+    Rendering::Mesh<Rendering::Vertex> mesh2;
 #endif
 };
 } // namespace CrossCraft

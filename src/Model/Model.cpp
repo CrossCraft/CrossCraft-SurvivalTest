@@ -129,8 +129,7 @@ void Model::load(YAML::Node node, glm::vec2 texSize) {
         idx_counter += 4;
     }
 
-    blockMesh.add_data(m_verts.data(), m_verts.size(), m_index.data(),
-                       m_index.size());
+    blockMesh.setup_buffer();
 }
 
 void Model::draw(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) {

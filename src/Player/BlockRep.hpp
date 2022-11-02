@@ -37,9 +37,7 @@ class BlockRep {
         -> void;
 
     uint16_t idx_counter[51];
-    std::vector<Rendering::Vertex> m_verts[51];
-    std::vector<uint16_t> m_index[51];
-    Rendering::Mesh blockMesh[51];
+    Rendering::Mesh<Rendering::Vertex> blockMesh[51];
 
     bool isSwinging;
     float swingTime;
