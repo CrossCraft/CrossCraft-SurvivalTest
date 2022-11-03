@@ -200,13 +200,16 @@ void World::update(double dt) {
     Rendering::RenderContext::get().set_mode_3D();
     player->update(static_cast<float>(dt), this);
     sbox->update_position(this);
-    clouds->update(dt);
-    psystem->update(dt);
-    dpsystem->update(dt);
-    drops->update(dt, player.get(), this);
-    arrow->update(dt, player.get(), this);
-    mobManager->update(dt, player.get(), this);
-    tnt->update(dt, player.get(), this);
+
+    if (!player->in_pause) {
+        clouds->update(dt);
+        psystem->update(dt);
+        dpsystem->update(dt);
+        drops->update(dt, player.get(), this);
+        arrow->update(dt, player.get(), this);
+        mobManager->update(dt, player.get(), this);
+        tnt->update(dt, player.get(), this);
+    }
 
     tick_counter += dt;
     stored_dt = dt;
