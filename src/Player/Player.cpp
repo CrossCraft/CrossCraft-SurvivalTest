@@ -457,22 +457,22 @@ auto Player::draw(World *wrld) -> void {
             water->draw();
         }
 
-            if (in_inventory) {
-                playerHUD->draw_text("Select block", CC_TEXT_COLOR_WHITE,
-                                     CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
-                                     0, 7, CC_TEXT_BG_NONE);
-            }
+        if (in_inventory) {
+            playerHUD->draw_text("Select block", CC_TEXT_COLOR_WHITE,
+                                 CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0,
+                                 7, CC_TEXT_BG_NONE);
+        }
 
-            if (itemSelections[selectorIDX].type >= 0)
-                playerHUD->draw_text(
-                    playerHUD->get_block_name(itemSelections[selectorIDX].type),
-                    CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER,
-                    CC_TEXT_ALIGN_BOTTOM, 0, 5, CC_TEXT_BG_NONE, 0, -3);
+        if (itemSelections[selectorIDX].type >= 0)
+            playerHUD->draw_text(
+                playerHUD->get_block_name(itemSelections[selectorIDX].type),
+                CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_BOTTOM,
+                0, 5, CC_TEXT_BG_NONE, 0, -3);
 
-            selector_block_prev = selectedBlock;
-            selector_idx_prev = selectorIDX;
-            in_inv_delta = in_inventory;
-        
+        selector_block_prev = selectedBlock;
+        selector_idx_prev = selectorIDX;
+        in_inv_delta = in_inventory;
+
         if (in_inventory || in_tab) {
             if (in_tab) {
                 Rendering::RenderContext::get().matrix_scale(
@@ -491,39 +491,38 @@ auto Player::draw(World *wrld) -> void {
         item_box->draw();
         selector->draw();
 
-            playerHUD->draw_text("Position: " + std::to_string((int)ipos.x) +
-                                     ", " + std::to_string((int)ipos.y) + ", " +
-                                     std::to_string((int)ipos.z),
-                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_LEFT,
-                                 CC_TEXT_ALIGN_TOP, 0, 0, CC_TEXT_BG_DYNAMIC);
+        playerHUD->draw_text("Position: " + std::to_string((int)ipos.x) + ", " +
+                                 std::to_string((int)ipos.y) + ", " +
+                                 std::to_string((int)ipos.z),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_LEFT,
+                             CC_TEXT_ALIGN_TOP, 0, 0, CC_TEXT_BG_DYNAMIC);
 
-            prev_ipos = ipos;
+        prev_ipos = ipos;
 
-            playerHUD->draw_text("FPS: " + std::to_string(fps_display),
-                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                                 CC_TEXT_ALIGN_TOP, 0, 0, false);
+        playerHUD->draw_text("FPS: " + std::to_string(fps_display),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                             CC_TEXT_ALIGN_TOP, 0, 0, false);
 
-            playerHUD->draw_text("&fScore: &e" + std::to_string(score),
-                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                                 CC_TEXT_ALIGN_TOP, 5, -1, false);
+        playerHUD->draw_text("&fScore: &e" + std::to_string(score),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                             CC_TEXT_ALIGN_TOP, 5, -1, false);
 
-            playerHUD->draw_text("Arrows: " + std::to_string(arrows),
-                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                                 CC_TEXT_ALIGN_CENTER, -29, -10, false);
+        playerHUD->draw_text("Arrows: " + std::to_string(arrows),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                             CC_TEXT_ALIGN_CENTER, -29, -10, false);
 
-            int i = 9;
-            for (int x = chat->data.size() - 1; x >= 0; x--) {
-                auto &p = chat->data.at(x);
-                if (i < 0)
-                    break;
+        int i = 9;
+        for (int x = chat->data.size() - 1; x >= 0; x--) {
+            auto &p = chat->data.at(x);
+            if (i < 0)
+                break;
 
-                playerHUD->draw_text(p.text, CC_TEXT_COLOR_WHITE,
-                                     CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_CENTER,
-                                     0, -i - 2, CC_TEXT_BG_NONE);
-                i--;
-            }
-            chat_size = chat->data.size();
-        
+            playerHUD->draw_text(p.text, CC_TEXT_COLOR_WHITE,
+                                 CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_CENTER, 0,
+                                 -i - 2, CC_TEXT_BG_NONE);
+            i--;
+        }
+        chat_size = chat->data.size();
 
         if (in_chat) {
             playerHUD->draw_text("> " + chat_text, CC_TEXT_COLOR_WHITE,
@@ -534,20 +533,16 @@ auto Player::draw(World *wrld) -> void {
         chat_text_size = chat_text.size();
         in_chat_delta = in_chat;
 
-            for (int i = 0; i < 9; i++) {
-                int count = (int)itemSelections[i].quantity;
-                blockRep->drawBlk(itemSelections[i].type, i, 0, 3, 10);
+        for (int i = 0; i < 9; i++) {
+            int count = (int)itemSelections[i].quantity;
+            blockRep->drawBlk(itemSelections[i].type, i, 0, 3, 10);
 
-
-                if (count > 1) {
-                    playerHUD->draw_text(
-                        std::to_string(count), CC_TEXT_COLOR_WHITE,
-                        CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, 0, false,
-                        -77 + i * 20, -124);
-                }
-
+            if (count > 1) {
+                playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
+                                     CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
+                                     0, 0, false, -77 + i * 20, -124);
             }
-
+        }
 
         if (air < 10) {
             for (int i = 0; i < air; i++) {
@@ -558,7 +553,7 @@ auto Player::draw(World *wrld) -> void {
         }
         Rendering::RenderContext::get().matrix_clear();
 
-            playerHUD->rebuild();
+        playerHUD->rebuild();
 
         for (int i = 0; i < 10; i++) {
             heartBG->draw();
