@@ -41,16 +41,16 @@ auto Drops::add_face_to_mesh(std::array<float, 12> data,
         vert.y = data[idx++] + mypos.y;
         vert.z = data[idx++] + mypos.z;
 
-        m_verts[type].push_back(vert);
+        blockMesh[type].vertices.push_back(vert);
     }
 
     // Push Back Indices
-    m_index[type].push_back(idx_counter[type]);
-    m_index[type].push_back(idx_counter[type] + 1);
-    m_index[type].push_back(idx_counter[type] + 2);
-    m_index[type].push_back(idx_counter[type] + 2);
-    m_index[type].push_back(idx_counter[type] + 3);
-    m_index[type].push_back(idx_counter[type] + 0);
+    blockMesh[type].indices.push_back(idx_counter[type]);
+    blockMesh[type].indices.push_back(idx_counter[type] + 1);
+    blockMesh[type].indices.push_back(idx_counter[type] + 2);
+    blockMesh[type].indices.push_back(idx_counter[type] + 2);
+    blockMesh[type].indices.push_back(idx_counter[type] + 3);
+    blockMesh[type].indices.push_back(idx_counter[type] + 0);
     idx_counter[type] += 4;
 }
 
@@ -179,10 +179,6 @@ void Drops::draw() {
 
 auto Drops::setup_model(uint8_t type) -> void {
     idx_counter[type] = 0;
-    m_verts[type].clear();
-    m_verts[type].shrink_to_fit();
-    m_index[type].clear();
-    m_index[type].shrink_to_fit();
     blockMesh[type].delete_data();
 
     glm::vec3 p = {-0.5f, -0.5f, -0.5f};

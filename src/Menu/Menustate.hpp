@@ -2,7 +2,7 @@
 #include "../MusicManager.hpp"
 #include "../ResourcePackManager.hpp"
 #include <Core/Application.hpp>
-#include <Graphics/2D/FontRenderer.hpp>
+#include <Graphics/2D/FixedFontRenderer.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Stardust-Celeste.hpp>
 #include <Utilities/Input.hpp>
@@ -54,8 +54,8 @@ class MenuState : public Core::ApplicationState {
     ScopePtr<Graphics::G2D::Sprite> sel_sprite;
     ScopePtr<Graphics::G2D::Sprite> dis_sprite;
 
-    ScopePtr<Graphics::G2D::FontRenderer> fontRenderer;
-    ScopePtr<Graphics::G2D::FontRenderer> splashRenderer;
+    ScopePtr<Graphics::G2D::FixedFontRenderer<512>> fontRenderer;
+    ScopePtr<Graphics::G2D::FixedFontRenderer<64>> splashRenderer;
 
     float scaleFactor;
     float scaleTimer;

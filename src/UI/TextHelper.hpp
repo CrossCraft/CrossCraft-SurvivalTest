@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Graphics/2D/FontRenderer.hpp>
+#include <Graphics/2D/FixedFontRenderer.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Rendering/Rendering.hpp>
 #include <Utilities/Types.hpp>
@@ -81,7 +81,7 @@ class TextHelper {
 
   private:
     uint32_t font_texture;
-    ScopePtr<Graphics::G2D::FontRenderer> fontRenderer;
+    ScopePtr<Graphics::G2D::FixedFontRenderer<1024>> fontRenderer;
     std::vector<glm::vec3> posBox;
     ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;
 

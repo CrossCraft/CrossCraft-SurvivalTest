@@ -48,7 +48,7 @@ void DeathParticleSystem::initialize(uint32_t type, glm::vec3 pos) {
 }
 
 void DeathParticleSystem::generate() {
-    mesh.delete_data();
+    mesh.clear_data();
 
     if (particles.size() <= 0)
         return;

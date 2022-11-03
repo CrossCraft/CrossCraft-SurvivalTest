@@ -95,9 +95,9 @@ void MenuState::on_start() {
                              {200.0f / 256.0f, 20.0f / 256.0f}});
     dis_sprite->set_layer(-1);
 
-    fontRenderer = create_scopeptr<Graphics::G2D::FontRenderer>(
+    fontRenderer = create_scopeptr<Graphics::G2D::FixedFontRenderer<512>>(
         font_texture, glm::vec2(16, 16));
-    splashRenderer = create_scopeptr<Graphics::G2D::FontRenderer>(
+    splashRenderer = create_scopeptr<Graphics::G2D::FixedFontRenderer<64>>(
         font_texture, glm::vec2(16, 16));
 
     scaleFactor = 1.3f;

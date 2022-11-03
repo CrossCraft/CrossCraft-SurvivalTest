@@ -200,8 +200,6 @@ Player::Player()
     rot = {0, 0};
     vel = {0, 0, 0};
 
-    countChange = true;
-
 #if BUILD_PC
     glfwSetCharCallback(GI::window, character_callback);
 #endif
@@ -453,22 +451,12 @@ auto Player::draw(World *wrld) -> void {
         auto ipos = glm::ivec3(static_cast<int>(pos.x), static_cast<int>(pos.y),
                                static_cast<int>(pos.z));
 
-        bool change = in_inv_delta != in_inventory ||
-                      in_chat_delta != in_chat || fps_count == 0 ||
-                      prev_ipos != ipos || chat_size != chat->data.size() ||
-                      selector_block_prev != selectedBlock ||
-                      selector_idx_prev != selectorIDX ||
-                      chat_text_size != chat_text.size() || in_tab ||
-                      countChange || air != 10.0f;
-
-        if (change)
-            playerHUD->clear();
+        playerHUD->clear();
 
         if (is_head_water) {
             water->draw();
         }
 
-        if (change) {
             if (in_inventory) {
                 playerHUD->draw_text("Select block", CC_TEXT_COLOR_WHITE,
                                      CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
@@ -484,7 +472,7 @@ auto Player::draw(World *wrld) -> void {
             selector_block_prev = selectedBlock;
             selector_idx_prev = selectorIDX;
             in_inv_delta = in_inventory;
-        }
+        
         if (in_inventory || in_tab) {
             if (in_tab) {
                 Rendering::RenderContext::get().matrix_scale(
@@ -503,7 +491,6 @@ auto Player::draw(World *wrld) -> void {
         item_box->draw();
         selector->draw();
 
-        if (change) {
             playerHUD->draw_text("Position: " + std::to_string((int)ipos.x) +
                                      ", " + std::to_string((int)ipos.y) + ", " +
                                      std::to_string((int)ipos.z),
@@ -511,24 +498,19 @@ auto Player::draw(World *wrld) -> void {
                                  CC_TEXT_ALIGN_TOP, 0, 0, CC_TEXT_BG_DYNAMIC);
 
             prev_ipos = ipos;
-        }
 
-        if (change)
             playerHUD->draw_text("FPS: " + std::to_string(fps_display),
                                  CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
                                  CC_TEXT_ALIGN_TOP, 0, 0, false);
 
-        if (change)
             playerHUD->draw_text("&fScore: &e" + std::to_string(score),
                                  CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
                                  CC_TEXT_ALIGN_TOP, 5, -1, false);
 
-        if (change)
             playerHUD->draw_text("Arrows: " + std::to_string(arrows),
                                  CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
                                  CC_TEXT_ALIGN_CENTER, -29, -10, false);
 
-        if (change) {
             int i = 9;
             for (int x = chat->data.size() - 1; x >= 0; x--) {
                 auto &p = chat->data.at(x);
@@ -541,9 +523,9 @@ auto Player::draw(World *wrld) -> void {
                 i--;
             }
             chat_size = chat->data.size();
-        }
+        
 
-        if (in_chat && change) {
+        if (in_chat) {
             playerHUD->draw_text("> " + chat_text, CC_TEXT_COLOR_WHITE,
                                  CC_TEXT_ALIGN_LEFT, CC_TEXT_ALIGN_BOTTOM, 0, 0,
                                  5);
@@ -552,19 +534,20 @@ auto Player::draw(World *wrld) -> void {
         chat_text_size = chat_text.size();
         in_chat_delta = in_chat;
 
-        if (change) {
             for (int i = 0; i < 9; i++) {
                 int count = (int)itemSelections[i].quantity;
+                blockRep->drawBlk(itemSelections[i].type, i, 0, 3, 10);
+
+
                 if (count > 1) {
                     playerHUD->draw_text(
                         std::to_string(count), CC_TEXT_COLOR_WHITE,
                         CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, 0, false,
                         -77 + i * 20, -124);
                 }
+
             }
 
-            countChange = false;
-        }
 
         if (air < 10) {
             for (int i = 0; i < air; i++) {
@@ -575,7 +558,6 @@ auto Player::draw(World *wrld) -> void {
         }
         Rendering::RenderContext::get().matrix_clear();
 
-        if (change)
             playerHUD->rebuild();
 
         for (int i = 0; i < 10; i++) {

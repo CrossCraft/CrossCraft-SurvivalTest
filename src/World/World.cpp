@@ -46,6 +46,7 @@ World::World(std::shared_ptr<Player> p) {
     clouds = create_scopeptr<Clouds>();
     psystem = create_scopeptr<BreakParticleSystem>(terrain_atlas);
     dpsystem = create_scopeptr<DeathParticleSystem>(particle_atlas);
+    dpsystem->initialize(0, {0, 0, 0});
     wpsystem = create_scopeptr<WeatherParticleSystem>(
         ResourcePackManager::get().load_texture(
             "assets/minecraft/textures/rain.png", SC_TEX_FILTER_NEAREST,
