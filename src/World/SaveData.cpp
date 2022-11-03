@@ -166,15 +166,25 @@ auto SaveData::load_world(World *wrld) -> bool {
 
         // PLAYER DATA
         gzread(save_file, &wrld->player->pos, sizeof(glm::vec3));
-        gzread(save_file, &wrld->player->HP, sizeof(uint8_t));
-        gzread(save_file, &wrld->player->arrows, sizeof(uint8_t));
-        gzread(save_file, &wrld->player->score, sizeof(uint16_t));
-        gzread(save_file, &wrld->player->air, sizeof(uint16_t));
 
-        for (int i = 0; i < 9; i++) {
-            gzread(save_file, &wrld->player->itemSelections[i],
-                   sizeof(SlotInfo));
-        }
+        int hp = 0;
+        gzread(save_file, &hp, sizeof(int));
+        wrld->player->HP = hp;
+
+        int arrows = 0;
+        gzread(save_file, &arrows, sizeof(int));
+        wrld->player->arrows = arrows;
+
+        int score = 0;
+        gzread(save_file, &score, sizeof(int));
+        wrld->player->score = score;
+
+        int air = 0;
+        gzread(save_file, &air, sizeof(int));
+        wrld->player->air = air;
+
+        gzread(save_file, wrld->player->itemSelections,
+            sizeof(SlotInfo));
 
         gzclose(save_file);
 
@@ -210,15 +220,17 @@ auto SaveData::save(std::any p) -> void {
 
         // PLAYER DATA
         gzwrite(save_file, &wrld->player->pos, sizeof(glm::vec3));
-        gzwrite(save_file, &wrld->player->HP, sizeof(uint8_t));
-        gzwrite(save_file, &wrld->player->arrows, sizeof(uint8_t));
-        gzwrite(save_file, &wrld->player->score, sizeof(uint16_t));
-        gzwrite(save_file, &wrld->player->air, sizeof(int8_t));
 
-        for (int i = 0; i < 9; i++) {
-            gzwrite(save_file, &wrld->player->itemSelections[i],
-                    sizeof(SlotInfo));
-        }
+        int hp = wrld->player->HP;
+        gzwrite(save_file, &hp, sizeof(int));
+        int arrows = wrld->player->arrows;
+        gzwrite(save_file, &arrows, sizeof(int));
+        int score = wrld->player->score;
+        gzwrite(save_file, &score, sizeof(int));
+        int air = wrld->player->air;
+        gzwrite(save_file, &wrld->player->air, sizeof(int));
+
+        gzwrite(save_file, wrld->player->itemSelections, sizeof(SlotInfo));
 
         gzclose(save_file);
     }
