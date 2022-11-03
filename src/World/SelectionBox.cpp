@@ -249,7 +249,7 @@ auto SelectionBox::draw() -> void {
     auto ctx = &Rendering::RenderContext::get();
 
     ctx->matrix_translate(glm::vec3(position.x, position.y, position.z));
-    // blockMesh[0].draw_lines();
+    blockMesh[0].draw(Rendering::PrimType::PRIM_TYPE_LINE);
 
     ctx->matrix_clear();
     return;

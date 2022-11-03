@@ -87,7 +87,10 @@
         "csignal": "cpp",
         "future": "cpp",
         "shared_mutex": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "valarray": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureOnOpen": false,
