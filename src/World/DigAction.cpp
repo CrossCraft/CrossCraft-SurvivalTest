@@ -63,12 +63,12 @@ auto DigAction::dig(std::any d) -> void {
         }
         return;
     }
+#endif
 
     if (!w->player->isAlive) {
         w->player->respawn(w->player->spawnPoint);
         return;
     }
-#endif
 
     w->player->blockRep->trigger_swing();
 
