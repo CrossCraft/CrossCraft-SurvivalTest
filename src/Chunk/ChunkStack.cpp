@@ -60,6 +60,20 @@ auto ChunkStack::update_check(World *wrld, int blkr, glm::ivec3 chk) -> void {
                 wrld->update_surroundings(chk.x, chk.z);
 
                 updated.push_back(chk);
+            } else if (blkr == Block::Lava) {
+                uint16_t x = chk.x / 16;
+                uint16_t y = chk.z / 16;
+                uint32_t id = x << 16 | (y & 0x00FF);
+
+                wrld->worldData[idx] = 10;
+                wrld->update_lighting(chk.x, chk.z);
+
+                if (wrld->chunks.find(id) != wrld->chunks.end())
+                    wrld->chunks[id]->generate(wrld);
+
+                wrld->update_surroundings(chk.x, chk.z);
+
+                updated.push_back(chk);
             } else if (blkr == Block::Sapling || blkr == Block::Flower1 ||
                        blkr == Block::Flower2 || blkr == Block::Mushroom1 ||
                        blkr == Block::Mushroom2) {
@@ -122,6 +136,44 @@ auto ChunkStack::update_check(World *wrld, int blkr, glm::ivec3 chk) -> void {
                 updated.push_back(chk);
             }
         }
+
+        if ((blk == Block::Water || blk == Block::Still_Water) &&
+            blkr == Block::Lava) {
+            uint16_t x = chk.x / 16;
+            uint16_t y = chk.z / 16;
+            uint32_t id = x << 16 | (y & 0x00FF);
+
+            wrld->worldData[idx] = Block::Stone;
+            wrld->update_lighting(chk.x, chk.z);
+
+            wrld->update_nearby_blocks({chk.x, chk.y + 1, chk.z});
+
+            if (wrld->chunks.find(id) != wrld->chunks.end())
+                wrld->chunks[id]->generate(wrld);
+
+            wrld->update_surroundings(chk.x, chk.z);
+
+            updated.push_back(chk);
+        }
+
+        if ((blk == Block::Lava || blk == Block::Still_Lava) &&
+            blkr == Block::Water) {
+            uint16_t x = chk.x / 16;
+            uint16_t y = chk.z / 16;
+            uint32_t id = x << 16 | (y & 0x00FF);
+
+            wrld->worldData[idx] = Block::Obsidian;
+            wrld->update_lighting(chk.x, chk.z);
+
+            wrld->update_nearby_blocks({chk.x, chk.y + 1, chk.z});
+
+            if (wrld->chunks.find(id) != wrld->chunks.end())
+                wrld->chunks[id]->generate(wrld);
+
+            wrld->update_surroundings(chk.x, chk.z);
+
+            updated.push_back(chk);
+        }
     }
 }
 
@@ -145,7 +197,7 @@ void ChunkStack::chunk_update(World *wrld) {
         auto idx = wrld->getIdx(pos.x, pos.y, pos.z);
         auto blk = wrld->worldData[idx];
 
-        if (blk == Block::Water) {
+        if (blk == Block::Water || blk == Block::Lava) {
             update_check(wrld, blk, {pos.x, pos.y - 1, pos.z});
             update_check(wrld, blk, {pos.x - 1, pos.y, pos.z});
             update_check(wrld, blk, {pos.x + 1, pos.y, pos.z});
