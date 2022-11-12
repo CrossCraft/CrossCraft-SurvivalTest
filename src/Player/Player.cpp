@@ -412,7 +412,12 @@ void Player::update(float dt, World *wrld) {
         } else {
             view_timer = 0;
         }
-        view_bob = sinf(view_timer * 3.14159 * 3.0f) / 18.0f;
+
+        if (Option::get().bobbing) {
+            view_bob = sinf(view_timer * 3.14159 * 3.0f) / 18.0f;
+        } else {
+            view_bob = 0.0f;
+        }
         cube_bob = cosf(view_timer * 3.14159 * 5.0f) / 44.0f;
 
         // Update camera
@@ -499,13 +504,19 @@ auto Player::draw(World *wrld) -> void {
 
         prev_ipos = ipos;
 
-        playerHUD->draw_text("FPS: " + std::to_string(fps_display),
-                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                             CC_TEXT_ALIGN_TOP, 0, 0, false);
+        if (Option::get().fps) {
+            playerHUD->draw_text("FPS: " + std::to_string(fps_display),
+                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                                 CC_TEXT_ALIGN_TOP, 0, 0, false);
 
-        playerHUD->draw_text("&fScore: &e" + std::to_string(score),
-                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
-                             CC_TEXT_ALIGN_TOP, 5, -1, false);
+            playerHUD->draw_text("&fScore: &e" + std::to_string(score),
+                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                                 CC_TEXT_ALIGN_TOP, 5, -1, false);
+        } else {
+            playerHUD->draw_text("&fScore: &e" + std::to_string(score),
+                                 CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                                 CC_TEXT_ALIGN_TOP, 5, 0, false);
+        }
 
         playerHUD->draw_text("Arrows: " + std::to_string(arrows),
                              CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,

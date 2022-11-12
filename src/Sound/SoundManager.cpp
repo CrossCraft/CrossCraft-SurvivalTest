@@ -1,4 +1,5 @@
 #include "SoundManager.hpp"
+#include "../Option.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
 
@@ -118,6 +119,9 @@ std::string get_step_mat(uint8_t block) {
 }
 
 auto SoundManager::play(uint8_t block, glm::vec3 pos, bool s) -> void {
+    if (!Option::get().sound)
+        return;
+
     if (!s) {
         // Dig
         auto str = get_dig_mat(block);

@@ -1,4 +1,5 @@
 #include "MusicManager.hpp"
+#include "Option.hpp"
 #include "ResourcePackManager.hpp"
 
 namespace CrossCraft {
@@ -23,6 +24,11 @@ MusicManager::MusicManager() {
 MusicManager::~MusicManager() {}
 
 auto MusicManager::update(float dt) -> void {
+    if (!Option::get().music) {
+        music->stop();
+        return;
+    }
+
     if (timer >= 0) {
         timer -= dt;
         music->update();
