@@ -32,19 +32,19 @@ Creeper::~Creeper() {}
 void Creeper::draw(CreeperData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
-    ctx->matrix_translate({sd->pos.x, sd->pos.y - 0.5675f, sd->pos.z});
+    ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.5675f + 0.2f, sd->pos.z});
     ctx->matrix_rotate(glm::vec3(sd->rot, 0.0f));
     ctx->matrix_scale({0.9f, 0.9f, 0.9f});
 
     Rendering::TextureManager::get().bind_texture(tex);
     auto sval = sinf(sd->animationTime * 3.14159f * 4.0f / 3.0f) * 30.0f;
 
-    head.draw({0.0f, 0.0f, 0.0f}, {0, 0, 0}, {1, 1, 1});
-    torso.draw({0.0f, -0.25f, 0.0f}, {0, 0, 0}, {1, 1, 1});
-    leg.draw({-0.25f, -1.0f, 0.125f}, {0, 180, sval}, {-1, 1, 1});
-    leg.draw({-0.25f, -1.0f, -0.125f}, {0, 0, sval}, {1, 1, 1});
-    leg.draw({0.25f, -1.0f, 0.125f}, {0, 180, -sval}, {-1, 1, -1});
-    leg.draw({0.25f, -1.0f, -0.125f}, {0, 0, -sval}, {1, 1, -1});
+    head.draw({0.0f, 1.0f, 0.0f}, {0, 0, 0}, {1, 1, 1});
+    torso.draw({0.0f, 0.75f, 0.0f}, {0, 0, 0}, {1, 1, 1});
+    leg.draw({-0.25f, 0, 0.125f}, {0, 180, sval}, {-1, 1, 1});
+    leg.draw({-0.25f, 0, -0.125f}, {0, 0, sval}, {1, 1, 1});
+    leg.draw({0.25f, 0, 0.125f}, {0, 180, -sval}, {-1, 1, -1});
+    leg.draw({0.25f, 0, -0.125f}, {0, 0, -sval}, {1, 1, -1});
     ctx->matrix_clear();
 }
 } // namespace CrossCraft

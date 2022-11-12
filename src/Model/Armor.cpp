@@ -24,31 +24,32 @@ Armor::Armor() {
 
 Armor::~Armor() {}
 
-void Armor::draw(Mob* sd, ArmorData& adata) {
+void Armor::draw(Mob *sd, ArmorData &adata) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
-    ctx->matrix_translate({sd->pos.x, sd->pos.y - 0.2f, sd->pos.z});
+    ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.8f, sd->pos.z});
     ctx->matrix_rotate(glm::vec3(sd->rot, 0.0f));
     ctx->matrix_scale({1.0f, 1.0f, 1.0f});
 
     Rendering::TextureManager::get().bind_texture(tex);
     auto sval = sinf(sd->animationTime * 3.14159f * 4.0f / 3.0f) * 30.0f;
 
-    if(adata.helmet){
-        head.draw({0.0f, -0.125f, 0.0f}, {0, 0, 0}, {1, 1, 1});
+    if (adata.helmet) {
+        head.draw({0.0f, -0.125f + 1.6f, 0.0f}, {0, 0, 0}, {1, 1, 1});
     }
-    
-    if(adata.torso){
+
+    if (adata.torso) {
 
         if (adata.zombie) {
-            arm.draw({ 0.0f, -0.4375f, 0.375f }, { 0, 180, 90 + sval / 5.0f}, { -1, 1, 1 });
-            arm.draw({ 0.0f, -0.4375f, -0.375f }, { 0, 0, -90 + sval / 5.0f}, { 1, 1, 1 });
-            torso.draw({ 0.0f, -0.25f, 0.0f }, { 0, 0, 0 }, { 1, 1, 1 });
-        }
-        else {
-            arm.draw({ 0.0f, -0.25f, 0.375f }, { 0, 180, sval }, { -1, 1, 1 });
-            arm.draw({ 0.0f, -0.25f, -0.375f }, { 0, 0, sval }, { 1, 1, 1 });
-            torso.draw({ 0.0f, -0.25f, 0.0f }, { 0, 0, 0 }, { 1, 1, 1 });
+            arm.draw({0.0f, -0.4375f + 1.6f, 0.375f},
+                     {0, 180, 90 + sval / 5.0f}, {-1, 1, 1});
+            arm.draw({0.0f, -0.4375f + 1.6f, -0.375f},
+                     {0, 0, -90 + sval / 5.0f}, {1, 1, 1});
+            torso.draw({0.0f, -0.25f + 1.6f, 0.0f}, {0, 0, 0}, {1, 1, 1});
+        } else {
+            arm.draw({0.0f, -0.25f + 1.6f, 0.375f}, {0, 180, sval}, {-1, 1, 1});
+            arm.draw({0.0f, -0.25f + 1.6f, -0.375f}, {0, 0, sval}, {1, 1, 1});
+            torso.draw({0.0f, -0.25f + 1.6f, 0.0f}, {0, 0, 0}, {1, 1, 1});
         }
     }
 
