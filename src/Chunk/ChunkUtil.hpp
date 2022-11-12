@@ -7,7 +7,7 @@
 using namespace Stardust_Celeste;
 
 namespace CrossCraft::Chunk {
-enum MeshSelection { Opaque = 1, Transparent = 2, Flora = 3 };
+enum MeshSelection { Opaque = 1, Transparent = 2 };
 
 struct SurroundPos {
     glm::vec3 up;
@@ -69,15 +69,12 @@ struct MeshInst {
 struct MeshCollection {
     MeshInst opaque;
     MeshInst transparent;
-    MeshInst flora;
 
     inline auto select(MeshSelection meshSel) -> MeshInst * {
         if (meshSel == MeshSelection::Opaque)
             return &opaque;
         else if (meshSel == MeshSelection::Transparent)
             return &transparent;
-        else if (meshSel == MeshSelection::Flora)
-            return &flora;
 
         return &opaque;
     }

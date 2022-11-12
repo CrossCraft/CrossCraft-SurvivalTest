@@ -371,11 +371,6 @@ void World::draw() {
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
     if (chunk_reverse_sorted.size() > 0) {
-        // Draw flora
-        for (auto const &[key, val] : chunk_reverse_sorted) {
-            if (val != nullptr)
-                val->draw_flora();
-        }
         // Draw transparent
         for (auto const &[key, val] : chunk_reverse_sorted) {
             if (val != nullptr)

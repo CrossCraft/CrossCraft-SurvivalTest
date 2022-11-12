@@ -278,7 +278,10 @@ auto BlockRep::drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void {
         blockMesh[type].setup_buffer();
     }
 
-    GI::set_culling_mode(false, true);
+    if (type == 50)
+        GI::set_culling_mode(false, false);
+    else
+        GI::set_culling_mode(false, true);
 
     if (type == 50)
         Rendering::TextureManager::get().bind_texture(player_tex);

@@ -391,12 +391,4 @@ void Stack::draw_transparent() {
     }
 }
 
-void Stack::draw_flora() {
-    // Draw transparent meshes
-    for (int i = 0; i < 4; i++) {
-        if (wasRendered[i])
-            stack[i]->draw(MeshSelection::Flora);
-    }
-}
-
 } // namespace CrossCraft::Chunk

@@ -81,8 +81,6 @@ class Stack {
      */
     void draw_transparent();
 
-    void draw_flora();
-
     /**
      * @brief Get the position
      *

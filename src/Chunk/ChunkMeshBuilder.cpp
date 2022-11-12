@@ -127,7 +127,7 @@ void MeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
             } else if (blk == Block::Glass &&
                        wrld->worldData[idx] != Block::Glass) {
                 add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal),
-                                 pos, lv, MeshSelection::Flora);
+                                 pos, lv, MeshSelection::Transparent);
             } else {
                 if (blk != Block::Water && blk != Block::Glass)
                     add_face_to_mesh(chunkMesh, data,
