@@ -7,9 +7,11 @@ using namespace Stardust_Celeste;
 
 namespace CrossCraft {
 class World;
+
+namespace Chunk {
 class ChunkMesh;
 
-class ChunkMeshBuilder {
+class MeshBuilder {
   public:
     static void try_add_face(ChunkMesh *chunkMesh, const World *wrld,
                              std::array<float, 12> data, uint8_t blk,
@@ -19,13 +21,12 @@ class ChunkMeshBuilder {
     static void add_face_to_mesh(ChunkMesh *chunkMesh,
                                  std::array<float, 12> data,
                                  std::array<float, 8> uv, glm::vec3 pos,
-                                 uint32_t lightVal, ChunkMeshSelection meshSel);
+                                 uint32_t lightVal, MeshSelection meshSel);
 
     static void add_face_to_mesh_wrld(ChunkMesh *chunkMesh, const World *wrld,
                                       std::array<float, 12> data,
                                       std::array<float, 8> uv, glm::vec3 pos,
-                                      uint32_t lightVal,
-                                      ChunkMeshSelection meshSel);
+                                      uint32_t lightVal, MeshSelection meshSel);
 
     static void add_xface_to_mesh(ChunkMesh *chunkMesh, std::array<float, 8> uv,
                                   glm::vec3 pos, uint32_t lightVal,
@@ -40,4 +41,5 @@ class ChunkMeshBuilder {
                                   SurroundPos surround);
 };
 
+} // namespace Chunk
 } // namespace CrossCraft

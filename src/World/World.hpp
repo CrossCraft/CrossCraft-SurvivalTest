@@ -33,6 +33,10 @@
 
 namespace CrossCraft {
 
+namespace Chunk {
+class Stack;
+} // namespace Chunk
+
 struct LayerMeta {
     bool is_empty;
     bool is_full;
@@ -53,7 +57,6 @@ inline auto validate_ivec3(glm::ivec3 ivec, glm::vec3 size) -> bool {
 class Player;
 class SelectionBox;
 typedef uint8_t block_t;
-class ChunkStack;
 class Drops;
 class Arrow;
 class MobManager;
@@ -163,7 +166,7 @@ class World {
 
     auto spawn() -> void;
 
-    std::map<int, ChunkStack *> chunks;
+    std::map<int, Chunk::Stack *> chunks;
     ChunkMeta *chunksMeta;
 
     auto set_block(short x, short y, short z, uint8_t mode, uint8_t block)

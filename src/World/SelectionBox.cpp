@@ -114,18 +114,18 @@ SelectionBox::SelectionBox() {
 
         auto p = glm::vec3(0, 0, 0);
 
-        add_face_to_mesh(topFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP, p,
-                         i);
-        add_face_to_mesh(bottomFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-                         p, i);
-        add_face_to_mesh(leftFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-                         p, i);
-        add_face_to_mesh(rightFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-                         p, i);
-        add_face_to_mesh(frontFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-                         p, i);
-        add_face_to_mesh(backFace, getTexCoord(239 + i, LIGHT_TOP), LIGHT_TOP,
-                         p, i);
+        add_face_to_mesh(topFace, Chunk::getTexCoord(239 + i, LIGHT_TOP),
+                         LIGHT_TOP, p, i);
+        add_face_to_mesh(bottomFace, Chunk::getTexCoord(239 + i, LIGHT_TOP),
+                         LIGHT_TOP, p, i);
+        add_face_to_mesh(leftFace, Chunk::getTexCoord(239 + i, LIGHT_TOP),
+                         LIGHT_TOP, p, i);
+        add_face_to_mesh(rightFace, Chunk::getTexCoord(239 + i, LIGHT_TOP),
+                         LIGHT_TOP, p, i);
+        add_face_to_mesh(frontFace, Chunk::getTexCoord(239 + i, LIGHT_TOP),
+                         LIGHT_TOP, p, i);
+        add_face_to_mesh(backFace, Chunk::getTexCoord(239 + i, LIGHT_TOP),
+                         LIGHT_TOP, p, i);
 
         blockMesh[i].setup_buffer();
     }

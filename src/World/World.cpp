@@ -232,7 +232,7 @@ void World::update(double dt) {
                 value->rtick_update(this);
 
             // Chunk Updates
-            value->chunk_update(this);
+            value->update(this);
 
             value->post_update(this);
         }
@@ -252,7 +252,7 @@ void World::update(double dt) {
 
         // Check what we have - what we still need
 
-        std::map<int, ChunkStack *> existing_chunks;
+        std::map<int, Chunk::Stack *> existing_chunks;
 
         for (auto &ipos : needed) {
             uint16_t x = ipos.x;
@@ -296,7 +296,7 @@ void World::update(double dt) {
 
             if (ipos.x >= 0 && ipos.x < (world_size.x / 16) && ipos.y >= 0 &&
                 ipos.y < (world_size.z / 16)) {
-                ChunkStack *stack = new ChunkStack(ipos.x, ipos.y);
+                Chunk::Stack *stack = new Chunk::Stack(ipos.x, ipos.y);
                 stack->generate(this);
 
                 uint16_t x = ipos.x;
@@ -304,7 +304,7 @@ void World::update(double dt) {
                 uint32_t id = x << 16 | (y & 0x00FF);
                 chunks.emplace(id, stack);
             } else if (cfg.compat) {
-                ChunkStack *stack = new ChunkStack(ipos.x, ipos.y);
+                Chunk::Stack *stack = new Chunk::Stack(ipos.x, ipos.y);
                 stack->generate_border();
 
                 uint16_t x = ipos.x;
@@ -336,14 +336,14 @@ void World::draw() {
     GI::enable(GI_DEPTH_TEST);
     GI::set_culling_mode(true, true);
 
-    std::map<float, ChunkStack *> chunk_sorted;
-    std::map<float, ChunkStack *, std::greater<float>> chunk_reverse_sorted;
+    std::map<float, Chunk::Stack *> chunk_sorted;
+    std::map<float, Chunk::Stack *, std::greater<float>> chunk_reverse_sorted;
     chunk_sorted.clear();
     chunk_reverse_sorted.clear();
 
     for (auto const &[key, val] : chunks) {
-        glm::vec2 relative_chunk_pos = glm::vec2(
-            val->get_chunk_pos().x * 16.0f, val->get_chunk_pos().y * 16.0f);
+        glm::vec2 relative_chunk_pos =
+            glm::vec2(val->get_pos().x * 16.0f, val->get_pos().y * 16.0f);
         auto diff =
             glm::vec2(player->pos.x, player->pos.z) - relative_chunk_pos;
         auto len = fabsf(sqrtf(diff.x * diff.x + diff.y * diff.y));

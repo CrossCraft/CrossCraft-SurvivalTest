@@ -3,8 +3,8 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtx/rotate_vector.hpp>
 
-namespace CrossCraft {
-ChunkStack::ChunkStack(int x, int z) : cX(x), cZ(z) {
+namespace CrossCraft::Chunk {
+Stack::Stack(int x, int z) : cX(x), cZ(z) {
     // Create new meshes
     for (int i = 0; i < 4; i++) {
         ChunkMesh *mesh = new ChunkMesh(cX, i, cZ);
@@ -13,7 +13,7 @@ ChunkStack::ChunkStack(int x, int z) : cX(x), cZ(z) {
     border = false;
 }
 
-ChunkStack::~ChunkStack() {
+Stack::~Stack() {
     // Destroy all meshes
     for (int i = 0; i < 4; i++) {
         delete stack[i];
@@ -39,7 +39,7 @@ auto water_can_flow(glm::ivec3 ivec, World *wrld) -> bool {
     return true;
 }
 
-auto ChunkStack::update_check(World *wrld, int blkr, glm::ivec3 chk) -> void {
+auto Stack::update_check(World *wrld, int blkr, glm::ivec3 chk) -> void {
     if (is_valid(chk)) {
         auto idx = wrld->getIdx(chk.x, chk.y, chk.z);
 
@@ -182,7 +182,7 @@ auto ChunkStack::update_check(World *wrld, int blkr, glm::ivec3 chk) -> void {
  *
  * @param wrld The world to reference
  */
-void ChunkStack::chunk_update(World *wrld) {
+void Stack::update(World *wrld) {
     // Update this chunk
 
     std::vector<glm::ivec3> newV;
@@ -221,7 +221,7 @@ void ChunkStack::chunk_update(World *wrld) {
     }
 }
 
-void ChunkStack::post_update(World *wrld) {
+void Stack::post_update(World *wrld) {
     for (auto &v : updated) {
         wrld->update_nearby_blocks(v);
     }
@@ -234,14 +234,14 @@ void ChunkStack::post_update(World *wrld) {
  *
  * @param wrld The world to reference
  */
-void ChunkStack::rtick_update(World *wrld) {
+void Stack::rtick_update(World *wrld) {
     // RTick each section
     for (int i = 0; i < 4; i++) {
         stack[i]->rtick(wrld);
     }
 }
 
-void ChunkStack::generate(World *wrld) {
+void Stack::generate(World *wrld) {
     // Generate meshes
     for (int i = 0; i < 4; i++) {
         if (stack[i] != nullptr && wrld != nullptr) {
@@ -258,7 +258,7 @@ void ChunkStack::generate(World *wrld) {
     }
 }
 
-void ChunkStack::generate_border() {
+void Stack::generate_border() {
     // Generate meshes
     stack[0]->generate_border();
     stack[1]->generate_border();
@@ -268,7 +268,7 @@ void ChunkStack::generate_border() {
     border = true;
 }
 
-bool ChunkStack::check_visible(World *wrld, glm::vec3 posCheck, int cY) {
+bool Stack::check_visible(World *wrld, glm::vec3 posCheck, int cY) {
     auto pos = wrld->player->get_pos();
     pos.y -= (1.80f - 1.5965f);
 
@@ -308,7 +308,7 @@ bool ChunkStack::check_visible(World *wrld, glm::vec3 posCheck, int cY) {
     return true;
 }
 
-void ChunkStack::draw(World *wrld) {
+void Stack::draw(World *wrld) {
     // Draw meshes
     for (int i = 0; i < 4; i++) {
         wasRendered[i] = false;
@@ -376,27 +376,27 @@ void ChunkStack::draw(World *wrld) {
 #endif
 
             if (visible || len <= 33.0f) {
-                stack[i]->draw(ChunkMeshSelection::Opaque);
+                stack[i]->draw(MeshSelection::Opaque);
                 wasRendered[i] = true;
             }
         }
     }
 }
 
-void ChunkStack::draw_transparent() {
+void Stack::draw_transparent() {
     // Draw transparent meshes
     for (int i = 0; i < 4; i++) {
         if (wasRendered[i])
-            stack[i]->draw(ChunkMeshSelection::Transparent);
+            stack[i]->draw(MeshSelection::Transparent);
     }
 }
 
-void ChunkStack::draw_flora() {
+void Stack::draw_flora() {
     // Draw transparent meshes
     for (int i = 0; i < 4; i++) {
         if (wasRendered[i])
-            stack[i]->draw(ChunkMeshSelection::Flora);
+            stack[i]->draw(MeshSelection::Flora);
     }
 }
 
-} // namespace CrossCraft
+} // namespace CrossCraft::Chunk

@@ -10,7 +10,7 @@ BreakParticleSystem::~BreakParticleSystem() {}
 auto rand_pos() -> float { return ((rand() % 16) - 8) * (1.0f / 16.0f); }
 float timer = 0.0f;
 auto bind_texture(BreakParticle &particle, uint32_t type) -> void {
-    particle.uv = getTexCoord(type, 0xFFCCCCCC);
+    particle.uv = Chunk::getTexCoord(type, 0xFFCCCCCC);
 
     const float UV_SIZE = (2.0f / 16.0f) / 16.0f;
     glm::vec2 uv_offset = glm::vec2(particle.uv[6], particle.uv[7]);

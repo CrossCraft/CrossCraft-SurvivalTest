@@ -20,17 +20,17 @@ TNT::TNT() {
     blockMesh.delete_data();
 
     glm::vec3 p = {0, 0, 0};
-    add_face_to_mesh(topFace, getTexCoord(Block::TNT, LIGHT_TOP), LIGHT_TOP, p,
-                     0);
-    add_face_to_mesh(bottomFace, getTexCoord(Block::TNT, LIGHT_BOT), LIGHT_BOT,
-                     p, 0);
-    add_face_to_mesh(leftFace, getTexCoord(Block::TNT, LIGHT_SIDE_X),
+    add_face_to_mesh(topFace, Chunk::getTexCoord(Block::TNT, LIGHT_TOP),
+                     LIGHT_TOP, p, 0);
+    add_face_to_mesh(bottomFace, Chunk::getTexCoord(Block::TNT, LIGHT_BOT),
+                     LIGHT_BOT, p, 0);
+    add_face_to_mesh(leftFace, Chunk::getTexCoord(Block::TNT, LIGHT_SIDE_X),
                      LIGHT_SIDE_X, p, 0);
-    add_face_to_mesh(rightFace, getTexCoord(Block::TNT, LIGHT_SIDE_X),
+    add_face_to_mesh(rightFace, Chunk::getTexCoord(Block::TNT, LIGHT_SIDE_X),
                      LIGHT_SIDE_X, p, 0);
-    add_face_to_mesh(frontFace, getTexCoord(Block::TNT, LIGHT_SIDE_Z),
+    add_face_to_mesh(frontFace, Chunk::getTexCoord(Block::TNT, LIGHT_SIDE_Z),
                      LIGHT_SIDE_Z, p, 0);
-    add_face_to_mesh(backFace, getTexCoord(Block::TNT, LIGHT_SIDE_Z),
+    add_face_to_mesh(backFace, Chunk::getTexCoord(Block::TNT, LIGHT_SIDE_Z),
                      LIGHT_SIDE_Z, p, 0);
     blockMesh.setup_buffer();
 }

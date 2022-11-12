@@ -15,15 +15,16 @@
 #include <glm.hpp>
 #include <vector>
 namespace CrossCraft {
-
 class World;
+namespace Chunk {
+
 class ChunkMesh;
 
 /**
  * @brief Chunk Stack
  *
  */
-class ChunkStack {
+class Stack {
   public:
     /**
      * @brief Construct a new Chunk Stack object
@@ -31,13 +32,13 @@ class ChunkStack {
      * @param x X Position
      * @param z Y Position
      */
-    ChunkStack(int x, int z);
+    Stack(int x, int z);
 
     /**
-     * @brief Destroy the Chunk Stack object
+     * @brief Destroy the  Stack object
      *
      */
-    ~ChunkStack();
+    ~Stack();
 
     /**
      * @brief Generate the stack
@@ -53,11 +54,11 @@ class ChunkStack {
     void generate_border();
 
     /**
-     * @brief Update Chunk
+     * @brief Update
      *
      * @param wrld The world to reference
      */
-    void chunk_update(World *wrld);
+    void update(World *wrld);
 
     /**
      * @brief Random Tick Update
@@ -69,13 +70,13 @@ class ChunkStack {
     void post_update(World *wrld);
 
     /**
-     * @brief Draw the chunk stack
+     * @brief Draw the  stack
      *
      */
     void draw(World *wrld);
 
     /**
-     * @brief Draw the transparent chunks
+     * @brief Draw the transparent
      *
      */
     void draw_transparent();
@@ -83,11 +84,11 @@ class ChunkStack {
     void draw_flora();
 
     /**
-     * @brief Get the chunk position
+     * @brief Get the position
      *
      * @return glm::ivec2
      */
-    inline auto get_chunk_pos() -> glm::ivec2 { return {cX, cZ}; }
+    inline auto get_pos() -> glm::ivec2 { return {cX, cZ}; }
 
     std::vector<glm::ivec3> posUpdate;
     bool border;
@@ -103,4 +104,5 @@ class ChunkStack {
     int cX, cZ;
 };
 
+} // namespace Chunk
 } // namespace CrossCraft

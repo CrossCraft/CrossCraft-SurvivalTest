@@ -1,8 +1,9 @@
 #include "ChunkMesh.hpp"
 #include "../World/Generation/WorldGenUtil.hpp"
+#include "../World/World.hpp"
 #include "ChunkMeshBuilder.hpp"
 
-namespace CrossCraft {
+namespace CrossCraft::Chunk {
 
 ChunkMesh::ChunkMesh(int x, int y, int z)
     : needsRegen(0), cX(x), cY(y), cZ(z), rtcounter(0) {
@@ -124,9 +125,8 @@ void ChunkMesh::layer_check(World *wrld, int y) {
                 SurroundPos surround;
                 surround.update(x, y, z);
 
-                ChunkMeshBuilder::try_add_face(this, wrld, bottomFace, blk,
-                                               {x, y, z}, surround.down,
-                                               LIGHT_BOT);
+                MeshBuilder::try_add_face(this, wrld, bottomFace, blk,
+                                          {x, y, z}, surround.down, LIGHT_BOT);
             }
         }
     }
@@ -147,9 +147,8 @@ void ChunkMesh::layer_check(World *wrld, int y) {
                 SurroundPos surround;
                 surround.update(x, y, z);
 
-                ChunkMeshBuilder::try_add_face(this, wrld, bottomFace, blk,
-                                               {x, y, z}, surround.down,
-                                               LIGHT_BOT);
+                MeshBuilder::try_add_face(this, wrld, bottomFace, blk,
+                                          {x, y, z}, surround.down, LIGHT_BOT);
             }
         }
     }
@@ -169,8 +168,8 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        ChunkMeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                       surround.left, LIGHT_SIDE_X);
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
+                                  surround.left, LIGHT_SIDE_X);
     }
 
     // Right check
@@ -188,8 +187,8 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        ChunkMeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                       surround.right, LIGHT_SIDE_X);
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
+                                  surround.right, LIGHT_SIDE_X);
     }
 
     // Back check
@@ -207,8 +206,8 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        ChunkMeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                       surround.back, LIGHT_SIDE_Z);
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
+                                  surround.back, LIGHT_SIDE_Z);
     }
 
     // Front check
@@ -226,8 +225,8 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        ChunkMeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                       surround.front, LIGHT_SIDE_Z);
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
+                                  surround.front, LIGHT_SIDE_Z);
     }
 }
 
@@ -252,8 +251,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            ChunkMeshBuilder::try_add_face(this, wrld, bottomFace, blk,
-                                           {x, y, z}, surround.down, LIGHT_BOT);
+            MeshBuilder::try_add_face(this, wrld, bottomFace, blk, {x, y, z},
+                                      surround.down, LIGHT_BOT);
         }
     }
 
@@ -273,8 +272,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            ChunkMeshBuilder::try_add_face(this, wrld, topFace, blk, {x, y, z},
-                                           surround.up, LIGHT_TOP);
+            MeshBuilder::try_add_face(this, wrld, topFace, blk, {x, y, z},
+                                      surround.up, LIGHT_TOP);
         }
     }
 
@@ -294,8 +293,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            ChunkMeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                           surround.left, LIGHT_SIDE_X);
+            MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
+                                      surround.left, LIGHT_SIDE_X);
         }
     }
 
@@ -315,9 +314,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            ChunkMeshBuilder::try_add_face(this, wrld, rightFace, blk,
-                                           {x, y, z}, surround.right,
-                                           LIGHT_SIDE_X);
+            MeshBuilder::try_add_face(this, wrld, rightFace, blk, {x, y, z},
+                                      surround.right, LIGHT_SIDE_X);
         }
     }
 
@@ -338,8 +336,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            ChunkMeshBuilder::try_add_face(this, wrld, backFace, blk, {x, y, z},
-                                           surround.back, LIGHT_SIDE_Z);
+            MeshBuilder::try_add_face(this, wrld, backFace, blk, {x, y, z},
+                                      surround.back, LIGHT_SIDE_Z);
         }
     }
 
@@ -360,9 +358,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            ChunkMeshBuilder::try_add_face(this, wrld, frontFace, blk,
-                                           {x, y, z}, surround.front,
-                                           LIGHT_SIDE_Z);
+            MeshBuilder::try_add_face(this, wrld, frontFace, blk, {x, y, z},
+                                      surround.front, LIGHT_SIDE_Z);
         }
     }
 }
@@ -414,7 +411,7 @@ void ChunkMesh::generate(const World *wrld) {
                     if (blk == Block::Flower1 || blk == Block::Flower2 ||
                         blk == Block::Mushroom1 || blk == Block::Mushroom2 ||
                         blk == Block::Sapling) {
-                        ChunkMeshBuilder::add_xface_to_mesh(
+                        MeshBuilder::add_xface_to_mesh(
                             this, getTexCoord(blk, LIGHT_TOP), {x, y, z},
                             LIGHT_TOP, wrld);
                         continue;
@@ -427,13 +424,13 @@ void ChunkMesh::generate(const World *wrld) {
                     // Add 6 faces
 
                     if (blk == Block::Slab) {
-                        ChunkMeshBuilder::add_slab_to_mesh(this, wrld, blk,
-                                                           {x, y, z}, surround);
+                        MeshBuilder::add_slab_to_mesh(this, wrld, blk,
+                                                      {x, y, z}, surround);
                         continue;
                     }
 
-                    ChunkMeshBuilder::add_block_to_mesh(this, wrld, blk,
-                                                        {x, y, z}, surround);
+                    MeshBuilder::add_block_to_mesh(this, wrld, blk, {x, y, z},
+                                                   surround);
                 }
             }
         }
@@ -475,64 +472,60 @@ void ChunkMesh::generate_border() {
                 // Add 6 faces
                 if (blk != Block::Water) {
                     if (h == 29) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, topFace, getTexCoord(blk, LIGHT_TOP),
-                            {x, y, z}, LIGHT_TOP, ChunkMeshSelection::Opaque);
+                            {x, y, z}, LIGHT_TOP, MeshSelection::Opaque);
                     }
 
                     if (x == 0) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, leftFace, getTexCoord(blk, LIGHT_SIDE_X),
-                            {x, y, z}, LIGHT_SIDE_X,
-                            ChunkMeshSelection::Opaque);
+                            {x, y, z}, LIGHT_SIDE_X, MeshSelection::Opaque);
                     } else if (x == 15) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, rightFace, getTexCoord(blk, LIGHT_SIDE_X),
-                            {x, y, z}, LIGHT_SIDE_X,
-                            ChunkMeshSelection::Opaque);
+                            {x, y, z}, LIGHT_SIDE_X, MeshSelection::Opaque);
                     }
                     if (z == 0) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, backFace, getTexCoord(blk, LIGHT_SIDE_Z),
-                            {x, y, z}, LIGHT_SIDE_Z,
-                            ChunkMeshSelection::Opaque);
+                            {x, y, z}, LIGHT_SIDE_Z, MeshSelection::Opaque);
                     } else if (z == 15) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, frontFace, getTexCoord(blk, LIGHT_SIDE_Z),
-                            {x, y, z}, LIGHT_SIDE_Z,
-                            ChunkMeshSelection::Opaque);
+                            {x, y, z}, LIGHT_SIDE_Z, MeshSelection::Opaque);
                     }
 
                 } else {
 
                     if (h == 31) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, topFace, getTexCoord(blk, LIGHT_TOP),
                             {x, y - 0.1f, z}, LIGHT_TOP,
-                            ChunkMeshSelection::Transparent);
+                            MeshSelection::Transparent);
                     }
 
                     if (x == 0 && cX == 16) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, leftFace, getTexCoord(blk, LIGHT_SIDE_X),
                             {x, y, z}, LIGHT_SIDE_X,
-                            ChunkMeshSelection::Transparent);
+                            MeshSelection::Transparent);
                     } else if (x == 15 && cX == -1) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, rightFace, getTexCoord(blk, LIGHT_SIDE_X),
                             {x, y, z}, LIGHT_SIDE_X,
-                            ChunkMeshSelection::Transparent);
+                            MeshSelection::Transparent);
                     }
                     if (z == 0 && cZ == 16) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, backFace, getTexCoord(blk, LIGHT_SIDE_Z),
                             {x, y, z}, LIGHT_SIDE_Z,
-                            ChunkMeshSelection::Transparent);
+                            MeshSelection::Transparent);
                     } else if (z == 15 && cZ == -1) {
-                        ChunkMeshBuilder::add_face_to_mesh(
+                        MeshBuilder::add_face_to_mesh(
                             this, frontFace, getTexCoord(blk, LIGHT_SIDE_Z),
                             {x, y, z}, LIGHT_SIDE_Z,
-                            ChunkMeshSelection::Transparent);
+                            MeshSelection::Transparent);
                     }
                 }
             }
@@ -543,7 +536,7 @@ void ChunkMesh::generate_border() {
     finalize_mesh();
 }
 
-void ChunkMesh::draw(ChunkMeshSelection meshSel) {
+void ChunkMesh::draw(MeshSelection meshSel) {
     if (blank)
         return;
 
@@ -557,4 +550,4 @@ void ChunkMesh::draw(ChunkMeshSelection meshSel) {
     Rendering::RenderContext::get().matrix_clear();
 }
 
-} // namespace CrossCraft
+} // namespace CrossCraft::Chunk

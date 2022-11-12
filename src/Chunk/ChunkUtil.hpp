@@ -6,8 +6,8 @@
 
 using namespace Stardust_Celeste;
 
-namespace CrossCraft {
-enum ChunkMeshSelection { Opaque = 1, Transparent = 2, Flora = 3 };
+namespace CrossCraft::Chunk {
+enum MeshSelection { Opaque = 1, Transparent = 2, Flora = 3 };
 
 struct SurroundPos {
     glm::vec3 up;
@@ -28,8 +28,8 @@ struct SurroundPos {
     }
 };
 
-struct ChunkMeshInst {
-    ~ChunkMeshInst() { delete_data(); }
+struct MeshInst {
+    ~MeshInst() { delete_data(); }
 
     inline auto delete_data() -> void {
         mesh.delete_data();
@@ -66,17 +66,17 @@ struct ChunkMeshInst {
     Rendering::Mesh<Rendering::Vertex> mesh;
 };
 
-struct ChunkMeshCollection {
-    ChunkMeshInst opaque;
-    ChunkMeshInst transparent;
-    ChunkMeshInst flora;
+struct MeshCollection {
+    MeshInst opaque;
+    MeshInst transparent;
+    MeshInst flora;
 
-    inline auto select(ChunkMeshSelection meshSel) -> ChunkMeshInst * {
-        if (meshSel == ChunkMeshSelection::Opaque)
+    inline auto select(MeshSelection meshSel) -> MeshInst * {
+        if (meshSel == MeshSelection::Opaque)
             return &opaque;
-        else if (meshSel == ChunkMeshSelection::Transparent)
+        else if (meshSel == MeshSelection::Transparent)
             return &transparent;
-        else if (meshSel == ChunkMeshSelection::Flora)
+        else if (meshSel == MeshSelection::Flora)
             return &flora;
 
         return &opaque;
@@ -273,4 +273,4 @@ inline std::array<float, 8> getTexCoord(uint8_t idx, uint32_t lv) {
     }
 }
 
-} // namespace CrossCraft
+} // namespace CrossCraft::Chunk

@@ -19,6 +19,8 @@ namespace CrossCraft {
 
 class World;
 
+namespace Chunk {
+
 /**
  * @brief Chunk mesh object.
  */
@@ -58,7 +60,7 @@ class ChunkMesh {
      * @brief Draw the chunk mesh
      *
      */
-    void draw(ChunkMeshSelection meshSel);
+    void draw(MeshSelection meshSel);
 
     /**
      * @brief Random Ticks the section
@@ -87,10 +89,11 @@ class ChunkMesh {
     int cX, cY, cZ;
     int rtcounter;
 
-    ChunkMeshCollection meshCollection;
+    MeshCollection meshCollection;
 
-    friend class ChunkMeshBuilder;
+    friend class MeshBuilder;
     bool blank;
 };
 
+} // namespace Chunk
 } // namespace CrossCraft

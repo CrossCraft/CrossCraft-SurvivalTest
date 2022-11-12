@@ -1,17 +1,17 @@
 #include "ChunkMeshBuilder.hpp"
 
-namespace CrossCraft {
+namespace CrossCraft::Chunk {
 
-void ChunkMeshBuilder::add_slab_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
-                                        uint8_t blk, glm::vec3 pos,
-                                        SurroundPos surround) {
+void MeshBuilder::add_slab_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
+                                   uint8_t blk, glm::vec3 pos,
+                                   SurroundPos surround) {
     try_add_face(chunkMesh, wrld, bottomFace, blk, {pos.x, pos.y, pos.z},
                  surround.down, LIGHT_BOT);
 
     // FIXME: have to duplicate and pass world to do a light check.. sigh..
     add_face_to_mesh_wrld(chunkMesh, wrld, topFace, getTexCoord(blk, LIGHT_TOP),
                           {pos.x, pos.y - 0.5f, pos.z}, LIGHT_TOP,
-                          ChunkMeshSelection::Opaque);
+                          MeshSelection::Opaque);
 
     try_add_face(chunkMesh, wrld, leftFaceHalf, blk, pos, surround.left,
                  LIGHT_SIDE_X);
@@ -24,9 +24,9 @@ void ChunkMeshBuilder::add_slab_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
                  LIGHT_SIDE_Z);
 }
 
-void ChunkMeshBuilder::add_block_to_mesh(ChunkMesh *chunkMesh,
-                                         const World *wrld, uint8_t blk,
-                                         glm::vec3 pos, SurroundPos surround) {
+void MeshBuilder::add_block_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
+                                    uint8_t blk, glm::vec3 pos,
+                                    SurroundPos surround) {
 
     try_add_face(chunkMesh, wrld, bottomFace, blk, pos, surround.down,
                  LIGHT_BOT);
@@ -43,10 +43,10 @@ void ChunkMeshBuilder::add_block_to_mesh(ChunkMesh *chunkMesh,
                  LIGHT_SIDE_Z);
 }
 
-void ChunkMeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
-                                    std::array<float, 12> data, uint8_t blk,
-                                    glm::vec3 pos, glm::vec3 posCheck,
-                                    uint32_t lightVal) {
+void MeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
+                               std::array<float, 12> data, uint8_t blk,
+                               glm::vec3 pos, glm::vec3 posCheck,
+                               uint32_t lightVal) {
 
     // Bounds check
     if (!((posCheck.x == -1 && chunkMesh->cX == 0) ||
@@ -119,28 +119,28 @@ void ChunkMeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
                     data2[10] *= 0.9f;
                 }
                 add_face_to_mesh(chunkMesh, data2, getTexCoord(blk, lightVal),
-                                 pos, lv, ChunkMeshSelection::Transparent);
+                                 pos, lv, MeshSelection::Transparent);
 
             } else if (blk == Block::Leaves) {
                 add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal),
-                                 pos, lv, ChunkMeshSelection::Opaque);
+                                 pos, lv, MeshSelection::Opaque);
             } else if (blk == Block::Glass &&
                        wrld->worldData[idx] != Block::Glass) {
                 add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal),
-                                 pos, lv, ChunkMeshSelection::Flora);
+                                 pos, lv, MeshSelection::Flora);
             } else {
                 if (blk != Block::Water && blk != Block::Glass)
                     add_face_to_mesh(chunkMesh, data,
                                      getTexCoord(blk, lightVal), pos, lv,
-                                     ChunkMeshSelection::Opaque);
+                                     MeshSelection::Opaque);
             }
         }
     }
 }
 
-void ChunkMeshBuilder::add_xface_to_mesh(ChunkMesh *chunkMesh,
-                                         std::array<float, 8> uv, glm::vec3 pos,
-                                         uint32_t lightVal, const World *wrld) {
+void MeshBuilder::add_xface_to_mesh(ChunkMesh *chunkMesh,
+                                    std::array<float, 8> uv, glm::vec3 pos,
+                                    uint32_t lightVal, const World *wrld) {
 
     int idxl = ((World *)wrld)
                    ->getIdxl(pos.x + chunkMesh->cX * 16, chunkMesh->cY * 16,
@@ -168,8 +168,7 @@ void ChunkMeshBuilder::add_xface_to_mesh(ChunkMesh *chunkMesh,
     }
 
     // Set data objects
-    auto mesh =
-        chunkMesh->meshCollection.select(ChunkMeshSelection::Transparent);
+    auto mesh = chunkMesh->meshCollection.select(MeshSelection::Transparent);
 
     auto *m = &mesh->mesh.vertices;
     auto *mi = &mesh->mesh.indices;
@@ -274,12 +273,11 @@ void ChunkMeshBuilder::add_xface_to_mesh(ChunkMesh *chunkMesh,
 }
 
 // TODO: REMOVE ME
-void ChunkMeshBuilder::add_face_to_mesh_wrld(ChunkMesh *chunkMesh,
-                                             const World *wrld,
-                                             std::array<float, 12> data,
-                                             std::array<float, 8> uv,
-                                             glm::vec3 pos, uint32_t lightVal,
-                                             ChunkMeshSelection meshSel) {
+void MeshBuilder::add_face_to_mesh_wrld(ChunkMesh *chunkMesh, const World *wrld,
+                                        std::array<float, 12> data,
+                                        std::array<float, 8> uv, glm::vec3 pos,
+                                        uint32_t lightVal,
+                                        MeshSelection meshSel) {
 
     auto mesh = chunkMesh->meshCollection.select(meshSel);
 
@@ -339,11 +337,10 @@ void ChunkMeshBuilder::add_face_to_mesh_wrld(ChunkMesh *chunkMesh,
     (*idc) += 4;
 }
 
-void ChunkMeshBuilder::add_face_to_mesh(ChunkMesh *chunkMesh,
-                                        std::array<float, 12> data,
-                                        std::array<float, 8> uv, glm::vec3 pos,
-                                        uint32_t lightVal,
-                                        ChunkMeshSelection meshSel) {
+void MeshBuilder::add_face_to_mesh(ChunkMesh *chunkMesh,
+                                   std::array<float, 12> data,
+                                   std::array<float, 8> uv, glm::vec3 pos,
+                                   uint32_t lightVal, MeshSelection meshSel) {
 
     auto mesh = chunkMesh->meshCollection.select(meshSel);
 
@@ -378,4 +375,4 @@ void ChunkMeshBuilder::add_face_to_mesh(ChunkMesh *chunkMesh,
     (*idc) += 4;
 }
 
-} // namespace CrossCraft
+} // namespace CrossCraft::Chunk
