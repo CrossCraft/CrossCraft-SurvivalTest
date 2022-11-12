@@ -13,13 +13,7 @@ TextHelper::TextHelper() {
 
     background_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(
         Rendering::Rectangle{glm::vec2(-1, -1), {112, 12}},
-        Rendering::Color{0, 0, 0, 128},
-#if BUILD_PLAT == BUILD_VITA
-        -2
-#else
-        2
-#endif
-    );
+        Rendering::Color{0, 0, 0, 128}, 2);
 }
 
 auto TextHelper::clear() -> void {
@@ -40,18 +34,11 @@ auto TextHelper::draw() -> void {
         Rendering::RenderContext::get().matrix_clear();
     }
 
-#if PSP
-    sceKernelDcacheWritebackInvalidateAll();
-#endif // PSP
+    GI::disable(GI_DEPTH_TEST);
 
-#if BUILD_PLAT == BUILD_VITA
-    glDisable(GL_DEPTH_TEST);
-#endif
     fontRenderer->draw();
 
-#if BUILD_PLAT == BUILD_VITA
-    glEnable(GL_DEPTH_TEST);
-#endif
+    GI::enable(GI_DEPTH_TEST);
 }
 
 auto TextHelper::get_width(std::string text) -> float {

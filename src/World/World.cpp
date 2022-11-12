@@ -332,11 +332,10 @@ void World::draw() {
     } else {
         sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 4.5f * 16.0f, 0x00FFCC99);
     }
-    sceGuEnable(GU_DEPTH_TEST);
-#else
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
 #endif
+    GI::enable(GI_DEPTH_TEST);
+    GI::set_culling_mode(true, true);
+
     std::map<float, ChunkStack *> chunk_sorted;
     std::map<float, ChunkStack *, std::greater<float>> chunk_reverse_sorted;
     chunk_sorted.clear();
@@ -361,10 +360,8 @@ void World::draw() {
         }
     }
 
-#if BUILD_PLAT == BUILD_VITA
-    glEnable(GL_BLEND);
-#elif BUILD_PLAT == BUILD_PSP
-    sceGuEnable(GU_BLEND);
+    GI::enable(GI_BLEND);
+#if PSP
     sceGuEnable(GU_ALPHA_TEST);
 #endif
     drops->draw();

@@ -104,7 +104,6 @@ void MenuState::on_start() {
     scaleTimer = 0.0f;
 
 #if PSP
-    sceKernelDcacheWritebackInvalidateAll();
     selIdx = 0;
 #endif
 }
@@ -435,12 +434,7 @@ void MenuState::on_draw(Core::Application *app, double dt) {
         Rendering::RenderContext::get().matrix_clear();
     }
 
-#if PSP
-    sceKernelDcacheWritebackInvalidateAll();
-    sceGuDisable(GU_DEPTH_TEST);
-#else
-    glDisable(GL_DEPTH_TEST);
-#endif
+    GI::enable(GI_DEPTH_TEST);
 }
 
 void MenuState::trigger(std::any m) {

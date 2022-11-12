@@ -180,17 +180,12 @@ auto SelectionBox::draw_break(World *wrld) -> void {
         int i = (wrld->totalTimeBreak - wrld->timeLeftToBreak) /
                 (wrld->totalTimeBreak / 10.0f);
         if (i >= 0 && i < 10) {
-#if BUILD_PLAT == BUILD_PSP
-            sceGuBlendFunc(GU_ADD, GU_DST_COLOR, GU_SRC_COLOR, 0, 0);
-#else
-            glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR);
-#endif
+
+            GI::blend_func(GI_DST_COLOR, GI_SRC_COLOR);
+
             blockMesh[i + 1].draw();
-#if BUILD_PLAT == BUILD_PSP
-            sceGuBlendFunc(GU_ADD, GU_SRC_ALPHA, GU_ONE_MINUS_SRC_ALPHA, 0, 0);
-#else
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#endif
+
+            GI::blend_func(GI_SRC_ALPHA, GI_ONE_MINUS_SRC_ALPHA);
         }
 
         ctx->matrix_clear();

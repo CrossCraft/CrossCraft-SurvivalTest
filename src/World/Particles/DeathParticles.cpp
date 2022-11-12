@@ -103,11 +103,7 @@ void DeathParticleSystem::update(double dt) {
 void DeathParticleSystem::draw(glm::vec3 rot) {
     if (timer2 < 1.0f) {
         Rendering::TextureManager::get().bind_texture(texture);
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
-        glDisable(GL_CULL_FACE);
-#else
-        sceGuDisable(GU_CULL_FACE);
-#endif
+        GI::set_culling_mode(false, true);
 
         for (auto &p : particles) {
 
@@ -123,12 +119,7 @@ void DeathParticleSystem::draw(glm::vec3 rot) {
 
             Rendering::RenderContext::get().matrix_clear();
         }
-
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
-        glEnable(GL_CULL_FACE);
-#else
-        sceGuEnable(GU_CULL_FACE);
-#endif
+        GI::set_culling_mode(true, true);
     }
 }
 

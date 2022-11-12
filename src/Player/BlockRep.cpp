@@ -208,19 +208,11 @@ auto BlockRep::drawBlk(int8_t type, int x, int y, int y_offset, float scale)
     // Set up texture
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
-    glDisable(GL_CULL_FACE);
-#else
-    sceGuDisable(GU_CULL_FACE);
-#endif
+    GI::set_culling_mode(false, true);
 
     blockMesh[type].draw();
 
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
-    glEnable(GL_CULL_FACE);
-#else
-    sceGuEnable(GU_CULL_FACE);
-#endif
+    GI::set_culling_mode(true, true);
 
     Rendering::RenderContext::get().matrix_clear();
 }
@@ -286,22 +278,14 @@ auto BlockRep::drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void {
         blockMesh[type].setup_buffer();
     }
 
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
-    glDisable(GL_CULL_FACE);
-#else
-    sceGuDisable(GU_CULL_FACE);
-#endif
+    GI::set_culling_mode(false, true);
 
     if (type == 50)
         Rendering::TextureManager::get().bind_texture(player_tex);
 
     blockMesh[type].draw();
 
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
-    glEnable(GL_CULL_FACE);
-#else
-    sceGuEnable(GU_CULL_FACE);
-#endif
+    GI::set_culling_mode(true, true);
 
     // revert back
     if (on_shaded_block) {

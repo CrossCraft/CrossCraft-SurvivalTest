@@ -19,14 +19,9 @@ void ChunkMesh::reset_allocate() {
 }
 
 void ChunkMesh::finalize_mesh() {
-
     meshCollection.transparent.finalize();
     meshCollection.flora.finalize();
     meshCollection.opaque.finalize();
-
-#if PSP
-    sceKernelDcacheWritebackInvalidateAll();
-#endif
 }
 
 void ChunkMesh::rtick(World *wrld) {

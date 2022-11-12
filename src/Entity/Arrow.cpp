@@ -196,11 +196,7 @@ void Arrow::draw() {
         // Set up texture
         Rendering::TextureManager::get().bind_texture(texture);
 
-#ifndef PSP
-        glDisable(GL_CULL_FACE);
-#else
-        sceGuDisable(GU_CULL_FACE);
-#endif
+        GI::set_culling_mode(false, true);
         Rendering::RenderContext::get().matrix_translate(
             {a.pos.x, a.pos.y, a.pos.z});
 
@@ -220,11 +216,7 @@ void Arrow::draw() {
                 blockMesh2.draw();
         }
 
-#ifndef PSP
-        glEnable(GL_CULL_FACE);
-#else
-        sceGuEnable(GU_CULL_FACE);
-#endif
+        GI::set_culling_mode(true, true);
         Rendering::RenderContext::get().matrix_clear();
     }
 }
