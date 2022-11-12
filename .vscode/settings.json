@@ -90,7 +90,9 @@
         "variant": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "forward_list": "cpp",
+        "set": "cpp"
     },
     "editor.formatOnSave": true,
     "cmake.configureOnOpen": false,

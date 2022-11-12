@@ -53,13 +53,18 @@ auto DigAction::dig(std::any d) -> void {
 
 #if BUILD_PC
     if (w->player->in_pause) {
-        if (w->player->pauseMenu->selIdx == 0) {
-            w->player->in_pause = false;
-            w->player->pauseMenu->exit();
-        } else if (w->player->pauseMenu->selIdx == 1) {
-            SaveData::save(w);
-        } else if (w->player->pauseMenu->selIdx == 2) {
-            exit(0);
+
+        if (w->player->pauseMenu->pauseState == 0) {
+            if (w->player->pauseMenu->selIdx == 0) {
+                w->player->in_pause = false;
+                w->player->pauseMenu->exit();
+            } else if (w->player->pauseMenu->selIdx == 1) {
+                w->player->pauseMenu->pauseState = 1;
+            } else if (w->player->pauseMenu->selIdx == 2) {
+                SaveData::save(w);
+            } else if (w->player->pauseMenu->selIdx == 3) {
+                exit(0);
+            }
         }
         return;
     }
