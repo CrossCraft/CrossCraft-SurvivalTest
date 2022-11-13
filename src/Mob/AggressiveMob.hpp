@@ -1,11 +1,11 @@
 #pragma once
-#include "Mob.hpp"
+#include "MobData.hpp"
 
-namespace CrossCraft {
-class AggressiveMob : public Mob {
+namespace CrossCraft::Mob {
+class AggressiveMob : public MobData {
   public:
     AggressiveMob() = default;
     virtual ~AggressiveMob() = default;
     void update(float dt, Player *p, World *w);
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

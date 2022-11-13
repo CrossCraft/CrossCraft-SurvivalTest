@@ -1,9 +1,9 @@
-#include "Zombie.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
-#include "Armor.hpp"
+#include "ArmorModel.hpp"
+#include "ZombieModel.hpp"
 #include <yaml-cpp/yaml.h>
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 Zombie::Zombie() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -24,7 +24,7 @@ Zombie::Zombie() {
 
 Zombie::~Zombie() {}
 
-void Zombie::draw(ZombieData *sd) {
+void Zombie::draw(Mob::ZombieData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.8f, sd->pos.z});
@@ -43,7 +43,7 @@ void Zombie::draw(ZombieData *sd) {
     leg.draw({0.0f, -1.0f + 1.8f, 0.125f}, {0, 180, sval}, {-1, 1, 1});
     leg.draw({0.0f, -1.0f + 1.8f, -0.125f}, {0, 0, sval}, {1, 1, 1});
 
-    ArmorData adata;
+    Mob::ArmorData adata;
     adata.helmet = (sd->armorVal >= 1);
     adata.torso = (sd->armorVal >= 2);
     adata.zombie = true;
@@ -54,4 +54,4 @@ void Zombie::draw(ZombieData *sd) {
 
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

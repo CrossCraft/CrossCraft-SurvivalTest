@@ -1,8 +1,8 @@
-#include "Sheep.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "SheepModel.hpp"
 #include <yaml-cpp/yaml.h>
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 Sheep::Sheep() {
     {
@@ -37,7 +37,7 @@ Sheep::Sheep() {
 
 Sheep::~Sheep() {}
 
-void Sheep::draw(SheepData *sd) {
+void Sheep::draw(Mob::SheepData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.5f, sd->pos.z});
@@ -69,4 +69,4 @@ void Sheep::draw(SheepData *sd) {
     }
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

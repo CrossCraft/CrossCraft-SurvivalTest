@@ -1,24 +1,24 @@
 #pragma once
 #include "../Entity/Entity.hpp"
 #include "../Mob/PassiveMob.hpp"
+#include "../Mob/SheepData.hpp"
 #include "Model.hpp"
 #include <glm.hpp>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 using namespace Stardust_Celeste;
-class SheepData : public PassiveMob {
-  public:
-    SheepData() = default;
-    ~SheepData() = default;
-    bool hasWool;
-};
 
 class Sheep {
   public:
     Sheep();
     ~Sheep();
 
-    void draw(SheepData *sd);
+    void draw(Mob::SheepData *sd);
+
+    inline static auto get() -> Sheep & {
+        static Sheep sheep;
+        return sheep;
+    }
 
   private:
     uint32_t tex, tex2;
@@ -30,4 +30,4 @@ class Sheep {
     Model torsoWool;
     Model headWool;
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

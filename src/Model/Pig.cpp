@@ -1,8 +1,8 @@
-#include "Pig.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "PigModel.hpp"
 #include <yaml-cpp/yaml.h>
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 Pig::Pig() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -22,7 +22,7 @@ Pig::Pig() {
 
 Pig::~Pig() {}
 
-void Pig::draw(PigData *sd) {
+void Pig::draw(Mob::PigData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 0.875f * 2, sd->pos.z});
@@ -40,4 +40,4 @@ void Pig::draw(PigData *sd) {
     leg.draw({1.0625f, -0.5 + 0.875f, -0.1875f}, {0, 0, -sval}, {1, 1, -1});
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

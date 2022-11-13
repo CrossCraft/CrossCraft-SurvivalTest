@@ -83,7 +83,7 @@ World::World(std::shared_ptr<Player> p) {
     isBreaking = false;
     timeLeftToBreak = -1.0f;
     breaking = {-1, -1, -1};
-    mobManager = create_scopeptr<MobManager>();
+    mobManager = create_scopeptr<Mob::MobManager>();
 }
 
 auto World::spawn() -> void {

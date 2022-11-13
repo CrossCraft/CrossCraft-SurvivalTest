@@ -1,22 +1,23 @@
 #pragma once
 #include "../Mob/PassiveMob.hpp"
+#include "../Mob/SteveData.hpp"
 #include "Model.hpp"
 #include <glm.hpp>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 using namespace Stardust_Celeste;
-class SteveData : public PassiveMob {
-  public:
-    SteveData() = default;
-    ~SteveData() = default;
-};
 
 class Steve {
   public:
     Steve();
     ~Steve();
 
-    void draw(SteveData *sd);
+    void draw(Mob::SteveData *sd);
+
+    inline static auto get() -> Steve & {
+        static Steve steve;
+        return steve;
+    }
 
   private:
     uint32_t tex;
@@ -26,4 +27,4 @@ class Steve {
     Model torso;
     Model head;
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

@@ -1,7 +1,7 @@
 #include "Model.hpp"
 #include <array>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 auto getUVs(YAML::Node arr, int idx, glm::vec2 texSize)
     -> std::array<float, 8> {
     auto data = arr[idx];
@@ -153,4 +153,4 @@ void Model::draw(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) {
     Rendering::RenderContext::get().matrix_pop();
 }
 
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

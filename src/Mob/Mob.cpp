@@ -1,15 +1,19 @@
-#include "Mob.hpp"
-#include "../Model/Creeper.hpp"
-#include "../Model/Pig.hpp"
-#include "../Model/Sheep.hpp"
-#include "../Model/Skeleton.hpp"
-#include "../Model/Spider.hpp"
-#include "../Model/Steve.hpp"
-#include "../Model/Zombie.hpp"
+#include "../Model/CreeperModel.hpp"
+#include "../Model/PigModel.hpp"
+#include "../Model/SheepModel.hpp"
+#include "../Model/SkeletonModel.hpp"
+#include "../Model/SpiderModel.hpp"
+#include "../Model/SteveModel.hpp"
+#include "../Model/ZombieModel.hpp"
 #include "../World/World.hpp"
+#include "MobData.hpp"
 
 namespace CrossCraft {
-Mob *Mob::make_mob(MobType type) {
+void Entity::OnHit(World *w, int damage, glm::vec3 from, bool player) {}
+} // namespace CrossCraft
+
+namespace CrossCraft::Mob {
+MobData *MobData::make_mob(MobType type) {
     switch (type) {
     case MobType::Steve: {
         SteveData *sd = new SteveData();
@@ -125,18 +129,13 @@ Mob *Mob::make_mob(MobType type) {
     return nullptr;
 }
 
-void Mob::OnDeath(World *w, bool playerKill) {
+void MobData::OnDeath(World *w, bool playerKill) {
     if (playerKill) {
         w->player->score += Score;
     }
 }
 
-void Entity::OnHit(World* w, int damage, glm::vec3 from, bool player) {
-
-}
-
-
-void Mob::OnHit(World* w, int damage, glm::vec3 from, bool player) {
+void MobData::OnHit(World *w, int damage, glm::vec3 from, bool player) {
     if (!isAlive)
         return;
 
@@ -153,5 +152,4 @@ void Mob::OnHit(World* w, int damage, glm::vec3 from, bool player) {
     pos.z += from.z * 0.16f;
 }
 
-
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

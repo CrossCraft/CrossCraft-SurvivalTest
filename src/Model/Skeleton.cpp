@@ -1,13 +1,14 @@
-#include "Skeleton.hpp"
+#include "../Mob/ArmorData.hpp"
+#include "../Mob/SkeletonData.hpp"
 #include "../Player/Player.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
-#include "Armor.hpp"
+#include "SkeletonModel.hpp"
 #include <gtc/matrix_transform.hpp>
 #include <gtx/projection.hpp>
 #include <gtx/rotate_vector.hpp>
 #include <yaml-cpp/yaml.h>
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 
@@ -30,7 +31,7 @@ Skeleton::Skeleton() {
 
 Skeleton::~Skeleton() {}
 
-void Skeleton::draw(SkeletonData *sd) {
+void Skeleton::draw(Mob::SkeletonData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.8f, sd->pos.z});
@@ -48,7 +49,7 @@ void Skeleton::draw(SkeletonData *sd) {
     leg.draw({0.0f, 0.8f, 0.125f}, {0, 180, sval}, {-1, 1, 1});
     leg.draw({0.0f, 0.8f, -0.125f}, {0, 0, sval}, {1, 1, 1});
 
-    ArmorData adata;
+    Mob::ArmorData adata;
     adata.helmet = (sd->armorVal >= 1);
     adata.torso = (sd->armorVal >= 2);
     adata.zombie = false;
@@ -59,55 +60,4 @@ void Skeleton::draw(SkeletonData *sd) {
 
     ctx->matrix_clear();
 }
-void SkeletonData::update(float dt, Player *p, World *w) {
-
-    AggressiveMob::update(dt, p, w);
-
-    if (!isAlive)
-        return;
-
-    auto diff = p->pos - pos;
-    auto len = sqrtf(diff.x * diff.x + diff.z * diff.z);
-
-    if (len < 8.0f) {
-        fireTime -= dt;
-
-        if (fireTime < 0) {
-            fireTime = 1.5f;
-
-            // Spawn arrow
-            ArrowData aData;
-            aData.inRange = false;
-            aData.pos = pos + glm::vec3(diff.x / 8.0f, 0.0f, diff.y / 8.0f);
-            aData.pos.y -= (1.80f - 1.5965f);
-            aData.rot = {-rot.x, -rot.y - 90.0f};
-            aData.size = {0.1f, 0.0f, 0.1f};
-            aData.lifeTime = 15.0f;
-            aData.playerArrow = false;
-
-            aData.vel = glm::normalize(diff) * 16.0f;
-            w->arrow->add_arrow(aData);
-        }
-    }
-}
-
-void SkeletonData::OnDeath(World *w, bool playerKill) {
-    Mob::OnDeath(w, playerKill);
-
-    for (int i = 0; i < 6 + rand() % 3; i++) {
-        ArrowData aData;
-        aData.inRange = false;
-        aData.pos = pos;
-        aData.pos.y -= 1.8f;
-        aData.rot = {rand() % 180 - 90, rand() % 360};
-        aData.size = {0.1f, 0.0f, 0.1f};
-        aData.lifeTime = 15.0f;
-        aData.playerArrow = true;
-
-        aData.vel = glm::normalize(
-                        glm::vec3(rand() % 5 - 2, rand() % 3, rand() % 5 - 2)) *
-                    16.0f;
-        w->arrow->add_arrow(aData);
-    }
-}
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

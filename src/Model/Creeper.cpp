@@ -1,15 +1,9 @@
-#include "Creeper.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
 #include "../World/World.hpp"
+#include "CreeperModel.hpp"
 #include <yaml-cpp/yaml.h>
-namespace CrossCraft {
-
-void CreeperData::OnDeath(World *w, bool playerKill) {
-    Mob::OnDeath(w, playerKill);
-    pos.y -= 1.4625f;
-    w->explode(pos);
-}
+namespace CrossCraft::Model {
 
 Creeper::Creeper() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -29,7 +23,7 @@ Creeper::Creeper() {
 
 Creeper::~Creeper() {}
 
-void Creeper::draw(CreeperData *sd) {
+void Creeper::draw(Mob::CreeperData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.5675f + 0.2f, sd->pos.z});
@@ -47,4 +41,4 @@ void Creeper::draw(CreeperData *sd) {
     leg.draw({0.25f, 0, -0.125f}, {0, 0, -sval}, {1, 1, -1});
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

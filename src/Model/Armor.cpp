@@ -1,9 +1,9 @@
-#include "Armor.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "ArmorModel.hpp"
 #include <yaml-cpp/yaml.h>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 Armor::Armor() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -24,7 +24,7 @@ Armor::Armor() {
 
 Armor::~Armor() {}
 
-void Armor::draw(Mob *sd, ArmorData &adata) {
+void Armor::draw(Mob::MobData *sd, Mob::ArmorData &adata) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.8f, sd->pos.z});
@@ -55,4 +55,4 @@ void Armor::draw(Mob *sd, ArmorData &adata) {
 
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

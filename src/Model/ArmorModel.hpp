@@ -1,22 +1,18 @@
 #pragma once
 #include "../Mob/PassiveMob.hpp"
+#include "../Mob/ArmorData.hpp"
 #include "Model.hpp"
 #include <glm.hpp>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 using namespace Stardust_Celeste;
-struct ArmorData{
-  bool helmet;
-  bool torso;
-  bool zombie;
-};
 
-class Armor {
+class Armor : public Singleton {
   public:
     Armor();
     ~Armor();
 
-    void draw(Mob* mobdata, ArmorData& sd);
+    void draw(Mob::MobData *mobdata, Mob::ArmorData &sd);
 
     inline static auto get() -> Armor & {
         static Armor armor;
@@ -31,4 +27,4 @@ class Armor {
     Model torso;
     Model head;
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

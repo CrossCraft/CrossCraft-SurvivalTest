@@ -2,7 +2,7 @@
 #include "../Player/Player.hpp"
 #include <gtx/vector_angle.hpp>
 
-namespace CrossCraft {
+namespace CrossCraft::Mob {
 void PassiveMob::update(float dt, Player *p, World *w) {
     if (!isAlive)
         return;
@@ -52,7 +52,7 @@ void PassiveMob::update(float dt, Player *p, World *w) {
 }
 
 void PassiveMob::OnDeath(World *w, bool playerKill) {
-    Mob::OnDeath(w, playerKill);
+    MobData::OnDeath(w, playerKill);
 
     DropData d;
     d.inRange = false;
@@ -66,4 +66,4 @@ void PassiveMob::OnDeath(World *w, bool playerKill) {
     w->drops->add_drop(d);
 }
 
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

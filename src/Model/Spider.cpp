@@ -1,8 +1,8 @@
-#include "Spider.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "SpiderModel.hpp"
 #include <yaml-cpp/yaml.h>
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 Spider::Spider() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -23,7 +23,7 @@ Spider::Spider() {
 
 Spider::~Spider() {}
 
-void Spider::draw(SpiderData *sd) {
+void Spider::draw(Mob::SpiderData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.0625f, sd->pos.z});
@@ -56,4 +56,4 @@ void Spider::draw(SpiderData *sd) {
              {1, 1, 1});
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

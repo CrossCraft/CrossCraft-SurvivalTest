@@ -2,6 +2,10 @@
 #include "../Entity/Entity.hpp"
 
 namespace CrossCraft {
+class Player;
+}
+
+namespace CrossCraft::Mob {
 enum class MobType {
     Steve = 0x00,
     Zombie = 0x01,
@@ -12,12 +16,10 @@ enum class MobType {
     Sheep = 0x06
 };
 
-class Player;
-
-class Mob : public Entity {
+class MobData : public Entity {
   public:
-    Mob() = default;
-    virtual ~Mob() = default;
+    MobData() = default;
+    virtual ~MobData() = default;
 
     MobType mobType;
     glm::vec2 head_rotation;
@@ -35,10 +37,10 @@ class Mob : public Entity {
 
     uint8_t armorVal;
 
-    static Mob *make_mob(MobType type);
+    static MobData *make_mob(MobType type);
 
     virtual void OnDeath(World *w, bool playerKill);
     virtual void update(float dt, Player *p, World *w) = 0;
-    void OnHit(World* w, int damage, glm::vec3 from, bool player);
+    void OnHit(World *w, int damage, glm::vec3 from, bool player);
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

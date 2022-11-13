@@ -15,8 +15,8 @@
 #include "../Entity/Drops.hpp"
 #include "../Entity/TNT.hpp"
 #include "../Mob/MobManager.hpp"
-#include "../Model/Steve.hpp"
-#include "../Model/Zombie.hpp"
+#include "../Model/SteveModel.hpp"
+#include "../Model/ZombieModel.hpp"
 #include "../Player/Player.hpp"
 #include "../Sound/SoundManager.hpp"
 #include "Clouds.hpp"
@@ -32,6 +32,10 @@
 #include <vector>
 
 namespace CrossCraft {
+
+namespace Mob {
+class MobManager;
+}
 
 namespace Chunk {
 class Stack;
@@ -59,7 +63,6 @@ class SelectionBox;
 typedef uint8_t block_t;
 class Drops;
 class Arrow;
-class MobManager;
 class TNT;
 
 /**
@@ -186,7 +189,7 @@ class World {
 
     ScopePtr<DeathParticleSystem> dpsystem;
     ScopePtr<WeatherParticleSystem> wpsystem;
-    ScopePtr<MobManager> mobManager;
+    ScopePtr<Mob::MobManager> mobManager;
     ScopePtr<Drops> drops;
     ScopePtr<TNT> tnt;
 

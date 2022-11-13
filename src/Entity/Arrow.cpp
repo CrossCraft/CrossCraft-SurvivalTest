@@ -126,7 +126,7 @@ void Arrow::update(float dt, Player *p, World *w) {
             auto lenF =
                 sqrtf(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
-            if (!d.playerArrow && m->mobType == MobType::Skeleton)
+            if (!d.playerArrow && m->mobType == Mob::MobType::Skeleton)
                 continue;
 
             if (toRemove == -1) {

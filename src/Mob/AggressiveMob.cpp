@@ -1,7 +1,7 @@
 #include "AggressiveMob.hpp"
 #include "../Player/Player.hpp"
 #include <gtx/vector_angle.hpp>
-namespace CrossCraft {
+namespace CrossCraft::Mob {
 void AggressiveMob::update(float dt, Player *p, World *w) {
     if (!isAlive)
         return;
@@ -63,4 +63,4 @@ void AggressiveMob::update(float dt, Player *p, World *w) {
 
     vel.y -= 16.0f * dt;
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

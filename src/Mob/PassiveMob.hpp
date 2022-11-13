@@ -1,8 +1,8 @@
 #pragma once
-#include "Mob.hpp"
+#include "MobData.hpp"
 
-namespace CrossCraft {
-class PassiveMob : public Mob {
+namespace CrossCraft::Mob {
+class PassiveMob : public MobData {
   public:
     float dirChangeTime;
     PassiveMob() = default;
@@ -10,4 +10,4 @@ class PassiveMob : public Mob {
     void update(float dt, Player *p, World *w);
     void OnDeath(World *w, bool playerKill);
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

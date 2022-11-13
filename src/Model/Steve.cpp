@@ -1,9 +1,9 @@
-#include "Steve.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../Utils.hpp"
+#include "SteveModel.hpp"
 #include <yaml-cpp/yaml.h>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 
 Steve::Steve() {
     YAML::Node config = YAML::LoadFile(ResourcePackManager::get().get_file(
@@ -24,7 +24,7 @@ Steve::Steve() {
 
 Steve::~Steve() {}
 
-void Steve::draw(SteveData *sd) {
+void Steve::draw(Mob::SteveData *sd) {
     auto ctx = &Rendering::RenderContext::get();
     ctx->matrix_clear();
     ctx->matrix_translate({sd->pos.x, sd->pos.y - 1.8f, sd->pos.z});
@@ -43,4 +43,4 @@ void Steve::draw(SteveData *sd) {
     leg.draw({0.0f, -1.0f + 1.8f, -0.125f}, {0, 0, sval}, {1, 1, 1});
     ctx->matrix_clear();
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

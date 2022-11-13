@@ -1,17 +1,9 @@
 #include "MobManager.hpp"
 #include "../Player/Player.hpp"
 
-namespace CrossCraft {
+namespace CrossCraft::Mob {
 
 MobManager::MobManager() {
-    steve = create_scopeptr<Steve>();
-    skeleton = create_scopeptr<Skeleton>();
-    zombie = create_scopeptr<Zombie>();
-    creeper = create_scopeptr<Creeper>();
-    pig = create_scopeptr<Pig>();
-    sheep = create_scopeptr<Sheep>();
-    spider = create_scopeptr<Spider>();
-
     mobs.clear();
     srand(time(NULL));
 }
@@ -23,7 +15,7 @@ MobManager::~MobManager() {
     mobs.clear();
 }
 
-void MobManager::add_mob(Mob *mobData) { mobs.push_back(mobData); }
+void MobManager::add_mob(MobData *mobData) { mobs.push_back(mobData); }
 
 const int MOB_DIST_NEAR = 24.0f;
 const int MOB_CAP = 20;
@@ -33,7 +25,7 @@ void MobManager::update(float dt, Player *p, World *w) {
 
     // Spawn
     if (mobs.size() < MOB_CAP) {
-        Mob *mobData = Mob::make_mob((MobType)(rand() % 7));
+        MobData *mobData = MobData::make_mob((MobType)(rand() % 7));
 
         auto pos = p->pos;
         int rx = rand() % 49 - 24;
@@ -156,31 +148,31 @@ void MobManager::draw() {
 
         switch (m->mobType) {
         case MobType::Steve:
-            steve->draw((SteveData *)m);
+            Model::Steve::get().draw((SteveData *)m);
             break;
 
         case MobType::Skeleton:
-            skeleton->draw((SkeletonData *)m);
+            Model::Skeleton::get().draw((SkeletonData *)m);
             break;
 
         case MobType::Zombie:
-            zombie->draw((ZombieData *)m);
+            Model::Zombie::get().draw((ZombieData *)m);
             break;
 
         case MobType::Creeper:
-            creeper->draw((CreeperData *)m);
+            Model::Creeper::get().draw((CreeperData *)m);
             break;
 
         case MobType::Pig:
-            pig->draw((PigData *)m);
+            Model::Pig::get().draw((PigData *)m);
             break;
 
         case MobType::Sheep:
-            sheep->draw((SheepData *)m);
+            Model::Sheep::get().draw((SheepData *)m);
             break;
 
         case MobType::Spider:
-            spider->draw((SpiderData *)m);
+            Model::Spider::get().draw((SpiderData *)m);
             break;
 
         default:
@@ -188,4 +180,4 @@ void MobManager::draw() {
         }
     }
 }
-} // namespace CrossCraft
+} // namespace CrossCraft::Mob

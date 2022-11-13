@@ -3,7 +3,7 @@
 #include <vector>
 #include <yaml-cpp/yaml.h>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 using namespace Stardust_Celeste;
 
 struct Model {
@@ -13,4 +13,4 @@ struct Model {
     uint16_t idx_counter;
     Rendering::Mesh<Rendering::Vertex> blockMesh;
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Model

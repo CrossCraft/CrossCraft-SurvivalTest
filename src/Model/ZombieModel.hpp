@@ -1,23 +1,24 @@
 #pragma once
 #include "../Entity/Entity.hpp"
 #include "../Mob/AggressiveMob.hpp"
+#include "../Mob/ZombieData.hpp"
 #include "Model.hpp"
 #include <glm.hpp>
 
-namespace CrossCraft {
+namespace CrossCraft::Model {
 using namespace Stardust_Celeste;
-class ZombieData : public AggressiveMob {
-  public:
-    ZombieData() = default;
-    ~ZombieData() = default;
-};
 
 class Zombie {
   public:
     Zombie();
     ~Zombie();
 
-    void draw(ZombieData *sd);
+    void draw(Mob::ZombieData *sd);
+
+    inline static auto get() -> Zombie & {
+        static Zombie zombie;
+        return zombie;
+    }
 
   private:
     uint32_t tex;
@@ -27,4 +28,4 @@ class Zombie {
     Model torso;
     Model head;
 };
-} // namespace CrossCraft
+} // namespace CrossCraft::Model
