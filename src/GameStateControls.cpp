@@ -191,11 +191,11 @@ void GameState::bind_controls() {
 
     // Mouse wheel to cycle through objects
     mouse_controller->add_command(
-        { (int)Input::MouseButtons::MWheelUp, KeyFlag::Press },
-        { Player::press_left, world->player.get() });
+        {(int)Input::MouseButtons::MWheelUp, KeyFlag::Press},
+        {Player::press_left, world->player.get()});
     mouse_controller->add_command(
-        { (int)Input::MouseButtons::MWheelDown, KeyFlag::Press },
-        { Player::press_right, world->player.get() });
+        {(int)Input::MouseButtons::MWheelDown, KeyFlag::Press},
+        {Player::press_right, world->player.get()});
 
     key_controller->add_command(
         {(int)Input::Keys::Num1, KeyFlag::Press | KeyFlag::Held},
@@ -237,6 +237,8 @@ void GameState::bind_controls() {
 
     key_controller->add_command({(int)Input::Keys::Tab, KeyFlag::Press},
                                 {Player::tab_start, world->player.get()});
+    key_controller->add_command({(int)Input::Keys::F5, KeyFlag::Press},
+                                {World::rain_toggle, world.get()});
 
     Input::add_controller(psp_controller);
     Input::add_controller(key_controller);

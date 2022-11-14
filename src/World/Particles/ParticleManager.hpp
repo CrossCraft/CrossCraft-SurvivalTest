@@ -29,14 +29,17 @@ class ParticleManager final : public Singleton {
     void spawn_particles(ParticleType type, glm::vec3 position,
                          uint8_t blkType);
 
-    void update(double dt);
+    void update(glm::vec3 pos, double dt);
     void draw(glm::vec3 rot);
 
-    void generate_mesh(ParticleType type, glm::vec3 pos, uint8_t blkType);
+    void generate_mesh(ParticleType type, uint8_t blkType);
 
     u32 terrain, weather, death;
 
+    bool raining;
+
   private:
+    float raintimer;
     std::unordered_map<u32, Particle> particles;
 
     u32 count;

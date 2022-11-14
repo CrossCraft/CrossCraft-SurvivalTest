@@ -2,7 +2,11 @@
 #include "../../Chunk/ChunkUtil.hpp"
 
 namespace CrossCraft {
-ParticleManager::ParticleManager() { count = 0; }
+ParticleManager::ParticleManager() {
+    count = 0;
+    raining = false;
+    generate_mesh(Particle_Weather, 0);
+}
 
 auto rand_pos() -> float { return ((rand() % 16) - 8) * (1.0f / 16.0f); }
 
@@ -50,6 +54,20 @@ auto bind_texture(std::array<Rendering::Vertex, 4> &v, int i) -> void {
     v[3].v = 0.0f;
 }
 
+auto bind_texture_weather(std::array<Rendering::Vertex, 4> &v) -> void {
+    v[0].u = 0.0f;
+    v[0].v = 0.0f;
+
+    v[1].u = 1.0f;
+    v[1].v = 0.0f;
+
+    v[2].u = 1.0f;
+    v[2].v = 1.0f;
+
+    v[3].u = 0.0f;
+    v[3].v = 1.0f;
+}
+
 void generate_verts() {}
 
 void gen_mesh(Rendering::FixedMesh<Rendering::Vertex, 4, 6> &m) {
@@ -73,9 +91,7 @@ void gen_mesh(Rendering::FixedMesh<Rendering::Vertex, 4, 6> &m) {
     m.indices[5] = 0;
 }
 
-void ParticleManager::generate_mesh(ParticleType type, glm::vec3 pos,
-                                    uint8_t blkType) {
-    Rendering::FixedMesh<Rendering::Vertex, 4, 6> weather_mesh;
+void ParticleManager::generate_mesh(ParticleType type, uint8_t blkType) {
 
     if (type == Particle_Break) {
         for (int i = 0; i < 4; i++) {
@@ -91,7 +107,7 @@ void ParticleManager::generate_mesh(ParticleType type, glm::vec3 pos,
         }
     } else {
         gen_mesh(weather_mesh);
-        bind_texture(weather_mesh.vertices, 0);
+        bind_texture_weather(weather_mesh.vertices);
         weather_mesh.setup_buffer();
     }
 }
@@ -101,14 +117,16 @@ void ParticleManager::spawn_particles(ParticleType type, glm::vec3 pos,
     srand(pos.x + pos.y + pos.z);
 
     if (type == Particle_Break || type == Particle_Death)
-        generate_mesh(type, pos, blkType);
+        generate_mesh(type, blkType);
 
     for (int i = 0; i < 32; i++) {
         Particle particle;
         particle.position = pos;
-        particle.position.x += rand_pos();
-        particle.position.y += rand_pos();
-        particle.position.z += rand_pos();
+        if (type != Particle_Weather) {
+            particle.position.x += rand_pos();
+            particle.position.y += rand_pos();
+            particle.position.z += rand_pos();
+        }
 
         if (type == Particle_Break) {
             particle.velocity =
@@ -118,12 +136,18 @@ void ParticleManager::spawn_particles(ParticleType type, glm::vec3 pos,
             particle.velocity = {0, rand() % 20, 0};
             particle.velocity /= 13.0f;
         } else {
-            particle.velocity = {0, 0, 0};
+            particle.velocity = {0, -10.0f, 0};
+        }
+
+        if (particle.velocity.y < -84.0f) {
+            particle.velocity.y = -84.0f;
         }
 
         particle.pre = 0.0f;
         if (type == Particle_Death) {
             particle.lifetime = 2.0f + 0.5f * static_cast<float>(rand() % 3);
+        } else if (type == Particle_Weather) {
+            particle.lifetime = 4.0f;
         } else {
             particle.lifetime = 1.0f;
         }
@@ -136,11 +160,30 @@ void ParticleManager::spawn_particles(ParticleType type, glm::vec3 pos,
         }
 
         particles.emplace(count++, particle);
+
+        if (type == Particle_Weather) {
+            break;
+        }
     }
 }
 
-void ParticleManager::update(double dt) {
+void ParticleManager::update(glm::vec3 pos, double dt) {
     std::vector<u32> dead;
+
+    if (raining) {
+        raintimer += dt;
+        if (raintimer > 0.4f) {
+            raintimer = 0.0f;
+
+            for (int x = -6; x <= 6; x++) {
+                for (int z = -6; z <= 6; z++) {
+                    auto npos = pos + glm::vec3(static_cast<float>(x), 4.0f,
+                                                static_cast<float>(z));
+                    spawn_particles(Particle_Weather, npos, 0);
+                }
+            }
+        }
+    }
 
     for (auto &[id, p] : particles) {
         if (p.pre > 0)
@@ -168,12 +211,11 @@ void ParticleManager::update(double dt) {
 }
 
 void ParticleManager::draw(glm::vec3 rot) {
+    GI::set_culling_mode(false, true);
 
     for (auto &[id, p] : particles) {
         if (p.pre > 0)
             continue;
-
-        GI::set_culling_mode(false, true);
 
         switch (p.type) {
         case Particle_Death: {
@@ -193,10 +235,17 @@ void ParticleManager::draw(glm::vec3 rot) {
         }
 
         Rendering::RenderContext::get().matrix_translate(p.position);
-        Rendering::RenderContext::get().matrix_scale({0.125f, 0.125f, 0.125f});
-        Rendering::RenderContext::get().matrix_scale({0.75f, 0.75f, 0.75f});
-        Rendering::RenderContext::get().matrix_rotate({0.0f, -rot.y, 0.0f});
-        Rendering::RenderContext::get().matrix_rotate({-rot.x, 0.0f, 0.0f});
+        if (p.type != Particle_Weather) {
+            Rendering::RenderContext::get().matrix_scale(
+                {0.125f, 0.125f, 0.125f});
+            Rendering::RenderContext::get().matrix_scale({0.75f, 0.75f, 0.75f});
+            Rendering::RenderContext::get().matrix_rotate({0.0f, -rot.y, 0.0f});
+            Rendering::RenderContext::get().matrix_rotate({-rot.x, 0.0f, 0.0f});
+        } else {
+            Rendering::RenderContext::get().matrix_scale({2, 8, 2});
+            Rendering::RenderContext::get().matrix_scale({0.75f, 0.75f, 0.75f});
+            Rendering::RenderContext::get().matrix_rotate({0.0f, -rot.y, 0.0f});
+        }
 
         // DRAW MESH
         switch (p.type) {
@@ -222,8 +271,8 @@ void ParticleManager::draw(glm::vec3 rot) {
         }
 
         Rendering::RenderContext::get().matrix_clear();
-
-        GI::set_culling_mode(true, true);
     }
+
+    GI::set_culling_mode(true, true);
 }
 } // namespace CrossCraft

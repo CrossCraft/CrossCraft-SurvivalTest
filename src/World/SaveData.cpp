@@ -183,8 +183,7 @@ auto SaveData::load_world(World *wrld) -> bool {
         gzread(save_file, &air, sizeof(int));
         wrld->player->air = air;
 
-        gzread(save_file, wrld->player->itemSelections,
-            sizeof(SlotInfo));
+        gzread(save_file, wrld->player->itemSelections, sizeof(SlotInfo));
 
         gzclose(save_file);
 

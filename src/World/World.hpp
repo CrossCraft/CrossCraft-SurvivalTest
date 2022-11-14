@@ -189,6 +189,8 @@ class World {
     ScopePtr<Drops> drops;
     ScopePtr<TNT> tnt;
 
+    static auto rain_toggle(std::any d) -> void;
+
   private:
     /**
      * @brief Get the needed chunks

@@ -206,7 +206,7 @@ void World::update(double dt) {
 
     if (!player->in_pause) {
         clouds->update(dt);
-        ParticleManager::get().update(dt);
+        ParticleManager::get().update(player.get()->pos, dt);
         drops->update(dt, player.get(), this);
         arrow->update(dt, player.get(), this);
         mobManager->update(dt, player.get(), this);
@@ -388,6 +388,10 @@ void World::draw() {
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
     sbox->draw_break(this);
     player->draw(this);
+}
+
+auto World::rain_toggle(std::any d) -> void {
+    ParticleManager::get().raining = !ParticleManager::get().raining;
 }
 
 auto World::update_surroundings(int x, int z) -> void {
