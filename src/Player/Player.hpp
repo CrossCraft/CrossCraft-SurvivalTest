@@ -165,20 +165,16 @@ class Player : public PlayerEntity {
 
     ScopePtr<Audio::Listener> listener;
 
-    ScopePtr<Graphics::G2D::Sprite> item_box;
-    ScopePtr<Graphics::G2D::Sprite> selector;
-    ScopePtr<Graphics::G2D::Sprite> crosshair;
-    ScopePtr<Graphics::G2D::Sprite> water;
-    ScopePtr<Graphics::G2D::Sprite> overlay;
-    ScopePtr<Graphics::G2D::Sprite> heartBG;
-    ScopePtr<Graphics::G2D::Sprite> heartHalf;
-    ScopePtr<Graphics::G2D::Sprite> heartFull;
-    ScopePtr<Graphics::G2D::Sprite> airContainer;
+    ScopePtr<Graphics::G2D::Sprite> item_box, selector, crosshair, water,
+        overlay;
+    ScopePtr<Graphics::G2D::Sprite> heartBG, heartHalf, heartFull, airContainer,
+        airContainerPop;
     uint32_t gui_texture, icons_texture, water_texture, overlay_texture,
         font_texture;
 
     bool hasDir;
     AABB model;
+    float heartTime;
 
     bool is_underwater, is_head_water, water_cutoff;
     bool on_ground, jumping;

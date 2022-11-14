@@ -155,6 +155,13 @@ Player::Player()
                              {9.0f / 256.0f, 9.0f / 256.0f}});
     airContainer->set_layer(-2);
 
+    airContainerPop = create_scopeptr<Graphics::G2D::Sprite>(
+        icons_texture, Rendering::Rectangle{{148, 38}, {9, 9}},
+        Rendering::Rectangle{
+            {(16.0f + 9.0f) / 256.0f, (256.0f - 27.0f) / 256.0f},
+            {9.0f / 256.0f, 9.0f / 256.0f}});
+    airContainerPop->set_layer(-2);
+
     heartHalf = create_scopeptr<Graphics::G2D::Sprite>(
         icons_texture, Rendering::Rectangle{{147, 29}, {7, 7}},
         Rendering::Rectangle{{60.0f / 256.0f, (256.0f - 8.0f) / 256.0f},
@@ -260,7 +267,7 @@ auto Player::spawn(World *wrld) -> void {
 const float GRAVITY_ACCELERATION = 28.0f;
 
 void Player::update(float dt, World *wrld) {
-
+    heartTime += dt;
     fps_timer += dt;
     fps_count++;
     if (fps_timer > 1.0f) {
@@ -557,7 +564,12 @@ auto Player::draw(World *wrld) -> void {
 
         if (air < 10) {
             for (int i = 0; i < air; i++) {
-                airContainer->draw();
+                float half = air - static_cast<float>(i);
+
+                if (half <= 0.5f)
+                    airContainerPop->draw();
+                else
+                    airContainer->draw();
                 Rendering::RenderContext::get().matrix_translate(
                     {9.0f, 0.0f, 0.0f});
             }
@@ -565,6 +577,16 @@ auto Player::draw(World *wrld) -> void {
         Rendering::RenderContext::get().matrix_clear();
 
         playerHUD->rebuild();
+
+        int off = 0;
+
+        Rendering::RenderContext::get().matrix_clear();
+        if (HP <= 5) {
+            Rendering::RenderContext::get().matrix_translate(
+                {off, sinf(heartTime * 25), 0.0f});
+        } else {
+            Rendering::RenderContext::get().matrix_translate({off, 0.0f, 0.0f});
+        }
 
         for (int i = 0; i < 10; i++) {
             heartBG->draw();
@@ -576,8 +598,17 @@ auto Player::draw(World *wrld) -> void {
                     heartHalf->draw();
                 }
             }
-            Rendering::RenderContext::get().matrix_translate(
-                {9.0f, 0.0f, 0.0f});
+
+            off += 9;
+
+            Rendering::RenderContext::get().matrix_clear();
+            if (HP <= 5) {
+                Rendering::RenderContext::get().matrix_translate(
+                    {off, sinf(i + heartTime * 25), 0.0f});
+            } else {
+                Rendering::RenderContext::get().matrix_translate(
+                    {off, 0.0f, 0.0f});
+            }
         }
         Rendering::RenderContext::get().matrix_clear();
         playerHUD->end2D();
