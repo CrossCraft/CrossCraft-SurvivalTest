@@ -206,6 +206,8 @@ Player::Player()
     pos = {0, 0, 0};
     rot = {0, 0};
     vel = {0, 0, 0};
+    acc = {0, 0, 0};
+    heartTime = 0.0f;
 
 #if BUILD_PC
     glfwSetCharCallback(GI::window, character_callback);
@@ -314,11 +316,14 @@ void Player::update(float dt, World *wrld) {
         jump_icd -= dt;
 
         // Update position
-        float mag = (vel.x * vel.x + vel.z * vel.z);
-        if (mag > 0.0f) {
-            vel.x *= playerSpeed / mag;
-            vel.z *= playerSpeed / mag;
+        float mag = (acc.x * acc.x + acc.z * acc.z);
+        if (mag > 1.0f) {
+            acc.x /= mag;
+            acc.z /= mag;
         }
+
+        vel.x += acc.x * playerSpeed * dt * 10.0f;
+        vel.z += acc.z * playerSpeed * dt * 10.0f;
 
         if (!is_underwater)
             vel.y -= GRAVITY_ACCELERATION * dt;
@@ -405,6 +410,15 @@ void Player::update(float dt, World *wrld) {
 
         pos += vel * dt;
         vel = vel2;
+        vel.x *= 0.85f;
+        vel.z *= 0.85f;
+
+        if (vel.x < 0.1f && vel.x > -0.1f) {
+            vel.x = 0.0f;
+        }
+        if (vel.z < 0.1f && vel.z > -0.1f) {
+            vel.z = 0.0f;
+        }
 
         blk = wrld->worldData[wrld->getIdx(pos.x, pos.y - 1.85f, pos.z)];
 
@@ -443,8 +457,8 @@ void Player::update(float dt, World *wrld) {
             pauseMenu->update();
         }
 
-        vel.x = 0.0f;
-        vel.z = 0.0f;
+        acc.x = 0.0f;
+        acc.z = 0.0f;
     }
     blockRep->update(dt);
 }
@@ -668,8 +682,8 @@ void Player::OnHit(World *w, int damage, glm::vec3 from, bool player) {
         isAlive = false;
     }
     hitCD = 0.6f;
-    pos.x += from.x * 0.16f;
-    pos.z += from.z * 0.16f;
+    vel.x += from.x * 2.5f;
+    vel.z += from.z * 2.5f;
 }
 
 } // namespace CrossCraft

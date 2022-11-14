@@ -17,6 +17,7 @@ void AggressiveMob::update(float dt, Player *p, World *w) {
 
     test_collide(w, dt);
 
+    vel += acc * dt;
     auto vel2 = vel;
     if (water_cutoff) {
         vel.x *= 0.5f;
@@ -25,6 +26,8 @@ void AggressiveMob::update(float dt, Player *p, World *w) {
     }
     pos += vel * dt;
     vel = vel2;
+    vel.x *= 0.85f;
+    vel.z *= 0.85f;
 
     auto ppos = glm::vec2{p->pos.x, p->pos.z};
     auto cpos = glm::vec2{pos.x, pos.z};
@@ -47,8 +50,8 @@ void AggressiveMob::update(float dt, Player *p, World *w) {
 
     if (len < 24.0f && len > 1.0f) {
         diff /= len;
-        vel.x = diff.x * 0.5f * vSpeed;
-        vel.z = diff.y * 0.5f * vSpeed;
+        acc.x = diff.x * vSpeed * 4.3f;
+        acc.z = diff.y * vSpeed * 4.3f;
 
         auto defaultPoint = glm::vec2(0.0f, 1.0f);
         auto refVec = diff;

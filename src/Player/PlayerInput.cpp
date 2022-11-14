@@ -125,15 +125,15 @@ template <typename T> constexpr T DEGTORAD(T x) { return x / 180.0f * 3.14159; }
 auto Player::move_reset(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
 
-    p->vel.x = 0.0f;
-    p->vel.z = 0.0f;
+    p->acc.x = 0.0f;
+    p->acc.z = 0.0f;
 }
 
 auto Player::move_forward(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
-        p->vel.x += -sinf(DEGTORAD(-p->rot.y));
-        p->vel.z += -cosf(DEGTORAD(-p->rot.y));
+        p->acc.x += -sinf(DEGTORAD(-p->rot.y));
+        p->acc.z += -cosf(DEGTORAD(-p->rot.y));
     }
 }
 
@@ -141,8 +141,8 @@ auto Player::move_backward(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
 
-        p->vel.x += sinf(DEGTORAD(-p->rot.y));
-        p->vel.z += cosf(DEGTORAD(-p->rot.y));
+        p->acc.x += sinf(DEGTORAD(-p->rot.y));
+        p->acc.z += cosf(DEGTORAD(-p->rot.y));
     } else if (p->in_pause) {
         if (p->pauseMenu->selIdx == 0) {
             p->in_pause = false;
@@ -157,16 +157,16 @@ auto Player::move_backward(std::any d) -> void {
 auto Player::move_left(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
-        p->vel.x += -sinf(DEGTORAD(-p->rot.y + 90.f));
-        p->vel.z += -cosf(DEGTORAD(-p->rot.y + 90.f));
+        p->acc.x += -sinf(DEGTORAD(-p->rot.y + 90.f));
+        p->acc.z += -cosf(DEGTORAD(-p->rot.y + 90.f));
     }
 }
 
 auto Player::move_right(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
-        p->vel.x += sinf(DEGTORAD(-p->rot.y + 90.f));
-        p->vel.z += cosf(DEGTORAD(-p->rot.y + 90.f));
+        p->acc.x += sinf(DEGTORAD(-p->rot.y + 90.f));
+        p->acc.z += cosf(DEGTORAD(-p->rot.y + 90.f));
     }
 }
 

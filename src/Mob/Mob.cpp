@@ -148,8 +148,8 @@ void MobData::OnHit(World *w, int damage, glm::vec3 from, bool player) {
         OnDeath(w, player);
     }
     hitCD = 0.3f;
-    pos.x += from.x * 0.16f;
-    pos.z += from.z * 0.16f;
+    vel.x += from.x * 2.5f;
+    vel.z += from.z * 2.5f;
 }
 
 } // namespace CrossCraft::Mob
