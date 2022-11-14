@@ -42,7 +42,7 @@ class ParticleManager final : public Singleton {
     u32 count;
 
     Rendering::FixedMesh<Rendering::Vertex, 4, 6> break_mesh[4];
-    Rendering::FixedMesh<Rendering::Vertex, 4, 6> death_mesh[4];
+    Rendering::FixedMesh<Rendering::Vertex, 4, 6> death_mesh[8];
     Rendering::FixedMesh<Rendering::Vertex, 4, 6> weather_mesh;
 };
 

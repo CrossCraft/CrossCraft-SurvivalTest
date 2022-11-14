@@ -34,8 +34,8 @@ auto bind_texture_break(std::array<Rendering::Vertex, 4> &v, uint32_t type)
     v[3].v = uv_offset.y;
 }
 
-auto bind_texture(std::array<Rendering::Vertex, 4> &v) -> void {
-    uint32_t type = rand() % 8;
+auto bind_texture(std::array<Rendering::Vertex, 4> &v, int i) -> void {
+    uint32_t type = i;
 
     const float UV_X = 1.0f / 16.0f;
     const float UV_Y = 1.0f / 16.0f;
@@ -84,14 +84,14 @@ void ParticleManager::generate_mesh(ParticleType type, glm::vec3 pos,
             break_mesh[i].setup_buffer();
         }
     } else if (type == Particle_Death) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             gen_mesh(death_mesh[i]);
-            bind_texture_break(death_mesh[i].vertices, 0);
+            bind_texture(death_mesh[i].vertices, i);
             death_mesh[i].setup_buffer();
         }
     } else {
         gen_mesh(weather_mesh);
-        bind_texture(weather_mesh.vertices);
+        bind_texture(weather_mesh.vertices, 0);
         weather_mesh.setup_buffer();
     }
 }
@@ -110,14 +110,30 @@ void ParticleManager::spawn_particles(ParticleType type, glm::vec3 pos,
         particle.position.y += rand_pos();
         particle.position.z += rand_pos();
 
-        particle.velocity = glm::vec3(rand() % 10, rand() % 37, rand() % 10);
-        particle.velocity /= 13.0f;
+        if (type == Particle_Break) {
+            particle.velocity =
+                glm::vec3(rand() % 10, rand() % 37, rand() % 10);
+            particle.velocity /= 13.0f;
+        } else if (type == Particle_Death) {
+            particle.velocity = {0, rand() % 20, 0};
+            particle.velocity /= 13.0f;
+        } else {
+            particle.velocity = {0, 0, 0};
+        }
 
         particle.pre = 0.0f;
-        particle.lifetime = 1.0f;
+        if (type == Particle_Death) {
+            particle.lifetime = 2.0f + 0.5f * static_cast<float>(rand() % 3);
+        } else {
+            particle.lifetime = 1.0f;
+        }
 
         particle.type = type;
-        particle.variant = rand() % 4;
+        if (type == Particle_Death) {
+            particle.variant = 0;
+        } else {
+            particle.variant = rand() % 4;
+        }
 
         particles.emplace(count++, particle);
     }
@@ -135,7 +151,13 @@ void ParticleManager::update(double dt) {
         if (p.lifetime < 0)
             dead.push_back(id);
 
-        if (p.type == 1 || p.type == 2)
+        if (p.type == Particle_Death) {
+            p.variant = (p.lifetime) / 0.2f;
+            if (p.variant >= 8)
+                p.variant = 7;
+        }
+
+        if (p.type == Particle_Break || p.type == Particle_Weather)
             p.velocity.y -= 16.0f * (float)dt;
 
         p.position += p.velocity * (float)dt;
@@ -179,8 +201,10 @@ void ParticleManager::draw(glm::vec3 rot) {
         // DRAW MESH
         switch (p.type) {
         case Particle_Death: {
-            death_mesh[p.variant].bind();
-            death_mesh[p.variant].draw();
+            if (p.variant < 8) {
+                death_mesh[p.variant].bind();
+                death_mesh[p.variant].draw();
+            }
             break;
         }
 
