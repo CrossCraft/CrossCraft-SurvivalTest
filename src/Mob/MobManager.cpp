@@ -125,8 +125,8 @@ void MobManager::update(float dt, Player *p, World *w) {
             m->deathTime += dt;
             m->rot.x += 180.0f * dt;
             if (m->deathTime > 0.5) {
-                w->dpsystem->initialize(0,
-                                        {m->pos.x, m->pos.y - 1.0f, m->pos.z});
+                ParticleManager::get().spawn_particles(
+                    Particle_Death, {m->pos.x, m->pos.y - 1.0f, m->pos.z}, 0);
                 if (toRemove == -1)
                     toRemove = i;
             }

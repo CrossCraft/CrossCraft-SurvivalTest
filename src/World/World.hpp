@@ -20,9 +20,7 @@
 #include "../Player/Player.hpp"
 #include "../Sound/SoundManager.hpp"
 #include "Clouds.hpp"
-#include "Particles/BreakParticles.hpp"
-#include "Particles/DeathParticles.hpp"
-#include "Particles/WeatherParticles.hpp"
+#include "Particles/ParticleManager.hpp"
 #include <Utilities/Types.hpp>
 #include <glm.hpp>
 #include <map>
@@ -187,8 +185,6 @@ class World {
     ScopePtr<SoundManager> sound_manager;
     ScopePtr<Arrow> arrow;
 
-    ScopePtr<DeathParticleSystem> dpsystem;
-    ScopePtr<WeatherParticleSystem> wpsystem;
     ScopePtr<Mob::MobManager> mobManager;
     ScopePtr<Drops> drops;
     ScopePtr<TNT> tnt;
@@ -204,7 +200,6 @@ class World {
     glm::ivec2 pchunk_pos;
 
     ScopePtr<SelectionBox> sbox;
-    ScopePtr<BreakParticleSystem> psystem;
 
     unsigned int terrain_atlas;
     unsigned int particle_atlas;

@@ -192,7 +192,8 @@ auto DigAction::dig(std::any d) -> void {
                 // Ivec is breaking
                 if (w->timeLeftToBreak < 0) {
                     // We found a working block -- create break particles
-                    w->psystem->initialize(blk, cast_pos);
+                    ParticleManager::get().spawn_particles(Particle_Break,
+                                                           cast_pos, blk);
 
                     if (blk != Block::TNT) {
 

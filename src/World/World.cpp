@@ -44,13 +44,13 @@ World::World(std::shared_ptr<Player> p) {
     NoiseUtil::initialize();
 
     clouds = create_scopeptr<Clouds>();
-    psystem = create_scopeptr<BreakParticleSystem>(terrain_atlas);
-    dpsystem = create_scopeptr<DeathParticleSystem>(particle_atlas);
-    dpsystem->initialize(0, {0, 0, 0});
-    wpsystem = create_scopeptr<WeatherParticleSystem>(
-        ResourcePackManager::get().load_texture(
-            "assets/minecraft/textures/rain.png", SC_TEX_FILTER_NEAREST,
-            SC_TEX_FILTER_NEAREST, true, false, true));
+
+    ParticleManager::get().terrain = terrain_atlas;
+    ParticleManager::get().death = particle_atlas;
+    ParticleManager::get().weather = ResourcePackManager::get().load_texture(
+        "assets/minecraft/textures/rain.png", SC_TEX_FILTER_NEAREST,
+        SC_TEX_FILTER_NEAREST, true, false, true);
+
     // Zero the array
     worldData = reinterpret_cast<block_t *>(
         calloc((uint64_t)world_size.x * (uint64_t)world_size.y *
@@ -206,8 +206,7 @@ void World::update(double dt) {
 
     if (!player->in_pause) {
         clouds->update(dt);
-        psystem->update(dt);
-        dpsystem->update(dt);
+        ParticleManager::get().update(dt);
         drops->update(dt, player.get(), this);
         arrow->update(dt, player.get(), this);
         mobManager->update(dt, player.get(), this);
@@ -381,9 +380,7 @@ void World::draw() {
     clouds->draw();
     tnt->draw();
 
-    psystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
-    dpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
-    // wpsystem->draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
+    ParticleManager::get().draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
 
     mobManager->draw();
     sbox->draw();
