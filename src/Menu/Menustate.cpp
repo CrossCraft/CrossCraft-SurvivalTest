@@ -482,8 +482,8 @@ void MenuState::trigger(std::any m) {
                     SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false, true);
 
                 mstate->gui_tex = ResourcePackManager::get().load_texture(
-                    "assets/gui/gui.png", SC_TEX_FILTER_NEAREST,
-                    SC_TEX_FILTER_NEAREST, false, true);
+                    "assets/minecraft/textures/gui/gui.png",
+                    SC_TEX_FILTER_NEAREST, SC_TEX_FILTER_NEAREST, false, true);
 
                 mstate->font_texture = ResourcePackManager::get().load_texture(
                     "assets/minecraft/textures/default.png",
