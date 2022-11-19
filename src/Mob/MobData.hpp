@@ -33,7 +33,7 @@ class MobData : public Entity {
     float deathTime;
     float hitCD;
 
-    int8_t Score;
+    uint32_t Score;
 
     uint8_t armorVal;
 

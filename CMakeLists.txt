@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(CrossCraft-SurvivalTest)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 
 if(WIN32)
     add_compile_definitions(BUILD_PLAT=0)
@@ -27,16 +28,18 @@ endif()
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE INC_FILES include/*.hpp)
 set(MINIZIP_SRC ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
+set(CCW_SRC ext/CCW/generator.c ext/CCW/builtins.c)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(MINIZIP_SRC ext/zlib/contrib/minizip/iowin32.c ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
 endif()
 
-add_executable(CrossCraft-SurvivalTest ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
+add_executable(CrossCraft-SurvivalTest ${CCW_SRC} ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
 target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/)
+target_link_directories(CrossCraft-SurvivalTest PUBLIC ext/CCW)
 
 if(NOT VITA)
-    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlib yaml-cpp)
+    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic yaml-cpp)
 else()
     target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic)
 endif()
