@@ -7,6 +7,3 @@
 [submodule "ext/zlib"]
 	path = ext/zlib
 	url = https://github.com/madler/zlib.git
-[submodule "ext/CCW"]
-	path = ext/CCW
-	url = https://github.com/CrossCraft/CrossCraft-Worldgen.git
