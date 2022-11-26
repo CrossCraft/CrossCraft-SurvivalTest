@@ -51,10 +51,11 @@ jobs:
       - checkout
       - run: |
           brew install cmake
+          wget --quiet https://github.com/Kitware/CMake/releases/download/v3.25.0/cmake-3.25.0-macos-universal.tar.gz && tar -xf cmake-3.25.0-macos-universal.tar.gz
           git submodule update --init --recursive --remote
           mkdir -p build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cmake-3.25.0-macos-universal/CMake.app/Contents/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
           make -j5
           cd ..
           mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
