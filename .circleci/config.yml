@@ -52,7 +52,7 @@ jobs:
           mv build/CrossCraft-SurvivalTest CrossCraft/CrossCraft-SurvivalTest
           strip ./CrossCraft/CrossCraft-SurvivalTest
           chmod +x ./CrossCraft/CrossCraft-SurvivalTest
-          zip CCST-Linux.zip CrossCraft
+          zip -r CCST-Linux.zip CrossCraft
       - store_artifacts:
           path: CCST-Linux.zip
 
@@ -80,7 +80,7 @@ jobs:
           cp resourcepacks/default.zip CrossCraft/resourcepacks/default.zip
           mv build/CrossCraft-SurvivalTest CrossCraft/CrossCraft-SurvivalTest
           chmod +x ./CrossCraft/CrossCraft-SurvivalTest
-          zip CCST-Mac.zip CrossCraft
+          zip -r CCST-Mac.zip CrossCraft
       - store_artifacts:
           path: CCST-Mac.zip
 
@@ -101,10 +101,11 @@ jobs:
           make -j5
           cd ..
           mkdir CrossCraft
+          mkdir -p CrossCraft/resourcepacks/default/
           mv build/EBOOT.PBP CrossCraft/EBOOT.PBP
           mv build/CrossCraft-SurvivalTest.prx CrossCraft/CrossCraft-SurvivalTest.prx
           unzip resourcepacks/default.zip -d CrossCraft/resourcepacks/default/
-          zip CCST-PSP.zip CrossCraft
+          zip -r CCST-PSP.zip CrossCraft
       - store_artifacts:
           path: CCST-PSP.zip
 
@@ -128,7 +129,7 @@ jobs:
           mv build/CrossCraft-SurvivalTest.vpk CrossCraft/CrossCraft-SurvivalTest.vpk
           mkdir -p CrossCraft/CrossCraft-ST/resourcepacks/default/
           unzip resourcepacks/default.zip -d CrossCraft/CrossCraft-ST/resourcepacks/default/
-          zip CCST-Vita.zip CrossCraft
+          zip -r CCST-Vita.zip CrossCraft
       - store_artifacts:
           path: CCST-Vita.zip
 
