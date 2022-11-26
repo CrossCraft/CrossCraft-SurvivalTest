@@ -58,7 +58,7 @@ jobs:
           git submodule update --init --recursive --remote
           mkdir -p build
           cd build
-          cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
+          ../cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
           make -j5
           cd ..
           mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
