@@ -46,9 +46,16 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make -j5
           cd ..
-          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
-          strip ./CrossCraft-SurvivalTest
-          chmod +x ./CrossCraft-SurvivalTest
+          mkdir CrossCraft
+          mkdir CrossCraft/resourcepacks
+          cp resourcepacks/default.zip CrossCraft/resourcepacks/default.zip
+          mv build/CrossCraft-SurvivalTest CrossCraft/CrossCraft-SurvivalTest
+          strip ./CrossCraft/CrossCraft-SurvivalTest
+          chmod +x ./CrossCraft/CrossCraft-SurvivalTest
+          zip CCST-Linux.zip CrossCraft
+      - store_artifacts:
+          path: CCST-Linux.zip
+
 
   mac:
     macos:
@@ -68,8 +75,14 @@ jobs:
           ../cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
           make -j5
           cd ..
-          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
-          chmod +x ./CrossCraft-SurvivalTest
+          mkdir CrossCraft
+          mkdir CrossCraft/resourcepacks
+          cp resourcepacks/default.zip CrossCraft/resourcepacks/default.zip
+          mv build/CrossCraft-SurvivalTest CrossCraft/CrossCraft-SurvivalTest
+          chmod +x ./CrossCraft/CrossCraft-SurvivalTest
+          zip CCST-Mac.zip CrossCraft
+      - store_artifacts:
+          path: CCST-Mac.zip
 
   psp:
     executor: psp-executor
@@ -87,10 +100,13 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$PSPDEV/psp/share/pspdev.cmake ..
           make -j5
           cd ..
-          mv build/EBOOT.PBP EBOOT.PBP
-          mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
-          unzip resourcepacks/default.zip -d resourcepacks/default/
-          mv resourcepacks/default.zip default.zip
+          mkdir CrossCraft
+          mv build/EBOOT.PBP CrossCraft/EBOOT.PBP
+          mv build/CrossCraft-SurvivalTest.prx CrossCraft/CrossCraft-SurvivalTest.prx
+          unzip resourcepacks/default.zip -d CrossCraft/resourcepacks/default/
+          zip CCST-PSP.zip CrossCraft
+      - store_artifacts:
+          path: CCST-PSP.zip
 
   psvita:
     executor: vita-executor
@@ -112,8 +128,9 @@ jobs:
           mv build/CrossCraft-SurvivalTest.vpk CrossCraft/CrossCraft-SurvivalTest.vpk
           mkdir -p CrossCraft/CrossCraft-ST/resourcepacks/default/
           unzip resourcepacks/default.zip -d CrossCraft/CrossCraft-ST/resourcepacks/default/
+          zip CCST-Vita.zip CrossCraft
       - store_artifacts:
-          path: CrossCraft
+          path: CCST-Vita.zip
 
 workflows:
   st4-workflow:
