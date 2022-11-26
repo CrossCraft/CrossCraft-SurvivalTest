@@ -108,10 +108,12 @@ jobs:
           cmake -DVITA=1 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake ..
           make -j5
           cd ..
-          mv build/CrossCraft-SurvivalTest.vpk CrossCraft-SurvivalTest.vpk
-          mkdir -p CrossCraft-ST/resourcepacks/default/
-          unzip resourcepacks/default.zip -d CrossCraft-ST/resourcepacks/default/
-
+          mkdir CrossCraft
+          mv build/CrossCraft-SurvivalTest.vpk CrossCraft/CrossCraft-SurvivalTest.vpk
+          mkdir -p CrossCraft/CrossCraft-ST/resourcepacks/default/
+          unzip resourcepacks/default.zip -d CrossCraft/CrossCraft-ST/resourcepacks/default/
+      - store_artifacts:
+          path: CrossCraft
 
 workflows:
   st4-workflow:
