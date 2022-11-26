@@ -113,10 +113,9 @@ jobs:
           unzip resourcepacks/default.zip -d CrossCraft-ST/resourcepacks/default/
 
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  when: << pipeline.parameters.GHA_Action >>
+  when: 
+    equal: [ "Trigger", << pipeline.parameters.GHA_Action >> ]
   st4-workflow:
     jobs:
       - linux
