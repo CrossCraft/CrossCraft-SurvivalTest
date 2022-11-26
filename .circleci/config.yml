@@ -27,6 +27,7 @@ jobs:
   linux:
     machine:
       image: ubuntu-2204:2022.10.2
+    resource_class: xlarge
     
     steps:
       - checkout
@@ -37,7 +38,7 @@ jobs:
           mkdir -p build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make
+          make -j9
           cd ..
           mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
           strip ./CrossCraft-SurvivalTest
@@ -55,12 +56,25 @@ jobs:
 
   psp:
     executor: psp-executor
+    resource_class: xlarge
 
     steps:
       - checkout
       - run:
-          name: "Build"
-          command: "echo Hello, World"
+          name: "Install Dependencies"
+          command: "apk add bash cmake git gmp mpc1 mpfr4 make"
+      - run: |
+          git config --global --add safe.directory /__w/CrossCraft-SurvivalTest/CrossCraft-SurvivalTest
+          git submodule update --init --recursive --remote
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$PSPDEV/psp/share/pspdev.cmake ..
+          make -j9
+          cd ..
+          mv build/EBOOT.PBP EBOOT.PBP
+          mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
+          unzip resourcepacks/default.zip -d resourcepacks/default/
+          mv resourcepacks/default.zip default.zip
 
   psvita:
     executor: vita-executor
