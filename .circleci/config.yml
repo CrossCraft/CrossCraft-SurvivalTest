@@ -91,7 +91,7 @@ jobs:
       - checkout
       - run:
           name: "Install Dependencies"
-          command: "apk add bash cmake git gmp mpc1 mpfr4 make"
+          command: "apk add bash cmake git gmp mpc1 mpfr4 make zip"
       - run: |
           git config --global --add safe.directory /__w/CrossCraft-SurvivalTest/CrossCraft-SurvivalTest
           git submodule update --init --recursive --remote
