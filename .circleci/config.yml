@@ -45,13 +45,19 @@ jobs:
 
   mac:
     macos:
-      xcode: "12.5.1"
+      xcode: "10.0"
     
     steps:
       - checkout
-      - run:
-          name: "Build"
-          command: "echo Hello, World"
+      - run: |
+          git submodule update --init --recursive --remote
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          make -j5
+          cd ..
+          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
+          chmod +x ./CrossCraft-SurvivalTest
 
   psp:
     executor: psp-executor
