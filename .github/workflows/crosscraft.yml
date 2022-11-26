@@ -144,6 +144,7 @@ jobs:
         run: |
           export VITASDK=/usr/local/vitasdk
           export PATH=$VITASDK/bin:$PATH
+          sudo apt-get install --yes --force-yes zip unzip
           git config --global --add safe.directory /__w/CrossCraft-SurvivalTest/CrossCraft-SurvivalTest
           git submodule update --init --recursive --remote
           mkdir -p build
