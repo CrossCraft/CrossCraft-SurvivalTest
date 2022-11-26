@@ -18,7 +18,7 @@ struct Config {
     inline static auto loadConfig() -> Config { // Store default values
         Config config;
         config.sense = 1.50f;
-        config.compat = 0;
+        config.compat = 1;
         config.ip = "classic.crosscraft.wtf";
         config.port = 25565;
         config.username = "TestName2";
@@ -72,7 +72,7 @@ struct Config {
             std::ofstream file2(PLATFORM_FILE_PREFIX + "config.cfg");
 
             file2 << "sense:1.50" << std::endl;
-            file2 << "compat:0" << std::endl;
+            file2 << "compat:1" << std::endl;
             file2 << "ip:classic.crosscraft.wtf" << std::endl;
             file2 << "port:25565" << std::endl;
             file2 << "username:CC-User" << std::endl;

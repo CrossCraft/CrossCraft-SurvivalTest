@@ -5,6 +5,10 @@
 #include <sstream>
 #include <string>
 
+#if PSP
+#include <pspctrl.h>
+#endif
+
 #if !(BUILD_PLAT == BUILD_PSP || BUILD_PLAT == BUILD_VITA)
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>

@@ -322,8 +322,8 @@ void Player::update(float dt, World *wrld) {
             acc.z /= mag;
         }
 
-        vel.x += acc.x * playerSpeed * dt * 10.0f;
-        vel.z += acc.z * playerSpeed * dt * 10.0f;
+        vel.x += acc.x * playerSpeed;
+        vel.z += acc.z * playerSpeed;
 
         if (!is_underwater)
             vel.y -= GRAVITY_ACCELERATION * dt;
@@ -410,8 +410,8 @@ void Player::update(float dt, World *wrld) {
 
         pos += vel * dt;
         vel = vel2;
-        vel.x *= 0.85f;
-        vel.z *= 0.85f;
+        vel.x *= dt;
+        vel.z *= dt;
 
         if (vel.x < 0.1f && vel.x > -0.1f) {
             vel.x = 0.0f;
