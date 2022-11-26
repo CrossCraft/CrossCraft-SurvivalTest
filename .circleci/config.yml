@@ -17,25 +17,6 @@ executors:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  windows:
-    executor: win/server-2019
-    
-    steps:
-      - checkout
-      - run: |
-          $ProgressPreference = "SilentlyContinue"
-          Invoke-WebRequest -URI https://github.com/Kitware/CMake/releases/download/v3.25.0/cmake-3.25.0-windows-x86_64.zip -OutFile cmake-3.25.0-windows-x86_64.zip
-          Expand-Archive cmake-3.25.0-windows-x86_64.zip -DestinationPath cmake
-
-      - run: |
-          git submodule update --init --recursive --remote
-          cmake/bin/cmake.exe -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -A x64 .
-          copy ext/zconf.h ext/zlib/zconf.h
-          cmake/bin/cmake.exe --build . --config Release
-          move Release\CrossCraft-SurvivalTest.exe CrossCraft-SurvivalTest.exe
-          move ZLib\Release\zlib.dll zlib.dll
-          move Stardust\ext\openal\Release\OpenAL32.dll OpenAL32.dll
-
   linux:
     machine:
       image: ubuntu-2204:2022.10.2
@@ -121,9 +102,9 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
+  when: << pipeline.parameters.GHA_Action >>
   st4-workflow:
     jobs:
-      - windows
       - linux
       - mac
       - psp
