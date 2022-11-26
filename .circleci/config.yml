@@ -2,25 +2,71 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+executors:
+  psp-executor:
+    docker: pspdev/pspdev:latest
+  
+  vita-executor:
+    docker: iridescentrose/psvitadev:latest
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  windows:
+    machine:
+      image: windows-server-2019
+    
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "Build"
+          command: "echo Hello, World"
+
+  linux:
+    machine:
+      image: ubuntu-2204
+    
+    steps:
+      - checkout
+      - run:
+          name: "Build"
+          command: "echo Hello, World"
+
+  mac:
+    macos:
+      xcode: "12.5.1"
+    
+    steps:
+      - checkout
+      - run:
+          name: "Build"
+          command: "echo Hello, World"
+
+  psp:
+    executor: psp-executor
+
+    steps:
+      - checkout
+      - run:
+          name: "Build"
+          command: "echo Hello, World"
+
+  psvita:
+    executor: vita-executor
+
+    steps:
+      - checkout
+      - run:
+          name: "Build"
+          command: "echo Hello, World"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  st4-workflow:
     jobs:
-      - say-hello
+      - windows
+      - linux
+      - mac
+      - psp
+      - psvita
