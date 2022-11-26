@@ -1,5 +1,8 @@
 #include "DigAction.hpp"
+#include "../Controls.hpp"
 #include "../Entity/DropLookup.hpp"
+#include "../Gamestate.hpp"
+#include "../Modding/Mod.hpp"
 #include "../Option.hpp"
 #include "SaveData.hpp"
 #include <Utilities/Input.hpp>
@@ -99,6 +102,53 @@ auto DigAction::dig(std::any d) -> void {
                 w->player->pauseMenu->pauseState = 0;
             }
             checkMouse = 0.0625f;
+        } else if (w->player->pauseMenu->pauseState == 2) {
+            if (w->player->pauseMenu->selIdx == 0) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyForward = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 1) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyBack = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 2) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyJump = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 3) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyChat = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 4) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyLeft = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 5) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyRight = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 6) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyTab = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 7) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().keyRespawn = val;
+                }
+            } else if (w->player->pauseMenu->selIdx == 8) {
+                w->player->pauseMenu->pauseState = 1;
+            }
+
+            Controls::get().writeControls();
+            GameState::apply_controls();
         }
         return;
     }
@@ -234,6 +284,7 @@ auto DigAction::dig(std::any d) -> void {
                     w->sound_manager->play(blk, cast_pos);
 
                     // Set to air
+                    auto oblk = w->worldData[idx];
                     w->worldData[idx] = Block::Air;
 
                     // Update metadata
@@ -265,6 +316,8 @@ auto DigAction::dig(std::any d) -> void {
 
                     w->update_surroundings(ivec.x, ivec.z);
                     w->update_nearby_blocks(ivec);
+
+                    Modding::ModManager::get().onBreak(ivec, oblk);
 
                     w->isBreaking = false;
                 } else {

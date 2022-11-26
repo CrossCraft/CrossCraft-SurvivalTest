@@ -28,19 +28,24 @@ endif()
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE INC_FILES include/*.hpp)
 set(MINIZIP_SRC ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
+set(LUA_SRC ext/lua/onelua.c)
+file(GLOB LUA_INC ext/lua/*.h)
+
+add_library(Lua ${LUA_SRC} ${LUA_INC})
+target_compile_definitions(Lua PUBLIC MAKE_LIB)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(MINIZIP_SRC ext/zlib/contrib/minizip/iowin32.c ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
 endif()
 
-add_executable(CrossCraft-SurvivalTest ${CCW_SRC} ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
-target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/)
+add_executable(CrossCraft-SurvivalTest ${LUA_SRC} ${CCW_SRC} ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
+target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/ ext/lua/)
 target_link_directories(CrossCraft-SurvivalTest PUBLIC ext/CCW)
 
 if(NOT VITA)
-    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic yaml-cpp)
+    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic yaml-cpp Lua)
 else()
-    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic)
+    target_link_libraries(CrossCraft-SurvivalTest SC-Entry Stardust-Celeste zlibstatic Lua)
 endif()
 
 if(WIN32)

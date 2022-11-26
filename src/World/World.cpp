@@ -1,5 +1,6 @@
 #include "World.hpp"
 #include "../Entity/DropLookup.hpp"
+#include "../Modding/Mod.hpp"
 #include "../ResourcePackManager.hpp"
 #include "Generation/NoiseUtil.hpp"
 #include "Generation/WorldGenUtil.hpp"
@@ -162,7 +163,7 @@ const auto CHUNKS_PER_SECOND = 96.0f;
 #endif
 
 #if BUILD_PLAT == BUILD_PSP || BUILD_PLAT == BUILD_VITA
-const auto RENDER_DISTANCE_DIAMETER = 8.0f;
+const auto RENDER_DISTANCE_DIAMETER = 10.0f;
 #else
 const auto RENDER_DISTANCE_DIAMETER = 16.f;
 #endif
@@ -235,6 +236,8 @@ void World::update(double dt) {
 
             value->post_update(this);
         }
+
+        Modding::ModManager::get().onTick();
     }
 
     // wpsystem->update(dt);

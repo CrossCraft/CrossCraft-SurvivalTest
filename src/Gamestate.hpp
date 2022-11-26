@@ -40,6 +40,8 @@ class GameState : public Core::ApplicationState {
      */
     ~GameState();
 
+    static void apply_controls();
+
     /**
      * @brief On Start initialization
      *

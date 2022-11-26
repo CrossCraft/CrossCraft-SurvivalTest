@@ -1,5 +1,7 @@
 #include "../BlockConst.hpp"
 #include "../Chunk/ChunkUtil.hpp"
+#include "../Controls.hpp"
+#include "../Gamestate.hpp"
 #include "../ResourcePackManager.hpp"
 #include "../World/SaveData.hpp"
 #include "Player.hpp"
@@ -131,9 +133,27 @@ auto Player::move_reset(std::any d) -> void {
 
 auto Player::move_forward(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
+
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
+#if PSP
+        if (!Controls::get().pspJoystickView) {
+            p->rot.x -= 5.0f;
+            if (p->rot.x < -89.9f) {
+                p->rot.x = -89.9f;
+            }
+
+            if (p->rot.x > 89.9f) {
+                p->rot.x = 89.9f;
+            }
+        } else {
+            p->acc.x += -sinf(DEGTORAD(-p->rot.y));
+            p->acc.z += -cosf(DEGTORAD(-p->rot.y));
+        }
+#else
+
         p->acc.x += -sinf(DEGTORAD(-p->rot.y));
         p->acc.z += -cosf(DEGTORAD(-p->rot.y));
+#endif
     }
 }
 
@@ -141,32 +161,151 @@ auto Player::move_backward(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
 
+#if PSP
+        if (!Controls::get().pspJoystickView) {
+            p->rot.x += 5.0f;
+            if (p->rot.x < -89.9f) {
+                p->rot.x = -89.9f;
+            }
+
+            if (p->rot.x > 89.9f) {
+                p->rot.x = 89.9f;
+            }
+        } else {
+            p->acc.x += sinf(DEGTORAD(-p->rot.y));
+            p->acc.z += cosf(DEGTORAD(-p->rot.y));
+        }
+#elif BUILD_PLAT != BUILD_VITA
         p->acc.x += sinf(DEGTORAD(-p->rot.y));
         p->acc.z += cosf(DEGTORAD(-p->rot.y));
+#endif
     } else if (p->in_pause) {
-        if (p->pauseMenu->selIdx == 0) {
-            p->in_pause = false;
-        } else if (p->pauseMenu->selIdx == 1) {
-            SaveData::save(p->wrldRef);
-        } else if (p->pauseMenu->selIdx == 2) {
-            exit(0);
+        if (p->pauseMenu->pauseState == 0) {
+            if (p->pauseMenu->selIdx == 0) {
+                p->in_pause = false;
+                p->pauseMenu->exit();
+            } else if (p->pauseMenu->selIdx == 1) {
+                p->pauseMenu->pauseState = 1;
+            } else if (p->pauseMenu->selIdx == 2) {
+                SaveData::save(p->wrldRef);
+            } else if (p->pauseMenu->selIdx == 3) {
+                exit(0);
+            }
+        } else if (p->pauseMenu->pauseState == 1) {
+            if (p->pauseMenu->selIdx == 0) {
+                Option::get().music = !Option::get().music;
+                Option::get().writeOptions();
+            } else if (p->pauseMenu->selIdx == 1) {
+                Option::get().renderDist++;
+                if (Option::get().renderDist > 3) {
+                    Option::get().renderDist = 0;
+                }
+                Option::get().writeOptions();
+            } else if (p->pauseMenu->selIdx == 2) {
+                Option::get().bobbing = !Option::get().bobbing;
+                Option::get().writeOptions();
+            } else if (p->pauseMenu->selIdx == 3) {
+                Option::get().sound = !Option::get().sound;
+                Option::get().writeOptions();
+            } else if (p->pauseMenu->selIdx == 4) {
+                Option::get().fps = !Option::get().fps;
+                Option::get().writeOptions();
+            } else if (p->pauseMenu->selIdx == 5) {
+                Option::get().vsync = !Option::get().vsync;
+                Rendering::RenderContext::get().vsync = Option::get().vsync;
+                Option::get().writeOptions();
+            } else if (p->pauseMenu->selIdx == 6) {
+                p->pauseMenu->pauseState = 2;
+            } else if (p->pauseMenu->selIdx == 7) {
+                p->pauseMenu->pauseState = 0;
+            }
+        } else if (p->pauseMenu->pauseState == 2) {
+            if (p->pauseMenu->selIdx == 0) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().buttonBreak = val;
+                }
+            } else if (p->pauseMenu->selIdx == 1) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().buttonPlace = val;
+                }
+            } else if (p->pauseMenu->selIdx == 2) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().buttonMenu = val;
+                }
+            } else if (p->pauseMenu->selIdx == 3) {
+                auto val = Controls::get().getNextKey();
+                if (val != 0) {
+                    Controls::get().buttonJump = val;
+                }
+            } else if (p->pauseMenu->selIdx == 4) {
+#if PSP
+                Controls::get().pspJoystickView =
+                    !Controls::get().pspJoystickView;
+#elif BUILD_PLAT == BUILD_VITA
+                Controls::get().vitaJoystickSwap =
+                    !Controls::get().vitaJoystickSwap;
+#endif
+            } else if (p->pauseMenu->selIdx == 5) {
+                p->pauseMenu->pauseState = 1;
+            }
+            Controls::get().writeControls();
+            GameState::apply_controls();
         }
+        delay(100);
+        return;
     }
 }
 
 auto Player::move_left(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
+#if PSP
+        if (!Controls::get().pspJoystickView) {
+            p->rot.y -= 5.0f;
+            if (p->rot.y > 360.0f) {
+                p->rot.y -= 360.0f;
+            }
+
+            if (p->rot.y < 0.0f) {
+                p->rot.y += 360.0f;
+            }
+
+        } else {
+            p->acc.x += -sinf(DEGTORAD(-p->rot.y + 90.f));
+            p->acc.z += -cosf(DEGTORAD(-p->rot.y + 90.f));
+        }
+#else
         p->acc.x += -sinf(DEGTORAD(-p->rot.y + 90.f));
         p->acc.z += -cosf(DEGTORAD(-p->rot.y + 90.f));
+#endif
     }
 }
 
 auto Player::move_right(std::any d) -> void {
     auto p = std::any_cast<Player *>(d);
     if (!p->in_inventory && !p->in_chat && !p->in_pause) {
+#if PSP
+        if (!Controls::get().pspJoystickView) {
+            p->rot.y += 5.0f;
+            if (p->rot.y > 360.0f) {
+                p->rot.y -= 360.0f;
+            }
+
+            if (p->rot.y < 0.0f) {
+                p->rot.y += 360.0f;
+            }
+
+        } else {
+            p->acc.x += sinf(DEGTORAD(-p->rot.y + 90.f));
+            p->acc.z += cosf(DEGTORAD(-p->rot.y + 90.f));
+        }
+#else
         p->acc.x += sinf(DEGTORAD(-p->rot.y + 90.f));
         p->acc.z += cosf(DEGTORAD(-p->rot.y + 90.f));
+#endif
     }
 }
 
@@ -216,9 +355,20 @@ auto Player::press_down(std::any d) -> void {
         p->in_chat = false;
     } else if (p->in_pause) {
         p->pauseMenu->selIdx++;
-        if (p->pauseMenu->selIdx > 3) {
-            p->pauseMenu->selIdx = 3;
+        if (p->pauseMenu->pauseState == 0) {
+            if (p->pauseMenu->selIdx > 3) {
+                p->pauseMenu->selIdx = 3;
+            }
+        } else if (p->pauseMenu->pauseState == 1) {
+            if (p->pauseMenu->selIdx > 7) {
+                p->pauseMenu->selIdx = 7;
+            }
+        } else if (p->pauseMenu->pauseState == 2) {
+            if (p->pauseMenu->selIdx > 5) {
+                p->pauseMenu->selIdx = 5;
+            }
         }
+
     } else if (!p->in_chat && p->in_inventory) {
         p->in_cursor_y += 1;
         if (p->in_cursor_y >= 5)
@@ -310,9 +460,16 @@ auto Player::rotate(float dt, float sense) -> void {
     const auto rotSpeed = 500.0f;
     float cX, cY;
 
+    float mX, mY;
+
 #if BUILD_PLAT == BUILD_VITA
-    cX = get_axis("Vita", "LX");
-    cY = get_axis("Vita", "LY");
+    if (Controls::get().vitaJoystickSwap) {
+        cX = get_axis("Vita", "LX");
+        cY = get_axis("Vita", "LY");
+    } else {
+        cX = get_axis("Vita", "RX");
+        cY = get_axis("Vita", "RY");
+    }
 
     if (cX <= 0.4f && cX >= -0.4f)
         cX = 0.0f;
@@ -321,17 +478,53 @@ auto Player::rotate(float dt, float sense) -> void {
 
     cX *= 0.3f;
     cY *= 0.3f;
+
+    if (!Controls::get().vitaJoystickSwap) {
+        mX = get_axis("Vita", "LX");
+        mY = get_axis("Vita", "LY");
+    } else {
+        mX = get_axis("Vita", "RX");
+        mY = get_axis("Vita", "RY");
+    }
+
+    if (mX > 0.5f || mX < -0.5f) {
+        acc.x += sinf(DEGTORAD(-rot.y + 90.0f)) * mX;
+        acc.z += cosf(DEGTORAD(-rot.y + 90.0f)) * mX;
+    }
+
+    if (mY > 0.5f || mY < -0.5f) {
+        acc.x += sinf(DEGTORAD(-rot.y)) * mY;
+        acc.z += cosf(DEGTORAD(-rot.y)) * mY;
+    }
+
 #elif BUILD_PLAT == BUILD_PSP
-    cX = get_axis("PSP", "X");
-    cY = get_axis("PSP", "Y");
+    cX = 0.0f;
+    cY = 0.0f;
+    if (Controls::get().pspJoystickView) {
+        cX = get_axis("PSP", "X");
+        cY = get_axis("PSP", "Y");
 
-    if (cX <= 0.4f && cX >= -0.4f)
-        cX = 0.0f;
-    if (cY <= 0.4f && cY >= -0.4f)
-        cY = 0.0f;
+        if (cX <= 0.4f && cX >= -0.4f)
+            cX = 0.0f;
+        if (cY <= 0.4f && cY >= -0.4f)
+            cY = 0.0f;
 
-    cX *= 0.3f;
-    cY *= 0.3f;
+        cX *= 0.3f;
+        cY *= 0.3f;
+    } else {
+        mX = get_axis("PSP", "X");
+        mY = get_axis("PSP", "Y");
+        if (mX > 0.5f || mX < -0.5f) {
+            acc.x += sinf(DEGTORAD(-rot.y + 90.0f)) * mX;
+            acc.z += cosf(DEGTORAD(-rot.y + 90.0f)) * mX;
+        }
+
+        if (mY > 0.5f || mY < -0.5f) {
+            acc.x += sinf(DEGTORAD(-rot.y)) * mY;
+            acc.z += cosf(DEGTORAD(-rot.y)) * mY;
+        }
+    }
+
 #else
     cX = get_axis("Mouse", "X");
     cY = get_axis("Mouse", "Y");

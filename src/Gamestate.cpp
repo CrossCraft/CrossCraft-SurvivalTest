@@ -1,5 +1,5 @@
 #include "Gamestate.hpp"
-
+#include "Modding/Mod.hpp"
 #include "MusicManager.hpp"
 #include "Rendering/ShaderManager.hpp"
 #include "ResourcePackManager.hpp"
@@ -11,6 +11,14 @@
 
 namespace CrossCraft {
 using namespace Stardust_Celeste::Utilities;
+
+GameState *instanced_gamestate = nullptr;
+
+void GameState::apply_controls() {
+    if (instanced_gamestate != nullptr) {
+        instanced_gamestate->bind_controls();
+    }
+}
 
 GameState::~GameState() { on_cleanup(); }
 
@@ -130,6 +138,10 @@ void GameState::on_start() {
     Rendering::ShaderManager::get().bind_shader(shad);
 #endif
 
+    int num_mods = Modding::ModManager::get().get_num_mods();
+    SC_APP_INFO("Loaded {} mods!", num_mods);
+    instanced_gamestate = this;
+
     Rendering::RenderContext::get().vsync = Option::get().vsync;
 
     // Make a world and generate it
@@ -186,8 +198,20 @@ void GameState::on_start() {
     // Bind our controllers
     bind_controls();
 
+    Input::add_controller(psp_controller);
+    Input::add_controller(key_controller);
+    Input::add_controller(mouse_controller);
+    Input::add_controller(vita_controller);
+
+    Input::set_differential_mode("Mouse", true);
+    Input::set_differential_mode("PSP", true);
+    Input::set_differential_mode("Vita", true);
+
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
+
+    Modding::ModManager::set_ptr(world.get());
+    Modding::ModManager::get().onStart();
 }
 
 void GameState::on_cleanup() {
@@ -208,6 +232,8 @@ void GameState::on_update(Core::Application *app, double dt) {
 
     Input::update();
     world->update(dt);
+
+    Modding::ModManager::get().onUpdate();
 }
 void GameState::on_draw(Core::Application *app, double dt) { world->draw(); }
 } // namespace CrossCraft

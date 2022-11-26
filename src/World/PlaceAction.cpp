@@ -1,4 +1,5 @@
 #include "PlaceAction.hpp"
+#include "../Modding/Mod.hpp"
 #include <Utilities/Input.hpp>
 #include <gtx/rotate_vector.hpp>
 
@@ -133,6 +134,9 @@ auto PlaceAction::place(std::any d) -> void {
             goto consume;
 
         w->worldData[idx] = blk;
+
+        Modding::ModManager::get().onPlace(
+            ivec, w->player->itemSelections[w->player->selectorIDX].type);
 
         w->sound_manager->play(blk, cast_pos, true);
 
