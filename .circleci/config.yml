@@ -22,9 +22,7 @@ jobs:
     
     steps:
       - checkout
-      - run: 
-        name: "Setup CMake"
-        command: |
+      - run: |
           $ProgressPreference = "SilentlyContinue"
           Invoke-WebRequest -URI https://github.com/Kitware/CMake/releases/download/v3.25.0/cmake-3.25.0-windows-x86_64.zip -OutFile cmake-3.25.0-windows-x86_64.zip
           Expand-Archive cmake-3.25.0-windows-x86_64.zip -DestinationPath cmake
@@ -63,9 +61,7 @@ jobs:
     
     steps:
       - checkout
-      - run: 
-        name: "Setup CMake"
-        command: |
+      - run: |
           curl -fL --retry 3 --max-time 300 -o cmake.tar.gz https://github.com/Kitware/CMake/releases/download/v3.20.3/cmake-3.20.3-macos-universal.tar.gz
           mkdir cmake
           tar -xf cmake.tar.gz --strip 3 -C cmake
