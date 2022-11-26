@@ -133,6 +133,8 @@ void ModManager::scan_mods() {
     std::filesystem::path p(PLATFORM_FILE_PREFIX + "mods/");
 
     try {
+        auto str = p.filename().string();
+        SC_APP_INFO("Scanning {}", str);
         for (const auto &entry : std::filesystem::directory_iterator(p)) {
             if (entry.is_directory()) {
                 auto p = PLATFORM_FILE_PREFIX + "mods/" +

@@ -48,6 +48,7 @@ inline void createDirs() {
 #if BUILD_PLAT == BUILD_VITA
     sceIoMkdir("ux0:/data/CrossCraft-ST", 0777);
     sceIoMkdir("ux0:/data/CrossCraft-ST/resourcepacks", 0777);
+    sceIoMkdir("ux0:/data/CrossCraft-ST/mods", 0777);
     Utilities::Logger::get_app_log()->flush_output = true;
     Utilities::Logger::get_core_log()->flush_output = true;
     if (!std::filesystem::exists(
@@ -57,6 +58,7 @@ inline void createDirs() {
     }
 #elif BUILD_PLAT == BUILD_PSP
     sceIoMkdir("./resourcepacks", 0777);
+    sceIoMkdir("./mods", 0777);
     {
         std::ifstream src("./default.zip", std::ios::binary);
         if (src.is_open()) {

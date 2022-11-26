@@ -59,8 +59,6 @@ const std::string frag_source = R"(
 
     out vec4 FragColor;
 
-    const float density = 0.0005f;
-
     void main() {
         vec4 texColor = texture(tex, vec2(uv.x + scroll, uv.y));
         if(drawSky == 0)
@@ -104,14 +102,13 @@ const std::string frag_source =
     float4 main(float2 vTexcoord : TEXCOORD0, float4 vColor : COLOR0, float4 coords : WPOS, uniform sampler2D tex, uniform float scroll, uniform int drawSky, uniform float3 fogColor) {
 
         float4 texColor = tex2D(tex, float2(vTexcoord.x + scroll, vTexcoord.y));
-        if(drawSky == 0)
+        if(drawSky == 0) {
             texColor *= vColor;
-        else if(drawSky == 1)
+        } else if(drawSky == 1) {
             texColor = float4(0.599765f, 0.796875f, 1.0f, 1.0f);
-        else if(drawSky == 2)
-            texColor = color;
-
-        texColor = clamp(texColor, 0.0f, 1.0f);
+        } else if(drawSky == 2) {
+            texColor = vColor;
+        }
 
         float dist = coords.z / coords.w;
 
@@ -131,6 +128,8 @@ const std::string frag_source =
 #endif
 
 void GameState::on_start() {
+    SC_APP_INFO("STARTING GAME STATE");
+
 #if BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX ||                \
     BUILD_PLAT == BUILD_VITA
     auto shad =
@@ -155,6 +154,7 @@ void GameState::on_start() {
             Rendering::Color{0x99, 0xCC, 0xFF, 0xFF});
 
         auto fc = glm::vec3(0.59765f, 0.796875, 1.0f);
+
 #if BUILD_PLAT != BUILD_PSP
         auto progID =
             Rendering::ShaderManager::get().get_current_shader().programID;
@@ -210,8 +210,8 @@ void GameState::on_start() {
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
 
-    Modding::ModManager::set_ptr(world.get());
-    Modding::ModManager::get().onStart();
+    // Modding::ModManager::set_ptr(world.get());
+    // Modding::ModManager::get().onStart();
 }
 
 void GameState::on_cleanup() {

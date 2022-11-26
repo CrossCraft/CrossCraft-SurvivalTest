@@ -115,11 +115,12 @@ void MenuState::on_cleanup() {
     delete key_controller;
     delete mouse_controller;
     delete vita_controller;
-
-    Rendering::TextureManager::get().delete_texture(gui_tex);
-    Rendering::TextureManager::get().delete_texture(font_texture);
-    Rendering::TextureManager::get().delete_texture(bg_texture);
-    Rendering::TextureManager::get().delete_texture(logo_texture);
+    /*
+        Rendering::TextureManager::get().delete_texture(gui_tex);
+        Rendering::TextureManager::get().delete_texture(font_texture);
+        Rendering::TextureManager::get().delete_texture(bg_texture);
+        Rendering::TextureManager::get().delete_texture(logo_texture);
+        */
 }
 
 void MenuState::quit(std::any d) {
@@ -134,6 +135,7 @@ void MenuState::on_update(Core::Application *app, double dt) {
         app->exit();
     }
     if (startSP) {
+        SC_APP_INFO("STARTING SINGLEPLAYER");
         app->push_state(create_refptr<GameState>());
         return;
     }
