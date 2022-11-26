@@ -46,6 +46,7 @@ jobs:
   mac:
     macos:
       xcode: "10.0"
+    resource_class: medium
     
     steps:
       - checkout
