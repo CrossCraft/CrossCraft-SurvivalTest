@@ -27,7 +27,6 @@ jobs:
   linux:
     machine:
       image: ubuntu-2204:2022.10.2
-    resource_class: xlarge
     
     steps:
       - checkout
@@ -38,7 +37,7 @@ jobs:
           mkdir -p build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j9
+          make -j5
           cd ..
           mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
           strip ./CrossCraft-SurvivalTest
@@ -56,7 +55,6 @@ jobs:
 
   psp:
     executor: psp-executor
-    resource_class: xlarge
 
     steps:
       - checkout
@@ -69,7 +67,7 @@ jobs:
           mkdir -p build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$PSPDEV/psp/share/pspdev.cmake ..
-          make -j9
+          make -j5
           cd ..
           mv build/EBOOT.PBP EBOOT.PBP
           mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
