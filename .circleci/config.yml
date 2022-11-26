@@ -50,6 +50,7 @@ jobs:
     steps:
       - checkout
       - run: |
+          brew install cmake
           git submodule update --init --recursive --remote
           mkdir -p build
           cd build
