@@ -114,9 +114,9 @@ jobs:
 
 
 workflows:
-  when: 
-    equal: [ "Trigger", << pipeline.parameters.GHA_Action >> ]
   st4-workflow:
+    when: 
+      equal: [ "Trigger", << pipeline.parameters.GHA_Action >> ]
     jobs:
       - linux
       - mac
