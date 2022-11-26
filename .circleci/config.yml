@@ -4,10 +4,12 @@ version: 2.1
 
 executors:
   psp-executor:
-    docker: pspdev/pspdev:latest
+    docker: 
+      - image: pspdev/pspdev:latest
   
   vita-executor:
-    docker: iridescentrose/psvitadev:latest
+    docker: 
+      - image: iridescentrose/psvitadev:latest
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
