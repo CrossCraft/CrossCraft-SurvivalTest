@@ -79,9 +79,21 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: "Build"
-          command: "echo Hello, World"
+      - run: |
+          export VITASDK=/usr/local/vitasdk
+          export PATH=$VITASDK/bin:$PATH
+          sudo apt-get install --yes --force-yes zip unzip
+          git config --global --add safe.directory /__w/CrossCraft-SurvivalTest/CrossCraft-SurvivalTest
+          git submodule update --init --recursive --remote
+          mkdir -p build
+          cd build
+          cmake -DVITA=1 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake ..
+          make
+          cd ..
+          mv build/CrossCraft-SurvivalTest.vpk CrossCraft-SurvivalTest.vpk
+          mkdir -p CrossCraft-ST/resourcepacks/default/
+          unzip resourcepacks/default.zip -d CrossCraft-ST/resourcepacks/default/
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
