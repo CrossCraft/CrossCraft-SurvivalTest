@@ -11,61 +11,15 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-
-  Ubuntu:
+  trigger-circleci:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        run: |
-          sudo apt update
-          sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libasound2-dev libjack-jackd2-dev oss4-dev libpulse-dev
-          git submodule update --init --recursive --remote
-          mkdir -p build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make
-          cd ..
-          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
-          strip ./CrossCraft-SurvivalTest
-          chmod +x ./CrossCraft-SurvivalTest
-      - name: Publish artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: CrossCraft-Linux
-          path: |
-            CrossCraft-SurvivalTest
-            resourcepacks/
-            LICENSE
-            README.md
-            config.cfg
-  
-  Mac:
-    runs-on: macOS-10.15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        run: |
-          git submodule update --init --recursive --remote
-          mkdir -p build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make
-          cd ..
-          mv build/CrossCraft-SurvivalTest CrossCraft-SurvivalTest
-          chmod +x ./CrossCraft-SurvivalTest
-      - name: Publish artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: CrossCraft-Mac
-          path: |
-            CrossCraft-SurvivalTest
-            resourcepacks/
-            LICENSE
-            README.md
-            config.cfg
+      - name: CircleCI
+        id: Trigger
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.5
+        env:
+          CCI_TOKEN: ${{ secrets.TK_PERSONAL }}
+
 
   Windows:
     runs-on: windows-latest
@@ -94,74 +48,3 @@ jobs:
             LICENSE
             README.md
             config.cfg
-
-  PSP:
-    runs-on: ubuntu-latest
-    container: pspdev/pspdev:latest
-
-    steps:
-      - name: Install dependencies
-        run: |
-          apk add bash cmake git gmp mpc1 mpfr4 make
-      
-      - name: Checkout
-        uses: actions/checkout@v2
-      
-      - name: Build
-        run: |
-          git config --global --add safe.directory /__w/CrossCraft-SurvivalTest/CrossCraft-SurvivalTest
-          git submodule update --init --recursive --remote
-          mkdir -p build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$PSPDEV/psp/share/pspdev.cmake ..
-          make
-          cd ..
-          mv build/EBOOT.PBP EBOOT.PBP
-          mv build/CrossCraft-SurvivalTest.prx CrossCraft-SurvivalTest.prx
-          unzip resourcepacks/default.zip -d resourcepacks/default/
-          mv resourcepacks/default.zip default.zip
-      - name: Publish artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: CrossCraft-PSP
-          path: |
-            EBOOT.PBP
-            CrossCraft-SurvivalTest.prx
-            resourcepacks/
-            LICENSE
-            README.md
-            config.cfg
-
-  Vita:
-    runs-on: ubuntu-latest
-    container: iridescentrose/psvitadev:latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-    
-      - name: Build
-        run: |
-          export VITASDK=/usr/local/vitasdk
-          export PATH=$VITASDK/bin:$PATH
-          sudo apt-get install --yes --force-yes zip unzip
-          git config --global --add safe.directory /__w/CrossCraft-SurvivalTest/CrossCraft-SurvivalTest
-          git submodule update --init --recursive --remote
-          mkdir -p build
-          cd build
-          cmake -DVITA=1 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake ..
-          make
-          cd ..
-          mv build/CrossCraft-SurvivalTest.vpk CrossCraft-SurvivalTest.vpk
-          mkdir -p CrossCraft-ST/resourcepacks/default/
-          unzip resourcepacks/default.zip -d CrossCraft-ST/resourcepacks/default/
-      - name: Publish artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: CrossCraft-Vita
-          path: |
-            CrossCraft-SurvivalTest.vpk
-            CrossCraft-ST/
-            LICENSE
-            README.md
-
