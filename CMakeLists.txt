@@ -25,7 +25,10 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE INC_FILES include/*.hpp)
 set(MINIZIP_SRC ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
 set(LUA_SRC ext/lua/onelua.c)
-set(ZLIB_SRCS ext/zlib/adler32.c ext/zlib/compress.c ext/zlib/crc32.c ext/zlib/deflate.c ext/zlib/gzclose.c ext/zlib/gzlib.c ext/zlib/gzread.c ext/zlib/gzwrite.c ext/zlib/inflate.c ext/zlib/infback.c ext/zlib/inftrees.c ext/zlib/inffast.c ext/zlib/trees.c ext/zlib/uncompr.c ext/zlib/zutil.c)
+
+if(NOT VITA)
+    set(ZLIB_SRCS ext/zlib/adler32.c ext/zlib/compress.c ext/zlib/crc32.c ext/zlib/deflate.c ext/zlib/gzclose.c ext/zlib/gzlib.c ext/zlib/gzread.c ext/zlib/gzwrite.c ext/zlib/inflate.c ext/zlib/infback.c ext/zlib/inftrees.c ext/zlib/inffast.c ext/zlib/trees.c ext/zlib/uncompr.c ext/zlib/zutil.c)
+endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(MINIZIP_SRC ext/zlib/contrib/minizip/iowin32.c ext/zlib/contrib/minizip/ioapi.c ext/zlib/contrib/minizip/mztools.c ext/zlib/contrib/minizip/unzip.c ext/zlib/contrib/minizip/zip.c)
@@ -61,7 +64,7 @@ if(VITA)
     set(VITA_VERSION "01.00")
 
     target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/include/)
-    target_link_libraries(CrossCraft-SurvivalTest Stardust-Celeste)
+    target_link_libraries(CrossCraft-SurvivalTest Stardust-Celeste z)
 
     vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
 
