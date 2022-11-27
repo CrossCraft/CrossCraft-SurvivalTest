@@ -197,7 +197,6 @@ Player::Player()
         "assets/minecraft/textures/char.png", SC_TEX_FILTER_NEAREST,
         SC_TEX_FILTER_NEAREST, false, false);
     pauseMenu = create_scopeptr<PauseMenu>();
-    listener = create_scopeptr<Audio::Listener>();
 
     fps_count = 0;
     fps_timer = 0.0f;
@@ -307,7 +306,6 @@ void Player::update(float dt, World *wrld) {
             arrows--;
         }
 
-        // listener->update(pos, vel, look, { 0, 1, 0 });
         chat->update(dt);
 
         hasDir = false;

@@ -18,7 +18,6 @@
 #include "Chat.hpp"
 #include "Graphics/2D/FontRenderer.hpp"
 #include "PauseMenu.hpp"
-#include <Audio/AudioListener.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Rendering/Camera.hpp>
 #include <Rendering/Primitive/Rectangle.hpp>
@@ -162,8 +161,6 @@ class Player : public PlayerEntity {
 
     bool fallDamaging;
     float startY;
-
-    ScopePtr<Audio::Listener> listener;
 
     ScopePtr<Graphics::G2D::Sprite> item_box, selector, crosshair, water,
         overlay;
