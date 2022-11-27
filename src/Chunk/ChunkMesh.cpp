@@ -10,7 +10,8 @@ ChunkMesh::ChunkMesh(int x, int y, int z)
     : needsRegen(0), cX(x), cY(y), cZ(z), rtcounter(0) {
     blank = false;
 
-    transformationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3( cX * 16, cY * 16, cZ * 16 ));
+    transformationMatrix =
+        glm::translate(glm::mat4(1.0f), glm::vec3(cX * 16, cY * 16, cZ * 16));
 }
 
 ChunkMesh::~ChunkMesh() {}
@@ -541,8 +542,14 @@ void ChunkMesh::draw(MeshSelection meshSel) {
     if (blank)
         return;
 
+#ifndef PSP
     // Set matrix
     Rendering::RenderContext::get().matrix_model(transformationMatrix);
+
+#else
+    Rendering::RenderContext::get().matrix_translate(
+        glm::vec3(cX * 16, cY * 16, cZ * 16));
+#endif
 
     // Draw
     meshCollection.select(meshSel)->draw();

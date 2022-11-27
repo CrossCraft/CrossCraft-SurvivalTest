@@ -369,30 +369,38 @@ auto CrossCraftGenerator::generate(World *wrld) -> void {
     int32_t *heightMap = (int32_t *)calloc(256 * 256, sizeof(int32_t));
 
     //"Raising..."
+    SC_APP_INFO("Raising");
     generate_heightmap(heightMap);
     //"Eroding..."
+    SC_APP_INFO("Raising");
     smooth_heightmap(heightMap);
 
     srand(NoiseUtil::seed);
 
     //"Soiling..."
+    SC_APP_INFO("Soiling");
     create_strata(wrld, heightMap);
 
     // Ores
     // make_ores();
 
     //"Watering..."
+    SC_APP_INFO("Watering");
     fill_water(wrld, heightMap);
 
     //"Melting..."
+    SC_APP_INFO("Melting");
     fill_lava(wrld, heightMap);
 
     //"Growing..."
+    SC_APP_INFO("Growing");
     create_surface(wrld, heightMap);
 
     ////"Planting..."
+    SC_APP_INFO("Planting");
     create_plants(wrld, heightMap);
 
+    SC_APP_INFO("Preparing to Enter World.");   
     // Bottom of World = Bedrock
     for (int x = 0; x < 256; x++) {
         for (int z = 0; z < 256; z++) {

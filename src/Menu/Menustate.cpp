@@ -109,12 +109,6 @@ void MenuState::on_start() {
 }
 
 void MenuState::on_cleanup() {
-    Input::clear_controller();
-
-    delete psp_controller;
-    delete key_controller;
-    delete mouse_controller;
-    delete vita_controller;
     /*
         Rendering::TextureManager::get().delete_texture(gui_tex);
         Rendering::TextureManager::get().delete_texture(font_texture);
@@ -136,6 +130,14 @@ void MenuState::on_update(Core::Application *app, double dt) {
     }
     if (startSP) {
         SC_APP_INFO("STARTING SINGLEPLAYER");
+
+        Input::clear_controller();
+
+        delete psp_controller;
+        delete key_controller;
+        delete mouse_controller;
+        delete vita_controller;
+
         app->push_state(create_refptr<GameState>());
         return;
     }

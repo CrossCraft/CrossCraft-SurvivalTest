@@ -4,27 +4,22 @@
 
 namespace CrossCraft {
 MusicManager::MusicManager() {
-#if PSP
-    std::string ext = "bgm";
-#else
-    std::string ext = "ogg";
-#endif
 
     std::string prefix = "assets/minecraft/music/";
-    tracks.push_back(prefix + "calm1." + ext);
-    tracks.push_back(prefix + "calm2." + ext);
-    tracks.push_back(prefix + "calm3." + ext);
-    tracks.push_back(prefix + "hal1." + ext);
-    tracks.push_back(prefix + "hal2." + ext);
-    tracks.push_back(prefix + "hal3." + ext);
-    tracks.push_back(prefix + "hal4." + ext);
+    tracks.push_back(prefix + "calm1.ogg");
+    tracks.push_back(prefix + "calm2.ogg");
+    tracks.push_back(prefix + "calm3.ogg");
+    tracks.push_back(prefix + "hal1.ogg");
+    tracks.push_back(prefix + "hal2.ogg");
+    tracks.push_back(prefix + "hal3.ogg");
+    tracks.push_back(prefix + "hal4.ogg");
 
     timer = -1.0f;
 }
 MusicManager::~MusicManager() {}
 
 auto MusicManager::update(float dt) -> void {
-    if (!Option::get().music) {
+    if (!Option::get().music && music.get() != nullptr) {
         music->stop();
         return;
     }
