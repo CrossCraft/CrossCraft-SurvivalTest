@@ -253,6 +253,75 @@ static int lua_player_setZ(lua_State *L) {
     return 0;
 }
 
+static int lua_entity_spawn_tnt(lua_State *L) {
+    int argc = lua_gettop(L);
+    if (argc != 4)
+        return luaL_error(L, "Error: Entity.spawnTNT() takes 4 arguments.");
+
+    float x = luaL_checkinteger(L, 1);
+    float y = luaL_checkinteger(L, 2);
+    float z = luaL_checkinteger(L, 3);
+    float f = luaL_checkinteger(L, 4);
+
+    TNTData data;
+    data.acc = glm::vec3(0.0f);
+    data.fuse = f;
+    data.vel = glm::vec3(0.0f);
+    data.immune = false;
+    data.inRange = false;
+    data.Killed = false;
+    data.rot = glm::vec2(0.0f);
+    data.pos = glm::vec3(x, y, z);
+
+    ModManager::wrld->tnt->add_TNT(data);
+
+    return 0;
+}
+
+static int lua_entity_spawn_drop(lua_State *L) {
+    int argc = lua_gettop(L);
+    if (argc != 5)
+        return luaL_error(L, "Error: Entity.spawnDrop() takes 5 arguments.");
+
+    float x = luaL_checkinteger(L, 1);
+    float y = luaL_checkinteger(L, 2);
+    float z = luaL_checkinteger(L, 3);
+    u8 id = luaL_checkinteger(L, 4);
+    u8 quant = luaL_checkinteger(L, 5);
+
+    DropData data;
+    data.acc = glm::vec3(0.0f);
+    data.vel = glm::vec3(0.0f);
+    data.rot = glm::vec2(0.0f);
+    data.inRange = false;
+    data.pos = glm::vec3(x, y, z);
+    data.quantity = quant;
+    data.type = id;
+    data.size = glm::vec3(0.1f);
+
+    ModManager::wrld->drops->add_drop(data);
+
+    return 0;
+}
+
+static int lua_entity_spawn_mob(lua_State *L) {
+    int argc = lua_gettop(L);
+    if (argc != 4)
+        return luaL_error(L, "Error: Entity.spawnMob() takes 4 arguments.");
+
+    float x = luaL_checkinteger(L, 1);
+    float y = luaL_checkinteger(L, 2);
+    float z = luaL_checkinteger(L, 3);
+    u8 id = luaL_checkinteger(L, 4);
+
+    auto mob = Mob::MobData::make_mob(static_cast<Mob::MobType>(id));
+    mob->pos = glm::vec3(x, y, z);
+
+    ModManager::wrld->mobManager->add_mob(mob);
+
+    return 0;
+}
+
 static const luaL_Reg worldLib[] = {
     {"getBlk", lua_world_get}, {"setBlk", lua_world_set}, {0, 0}};
 
@@ -263,6 +332,12 @@ static const luaL_Reg playerLib[] = {{"getX", lua_player_getX},
                                      {"getZ", lua_player_getZ},
                                      {"setZ", lua_player_setZ},
                                      {0, 0}};
+
+static const luaL_Reg entityLib[] = {{"spawnTNT", lua_entity_spawn_tnt},
+                                     {"spawnDrop", lua_entity_spawn_drop},
+                                     {"spawnMob", lua_entity_spawn_mob},
+                                     {0, 0}};
+
 auto ModManager::init_lib(lua_State *L) -> void {
 
     lua_getglobal(L, "World");
@@ -281,6 +356,14 @@ auto ModManager::init_lib(lua_State *L) -> void {
     lua_newtable(L);
     luaL_setfuncs(L, playerLib, 0);
     lua_setglobal(L, "Player");
+
+    lua_getglobal(L, "Entity");
+    lua_pop(L, 1);
+    if (lua_isnil(L, -1)) {
+    }
+    lua_newtable(L);
+    luaL_setfuncs(L, entityLib, 0);
+    lua_setglobal(L, "Entity");
 }
 
 } // namespace CrossCraft::Modding
