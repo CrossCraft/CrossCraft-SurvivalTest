@@ -338,28 +338,11 @@ void World::draw() {
     GI::enable(GI_DEPTH_TEST);
     GI::set_culling_mode(true, true);
 
-    std::map<float, Chunk::Stack *> chunk_sorted;
-    std::map<float, Chunk::Stack *, std::greater<float>> chunk_reverse_sorted;
-    chunk_sorted.clear();
-    chunk_reverse_sorted.clear();
 
+    // Draw opaque
     for (auto const &[key, val] : chunks) {
-        glm::vec2 relative_chunk_pos =
-            glm::vec2(val->get_pos().x * 16.0f, val->get_pos().y * 16.0f);
-        auto diff =
-            glm::vec2(player->pos.x, player->pos.z) - relative_chunk_pos;
-        auto len = fabsf(sqrtf(diff.x * diff.x + diff.y * diff.y));
-        chunk_sorted.emplace(len, val);
-    }
-
-    chunk_reverse_sorted.insert(chunk_sorted.begin(), chunk_sorted.end());
-
-    if (chunk_sorted.size() > 0) {
-        // Draw opaque
-        for (auto const &[key, val] : chunk_sorted) {
-            if (val != nullptr)
-                val->draw(this);
-        }
+        if (val != nullptr)
+            val->draw(this);
     }
 
     GI::enable(GI_BLEND);
@@ -372,12 +355,10 @@ void World::draw() {
     // Set up texture
     Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
-    if (chunk_reverse_sorted.size() > 0) {
-        // Draw transparent
-        for (auto const &[key, val] : chunk_reverse_sorted) {
-            if (val != nullptr)
-                val->draw_transparent();
-        }
+    // Draw transparent
+    for (auto const &[key, val] : chunks) {
+        if (val != nullptr)
+            val->draw_transparent();
     }
 
     clouds->draw();

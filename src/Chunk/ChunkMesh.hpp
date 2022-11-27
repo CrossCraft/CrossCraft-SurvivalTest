@@ -72,6 +72,7 @@ class ChunkMesh {
     bool needsRegen;
 
   private:
+    glm::mat4 transformationMatrix;
     void full_check(World *wrld);
     void layer_check(World *wrld, int y);
     /**

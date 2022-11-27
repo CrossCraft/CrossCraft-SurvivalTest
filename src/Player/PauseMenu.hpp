@@ -1,6 +1,6 @@
 #pragma once
 #include "../Option.hpp"
-#include <Graphics/2D/FontRenderer.hpp>
+#include <Graphics/2D/FixedFontRenderer.hpp>
 #include <Graphics/2D/Sprite.hpp>
 #include <Rendering/Camera.hpp>
 #include <Rendering/Primitive/Rectangle.hpp>
@@ -27,7 +27,7 @@ class PauseMenu {
     ScopePtr<Graphics::G2D::Sprite> unsel_sprite;
     ScopePtr<Graphics::G2D::Sprite> sel_sprite;
     ScopePtr<Graphics::G2D::Sprite> dis_sprite;
-    RefPtr<Graphics::G2D::FontRenderer> fontRenderer;
+    RefPtr<Graphics::G2D::FixedFontRenderer<256>> fontRenderer;
 
     ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;
 };

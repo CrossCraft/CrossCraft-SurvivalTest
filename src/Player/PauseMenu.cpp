@@ -44,7 +44,7 @@ PauseMenu::PauseMenu() {
                              {200.0f / 256.0f, 20.0f / 256.0f}});
     dis_sprite->set_layer(-4);
 
-    fontRenderer = create_refptr<Graphics::G2D::FontRenderer>(
+    fontRenderer = create_refptr<Graphics::G2D::FixedFontRenderer<256>>(
         font_texture, glm::vec2(16, 16));
 
     background_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(
@@ -71,7 +71,7 @@ auto PauseMenu::exit() -> void {
     pauseState = 0;
 }
 
-auto render_with_shadow(RefPtr<Graphics::G2D::FontRenderer> fontRenderer,
+auto render_with_shadow(RefPtr<Graphics::G2D::FixedFontRenderer<256>> fontRenderer,
                         std::string str, float x, float y) -> void {
     fontRenderer->add_text(str, {x - fontRenderer->calculate_size(str) / 2, y},
                            {255, 255, 255, 255}, -11);

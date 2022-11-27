@@ -8,7 +8,7 @@ TextHelper::TextHelper() {
         "assets/minecraft/textures/default.png", SC_TEX_FILTER_NEAREST,
         SC_TEX_FILTER_NEAREST, false, false);
 
-    fontRenderer = create_scopeptr<Graphics::G2D::FixedFontRenderer<1024>>(
+    fontRenderer = create_scopeptr<Graphics::G2D::FixedFontRenderer<256>>(
         font_texture, glm::vec2(16, 16));
 
     background_rectangle = create_scopeptr<Rendering::Primitive::Rectangle>(

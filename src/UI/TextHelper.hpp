@@ -81,7 +81,7 @@ class TextHelper {
 
   private:
     uint32_t font_texture;
-    ScopePtr<Graphics::G2D::FixedFontRenderer<1024>> fontRenderer;
+    ScopePtr<Graphics::G2D::FixedFontRenderer<256>> fontRenderer;
     std::vector<glm::vec3> posBox;
     ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;
 

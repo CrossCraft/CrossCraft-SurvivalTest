@@ -2,12 +2,15 @@
 #include "../World/Generation/WorldGenUtil.hpp"
 #include "../World/World.hpp"
 #include "ChunkMeshBuilder.hpp"
+#include <gtc/matrix_transform.hpp>
 
 namespace CrossCraft::Chunk {
 
 ChunkMesh::ChunkMesh(int x, int y, int z)
     : needsRegen(0), cX(x), cY(y), cZ(z), rtcounter(0) {
     blank = false;
+
+    transformationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3( cX * 16, cY * 16, cZ * 16 ));
 }
 
 ChunkMesh::~ChunkMesh() {}
@@ -539,8 +542,7 @@ void ChunkMesh::draw(MeshSelection meshSel) {
         return;
 
     // Set matrix
-    Rendering::RenderContext::get().matrix_translate(
-        {cX * 16, cY * 16, cZ * 16});
+    Rendering::RenderContext::get().matrix_model(transformationMatrix);
 
     // Draw
     meshCollection.select(meshSel)->draw();
