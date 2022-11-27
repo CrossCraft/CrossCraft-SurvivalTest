@@ -53,8 +53,8 @@ jobs:
           strip ./CrossCraft/CrossCraft-SurvivalTest
           chmod +x ./CrossCraft/CrossCraft-SurvivalTest
           zip -r CCST-Linux.zip CrossCraft
-      - store_artifacts:
-          path: CCST-Linux.zip
+#      - store_artifacts:
+#          path: CCST-Linux.zip
 
 
   mac:
@@ -81,8 +81,8 @@ jobs:
           mv build/CrossCraft-SurvivalTest CrossCraft/CrossCraft-SurvivalTest
           chmod +x ./CrossCraft/CrossCraft-SurvivalTest
           zip -r CCST-Mac.zip CrossCraft
-      - store_artifacts:
-          path: CCST-Mac.zip
+#      - store_artifacts:
+#          path: CCST-Mac.zip
 
   psp:
     executor: psp-executor
@@ -106,8 +106,8 @@ jobs:
           mv build/CrossCraft-SurvivalTest.prx CrossCraft/CrossCraft-SurvivalTest.prx
           unzip resourcepacks/default.zip -d CrossCraft/resourcepacks/default/
           zip -r CCST-PSP.zip CrossCraft
-      - store_artifacts:
-          path: CCST-PSP.zip
+#      - store_artifacts:
+#          path: CCST-PSP.zip
 
   psvita:
     executor: vita-executor
@@ -130,8 +130,8 @@ jobs:
           mkdir -p CrossCraft/CrossCraft-ST/resourcepacks/default/
           unzip resourcepacks/default.zip -d CrossCraft/CrossCraft-ST/resourcepacks/default/
           zip -r CCST-Vita.zip CrossCraft
-      - store_artifacts:
-          path: CCST-Vita.zip
+#      - store_artifacts:
+#          path: CCST-Vita.zip
 
 workflows:
   st4-workflow:
@@ -139,6 +139,6 @@ workflows:
       equal: [ "Trigger", << pipeline.parameters.GHA_Action >> ]
     jobs:
       - linux
-      - mac
+#      - mac
       - psp
       - psvita
