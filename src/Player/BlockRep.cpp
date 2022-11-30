@@ -249,7 +249,7 @@ auto BlockRep::drawBlkHand(int8_t type, World *wrld, double cube_bob) -> void {
     }
 
     // DISABLE CULL
-#if BUILD_PC || BUILD_PLAT == BUILD_VITA
+#if BUILD_PC || BUILD_PLAT == BUILD_VITA || BUILD_PLAT == BUILD_3DS
     glClear(GL_DEPTH_BUFFER_BIT);
 #else
     sceGuClear(GU_DEPTH_BUFFER_BIT);

@@ -10,6 +10,9 @@ if(WIN32)
 elseif(PSP)
     add_compile_definitions(BUILD_PLAT=2)
     add_compile_definitions(IOAPI_NO_64)
+elseif(3DS)
+    add_compile_definitions(BUILD_PLAT=7)
+    add_compile_definitions(IOAPI_NO_64)
 elseif(VITA)
     add_compile_definitions(BUILD_PLAT=3)
     add_compile_definitions(IOAPI_NO_64)
@@ -50,6 +53,17 @@ if(PSP)
         ICON_PATH ../src/assets/psp/ICON0.png
         BACKGROUND_PATH ../src/assets/psp/PIC1.png
         BUILD_PRX 1
+    )
+endif()
+
+if(3DS)
+    include(ext/Stardust-Celeste/Tools3DS.cmake)
+
+    add_3dsx_target(
+        CrossCraft-SurvivalTest
+        APP_TITLE CrossCraft-SurvivalTest
+        APP_DESCRIPTION "CrossCraft Survival Test 3DS"
+        APP_AUTHOR "Iridescence and CypressImplex"
     )
 endif()
 

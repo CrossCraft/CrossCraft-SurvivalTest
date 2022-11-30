@@ -66,7 +66,7 @@ void MeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
 
         auto lv = lightVal;
 
-        if (idxl >= 0 &&
+        if (idxl >= 0 && posCheck.y >= 0 &&
             !((wrld->lightData[idxl] >> ((int)posCheck.y % 16)) & 1)) {
             switch (lv) {
             case LIGHT_TOP:

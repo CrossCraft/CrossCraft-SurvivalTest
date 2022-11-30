@@ -227,7 +227,7 @@ auto SaveData::save(std::any p) -> void {
         int score = wrld->player->score;
         gzwrite(save_file, &score, sizeof(int));
         int air = wrld->player->air;
-        gzwrite(save_file, &wrld->player->air, sizeof(int));
+        gzwrite(save_file, &air, sizeof(int));
 
         gzwrite(save_file, wrld->player->itemSelections, sizeof(SlotInfo));
 

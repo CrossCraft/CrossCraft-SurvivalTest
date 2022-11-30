@@ -14,16 +14,6 @@
 #include <pspctrl.h>
 #endif
 
-#define BUILD_PC (BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX)
-
-#if PSP
-#include <pspkernel.h>
-#elif BUILD_PLAT == BUILD_VITA
-#include <vitaGL.h>
-#else
-#include <glad/glad.hpp>
-#endif
-
 namespace CrossCraft {
 
 World::World(std::shared_ptr<Player> p) {
@@ -156,7 +146,7 @@ World::~World() {
 
 #if PSP
 const auto CHUNKS_PER_SECOND = 2.0f;
-#elif BUILD_PLAT == BUILD_VITA
+#elif BUILD_PLAT == BUILD_VITA || BUILD_PLAT == BUILD_3DS
 const auto CHUNKS_PER_SECOND = 4.0f;
 #else
 const auto CHUNKS_PER_SECOND = 96.0f;
@@ -164,14 +154,20 @@ const auto CHUNKS_PER_SECOND = 96.0f;
 
 #if BUILD_PLAT == BUILD_PSP || BUILD_PLAT == BUILD_VITA
 const auto RENDER_DISTANCE_DIAMETER = 10.0f;
+#elif BUILD_PLAT == BUILD_3DS
+const auto RENDER_DISTANCE_DIAMETER = 5.0f;
 #else
 const auto RENDER_DISTANCE_DIAMETER = 16.f;
 #endif
 
 auto World::get_needed_chunks() -> std::vector<glm::ivec2> {
+#if BUILD_PLAT == BUILD_3DS
+    auto RDIST_DIAMETER = static_cast<float>(RENDER_DISTANCE_DIAMETER);
+#else
     auto RDIST_DIAMETER = RENDER_DISTANCE_DIAMETER *
                           static_cast<float>(Option::get().renderDist + 1) /
                           4.0f;
+#endif
 
     auto rad = RDIST_DIAMETER / 2.f;
 
@@ -338,7 +334,6 @@ void World::draw() {
     GI::enable(GI_DEPTH_TEST);
     GI::set_culling_mode(true, true);
 
-
     // Draw opaque
     for (auto const &[key, val] : chunks) {
         if (val != nullptr)
@@ -375,6 +370,7 @@ void World::draw() {
 }
 
 auto World::rain_toggle(std::any d) -> void {
+    UNUSED(d);
     ParticleManager::get().raining = !ParticleManager::get().raining;
 }
 
@@ -444,8 +440,7 @@ auto World::update_lighting(int x, int z) -> void {
     }
 }
 
-auto World::set_block(short x, short y, short z, uint8_t mode, uint8_t block)
-    -> void {
+auto World::set_block(short x, short y, short z, uint8_t block) -> void {
     worldData[getIdx(x, y, z)] = block;
 }
 

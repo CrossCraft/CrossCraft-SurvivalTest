@@ -96,6 +96,7 @@ Player::Player()
     in_pause = false;
     hasDir = false;
     is_firing = false;
+    fallDamaging = false;
 
     size = {0.6f, 1.8f, 0.6f};
 
@@ -645,7 +646,7 @@ auto Player::draw(World *wrld) -> void {
 
         playerHUD->rebuild();
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
         auto progID =
             Rendering::ShaderManager::get().get_current_shader().programID;
         auto location = glGetUniformLocation(progID, "drawSky");
@@ -654,7 +655,7 @@ auto Player::draw(World *wrld) -> void {
 
         death_rectangle->draw();
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
         glUniform1i(location, 0);
 #endif
 

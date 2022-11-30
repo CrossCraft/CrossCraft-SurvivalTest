@@ -170,8 +170,7 @@ class World {
     std::map<int, Chunk::Stack *> chunks;
     ChunkMeta *chunksMeta;
 
-    auto set_block(short x, short y, short z, uint8_t mode, uint8_t block)
-        -> void;
+    auto set_block(short x, short y, short z, uint8_t block) -> void;
 
     glm::vec3 world_size;
     bool loaded;

@@ -24,7 +24,7 @@ class Clouds {
     uint16_t idx_counter;
     Rendering::Mesh<Rendering::Vertex> mesh;
 
-#ifdef PSP
+#if BUILD_PLAT == BUILD_PSP || BUILD_PLAT == BUILD_3DS
     uint16_t idx_counter2;
     Rendering::Mesh<Rendering::Vertex> mesh2;
 #endif

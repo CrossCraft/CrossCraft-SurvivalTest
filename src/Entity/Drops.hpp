@@ -15,7 +15,7 @@ using namespace Stardust_Celeste;
 
 class Player;
 
-struct DropData : public Entity {
+struct DropData final : public Entity {
     uint8_t type;
     uint8_t quantity;
     float animTime;
@@ -23,7 +23,7 @@ struct DropData : public Entity {
     void doPhysics(float dt, World *w);
 };
 
-class Drops {
+class Drops final {
   public:
     Drops();
     ~Drops();

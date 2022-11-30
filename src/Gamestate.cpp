@@ -155,7 +155,7 @@ void GameState::on_start() {
 
         auto fc = glm::vec3(0.59765f, 0.796875, 1.0f);
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
         auto progID =
             Rendering::ShaderManager::get().get_current_shader().programID;
         auto location = glGetUniformLocation(progID, "fogColor");
@@ -165,7 +165,7 @@ void GameState::on_start() {
         Rendering::RenderContext::get().set_color(
             Rendering::Color{0xFF, 0xFF, 0xFF, 0xFF});
         auto fc = glm::vec3(1.0f, 1.0f, 1.0f);
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
         auto progID =
             Rendering::ShaderManager::get().get_current_shader().programID;
         auto location = glGetUniformLocation(progID, "fogColor");
@@ -191,9 +191,11 @@ void GameState::on_start() {
 
     // Make new controllers
     psp_controller = new Input::PSPController();
+    n3ds_controller = new Input::N3DSController();
     vita_controller = new Input::VitaController();
     key_controller = new Input::KeyboardController();
     mouse_controller = new Input::MouseController();
+    n3ds_controller = new Input::N3DSController();
 
     // Bind our controllers
     bind_controls();
@@ -202,16 +204,18 @@ void GameState::on_start() {
     Input::add_controller(key_controller);
     Input::add_controller(mouse_controller);
     Input::add_controller(vita_controller);
+    Input::add_controller(n3ds_controller);
 
     Input::set_differential_mode("Mouse", true);
     Input::set_differential_mode("PSP", true);
     Input::set_differential_mode("Vita", true);
+    Input::set_differential_mode("3DS", true);
 
     // Request 3D Mode
     Rendering::RenderContext::get().set_mode_3D();
 
-    // Modding::ModManager::set_ptr(world.get());
-    // Modding::ModManager::get().onStart();
+    Modding::ModManager::set_ptr(world.get());
+    Modding::ModManager::get().onStart();
 }
 
 void GameState::on_cleanup() {
@@ -219,6 +223,7 @@ void GameState::on_cleanup() {
     delete vita_controller;
     delete key_controller;
     delete mouse_controller;
+    delete n3ds_controller;
 }
 
 void GameState::quit(std::any d) {

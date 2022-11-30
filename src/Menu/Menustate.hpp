@@ -42,6 +42,7 @@ class MenuState : public Core::ApplicationState {
     Utilities::Controller *vita_controller;
     Utilities::Controller *key_controller;
     Utilities::Controller *mouse_controller;
+    Utilities::Controller *n3ds_controller;
 
     uint32_t bg_texture;
     uint32_t logo_texture;

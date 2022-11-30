@@ -46,15 +46,11 @@ void Entity::test_collide(World *wrld, float dt) {
         testZ = true;
     }
 
-    glm::vec3 newPosition = pos;
-
     if (testX) {
-        bool collided = false;
         for (int y = yMin; y <= yMax; y++) {
             for (int z = zMin; z <= zMax; z++) {
                 glm::ivec3 pos = glm::ivec3(x, y, z);
                 if (test(pos, wrld)) {
-                    collided = true;
                     vel.x = 0;
                 }
             }
@@ -62,12 +58,10 @@ void Entity::test_collide(World *wrld, float dt) {
     }
 
     if (testY) {
-        bool collided = false;
         for (int x = xMin; x <= xMax; x++) {
             for (int z = zMin; z <= zMax; z++) {
                 glm::ivec3 pos = glm::ivec3(x, y, z);
                 if (test(pos, wrld)) {
-                    collided = true;
                     vel.y = 0;
                     is_falling = false;
                 }
@@ -76,12 +70,10 @@ void Entity::test_collide(World *wrld, float dt) {
     }
 
     if (testZ) {
-        bool collided = false;
         for (int x = xMin; x <= xMax; x++) {
             for (int y = yMin; y <= yMax; y++) {
                 glm::ivec3 pos = glm::ivec3(x, y, z);
                 if (test(pos, wrld)) {
-                    collided = true;
                     vel.z = 0;
                 }
             }

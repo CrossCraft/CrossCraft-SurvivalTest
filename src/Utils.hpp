@@ -4,8 +4,11 @@
 #include <Utilities/Utilities.hpp>
 #include <string>
 
-#if BUILD_PLAT != BUILD_VITA
+#if BUILD_PLAT != BUILD_VITA && BUILD_PLAT != BUILD_3DS
 #define PLATFORM_FILE_PREFIX std::string("")
+#define PLATFORM_APP_FILE_PREFIX std::string("")
+#elif BUILD_PLAT == BUILD_3DS
+#define PLATFORM_FILE_PREFIX std::string("CrossCraft-ST/")
 #define PLATFORM_APP_FILE_PREFIX std::string("")
 #else
 #define PLATFORM_FILE_PREFIX std::string("ux0:/data/CrossCraft-ST/")

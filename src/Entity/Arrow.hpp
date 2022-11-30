@@ -15,14 +15,14 @@ namespace CrossCraft {
 using namespace Stardust_Celeste;
 class Player;
 
-struct ArrowData : public Entity {
+struct ArrowData final : public Entity {
     float lifeTime;
     bool playerArrow;
     bool inRange;
     void doPhysics(float dt, World *w);
 };
 
-class Arrow {
+class Arrow final {
   public:
     Arrow();
     ~Arrow();

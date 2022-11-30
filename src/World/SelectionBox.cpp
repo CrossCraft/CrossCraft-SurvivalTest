@@ -88,13 +88,13 @@ SelectionBox::SelectionBox() {
     blockMesh[0].indices.push_back(16);
 
     blockMesh[0].vertices.push_back(
-        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 0, 1});
+        Rendering::Vertex{0, 0, Rendering::Color{255, 255, 255, 255}, 0, 0, 1});
     blockMesh[0].vertices.push_back(
-        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 0, 1});
+        Rendering::Vertex{0, 0, Rendering::Color{255, 255, 255, 255}, 1, 0, 1});
     blockMesh[0].vertices.push_back(
-        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 1, 1, 1});
+        Rendering::Vertex{0, 0, Rendering::Color{255, 255, 255, 255}, 1, 1, 1});
     blockMesh[0].vertices.push_back(
-        Rendering::Vertex{0, 0, {255, 255, 255, 255}, 0, 1, 1});
+        Rendering::Vertex{0, 0, Rendering::Color{255, 255, 255, 255}, 0, 1, 1});
 
     blockMesh[0].indices.push_back(20);
     blockMesh[0].indices.push_back(21);

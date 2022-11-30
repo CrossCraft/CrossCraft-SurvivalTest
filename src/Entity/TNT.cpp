@@ -105,6 +105,8 @@ void TNT::draw() {
 auto TNT::add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
                            uint32_t lightVal, glm::vec3 mypos, uint8_t type)
     -> void {
+    UNUSED(type);
+
     Rendering::Color c;
 
     c.color = lightVal;
@@ -135,6 +137,10 @@ auto TNT::add_face_to_mesh(std::array<float, 12> data, std::array<float, 8> uv,
 }
 
 void TNTData::OnHit(World *w, int damage, glm::vec3 from, bool player) {
+    UNUSED(from);
+    UNUSED(damage);
+    UNUSED(w);
+
     if (player)
         Killed = true;
 }

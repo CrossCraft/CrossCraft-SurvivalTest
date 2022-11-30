@@ -15,7 +15,7 @@ using namespace Stardust_Celeste;
 
 class Player;
 
-struct TNTData : public Entity {
+struct TNTData final : public Entity {
     bool inRange;
     float fuse;
     bool Killed;
@@ -24,7 +24,7 @@ struct TNTData : public Entity {
     void OnHit(World *w, int damage, glm::vec3 from, bool player);
 };
 
-class TNT {
+class TNT final {
   public:
     TNT();
     ~TNT();

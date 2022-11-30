@@ -5,7 +5,7 @@
 
 namespace CrossCraft {
 
-#ifndef PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
 GLuint location;
 GLuint location2;
 #endif
@@ -17,7 +17,7 @@ Clouds::Clouds() {
     idx_counter = 0;
     scroll = 0.0f;
 
-#ifdef PSP
+#if PSP || BUILD_PLAT == BUILD_3DS
     idx_counter2 = 0;
 #else
     auto progID =
@@ -165,18 +165,18 @@ void Clouds::draw() {
     Rendering::RenderContext::get().matrix_translate({-128.0f, 67, -128.0f});
     Rendering::RenderContext::get().matrix_scale({2.0f, 1.0f, 2.0f});
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
     glUniform1f(location, scroll / 4096.0f);
 
     glUniform1i(location2, 1);
     mesh.bind();
-#else
+#elif BUILD_PLAT == BUILD_PSP
     sceGuTexOffset(scroll / 4096.0f, 0.0f);
     sceGuDisable(GU_TEXTURE_2D);
     mesh2.bind();
 #endif
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
     mesh.draw();
 #else
     mesh2.draw();
@@ -184,9 +184,9 @@ void Clouds::draw() {
 
     Rendering::TextureManager::get().bind_texture(texture);
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
     glUniform1i(location2, 0);
-#else
+#elif BUILD_PLAT == BUILD_PSP
     sceGuEnable(GU_TEXTURE_2D);
 #endif
 
@@ -194,9 +194,9 @@ void Clouds::draw() {
     Rendering::RenderContext::get().matrix_translate({0, 66, 0});
     mesh.draw();
 
-#if BUILD_PLAT != BUILD_PSP
+#if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
     glUniform1f(location, 0.0f);
-#else
+#elif BUILD_PLAT == BUILD_PSP
     sceGuTexOffset(0.0f, 0.0f);
 #endif
 

@@ -3,6 +3,7 @@
 #include "../UI/TextHelper.hpp"
 #include <Utilities/Controllers/KeyboardController.hpp>
 #include <Utilities/Controllers/MouseController.hpp>
+#include <Utilities/Controllers/N3DSController.hpp>
 #include <Utilities/Controllers/PSPController.hpp>
 #include <Utilities/Controllers/VitaController.hpp>
 #include <fstream>
@@ -11,6 +12,15 @@
 #include <stdio.h>
 
 #define BUILD_PC (BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX)
+
+#if BUILD_PLAT == BUILD_3DS
+#define SCREEN_W 400
+#define SCREEN_H 240
+#else
+#define SCREEN_W 480
+#define SCREEN_H 272
+#endif
+#define SCREEN_CENTER (SCREEN_W / 2)
 
 #if BUILD_PC
 #define GLFW_INCLUDE_NONE
@@ -43,12 +53,14 @@ void MenuState::on_start() {
     vita_controller = new Input::VitaController();
     key_controller = new Input::KeyboardController();
     mouse_controller = new Input::MouseController();
+    n3ds_controller = new Input::N3DSController();
 
     // Bind our controllers
     bind_controls();
 
     // Request 2D Mode
-    Rendering::RenderContext::get().matrix_ortho(0, 480, 0, 272, -30, 30);
+    Rendering::RenderContext::get().matrix_ortho(0, SCREEN_W, 0, SCREEN_H, -30,
+                                                 30);
     Rendering::RenderContext::get().set_mode_2D();
 
     bg_texture = ResourcePackManager::get().load_texture(
@@ -72,25 +84,26 @@ void MenuState::on_start() {
         Rendering::Color{80, 80, 80, 255});
 
     logo_sprite = create_scopeptr<Graphics::G2D::Sprite>(
-        logo_texture, Rendering::Rectangle{{-16, 272 - 87}, {512, 64}});
+        logo_texture,
+        Rendering::Rectangle{{SCREEN_CENTER - 256, SCREEN_H - 87}, {512, 64}});
 
     logo_sprite->set_layer(-1);
 
     unsel_sprite = create_scopeptr<Graphics::G2D::Sprite>(
-        gui_tex, Rendering::Rectangle{{140, 144}, {200, 20}},
+        gui_tex, Rendering::Rectangle{{SCREEN_CENTER - 100, 144}, {200, 20}},
         Rendering::Rectangle{{0, (256.0f - 86.0f) / 256.0f},
                              {200.0f / 256.0f, 20.0f / 256.0f}});
 
     unsel_sprite->set_layer(-1);
 
     sel_sprite = create_scopeptr<Graphics::G2D::Sprite>(
-        gui_tex, Rendering::Rectangle{{140, 144}, {200, 20}},
+        gui_tex, Rendering::Rectangle{{SCREEN_CENTER - 100, 144}, {200, 20}},
         Rendering::Rectangle{{0, (256.0f - 106.0f) / 256.0f},
                              {200.0f / 256.0f, 20.0f / 256.0f}});
     sel_sprite->set_layer(-1);
 
     dis_sprite = create_scopeptr<Graphics::G2D::Sprite>(
-        gui_tex, Rendering::Rectangle{{140, 194}, {200, 20}},
+        gui_tex, Rendering::Rectangle{{SCREEN_CENTER - 100, 194}, {200, 20}},
         Rendering::Rectangle{{0, (256.0f - 66.0f) / 256.0f},
                              {200.0f / 256.0f, 20.0f / 256.0f}});
     dis_sprite->set_layer(-1);
@@ -137,6 +150,7 @@ void MenuState::on_update(Core::Application *app, double dt) {
         delete key_controller;
         delete mouse_controller;
         delete vita_controller;
+        delete n3ds_controller;
 
         app->push_state(create_refptr<GameState>());
         return;
@@ -195,7 +209,8 @@ void MenuState::on_update(Core::Application *app, double dt) {
 void MenuState::on_draw(Core::Application *app, double dt) {
 
     Rendering::RenderContext::get().set_mode_2D();
-    Rendering::RenderContext::get().matrix_ortho(0, 480, 0, 272, 100, -100);
+    Rendering::RenderContext::get().matrix_ortho(0, SCREEN_W, 0, SCREEN_H, 100,
+                                                 -100);
 
     for (int x = 0; x < 16; x++)
         for (int y = 0; y < 9; y++) {
@@ -212,54 +227,69 @@ void MenuState::on_draw(Core::Application *app, double dt) {
         if (selIdx != 0) {
             fontRenderer->add_text(
                 "Singleplayer",
-                {241 - fontRenderer->calculate_size("Singleplayer") / 2, 134},
+                {SCREEN_CENTER + 1 -
+                     fontRenderer->calculate_size("Singleplayer") / 2,
+                 134},
                 shadow, -19);
             fontRenderer->add_text(
                 "Singleplayer",
-                {240 - fontRenderer->calculate_size("Singleplayer") / 2, 135},
+                {SCREEN_CENTER -
+                     fontRenderer->calculate_size("Singleplayer") / 2,
+                 135},
                 white, -20);
         } else {
             fontRenderer->add_text(
                 "Singleplayer",
-                {241 - fontRenderer->calculate_size("Singleplayer") / 2, 134},
+                {SCREEN_CENTER + 1 -
+                     fontRenderer->calculate_size("Singleplayer") / 2,
+                 134},
                 CC_TEXT_COLOR_SELECT_BACK, -19);
             fontRenderer->add_text(
                 "Singleplayer",
-                {240 - fontRenderer->calculate_size("Singleplayer") / 2, 135},
+                {SCREEN_CENTER -
+                     fontRenderer->calculate_size("Singleplayer") / 2,
+                 135},
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
 
         // Multiplayer
         fontRenderer->add_text(
             "Multiplayer",
-            {241 - fontRenderer->calculate_size("Multiplayer") / 2, 134 - 24},
+            {SCREEN_CENTER + 1 -
+                 fontRenderer->calculate_size("Multiplayer") / 2,
+             134 - 24},
             shadow, -19);
         fontRenderer->add_text(
             "Multiplayer",
-            {240 - fontRenderer->calculate_size("Multiplayer") / 2, 135 - 24},
+            {SCREEN_CENTER - fontRenderer->calculate_size("Multiplayer") / 2,
+             135 - 24},
             white, -20);
 
         // Resource Packs
         if (selIdx != 2) {
             fontRenderer->add_text(
                 "Resource Packs",
-                {241 - fontRenderer->calculate_size("Resource Packs") / 2,
+                {SCREEN_CENTER + 1 -
+                     fontRenderer->calculate_size("Resource Packs") / 2,
                  134 - 24 * 2},
                 shadow, -19);
             fontRenderer->add_text(
                 "Resource Packs",
-                {240 - fontRenderer->calculate_size("Resource Packs") / 2,
+                {SCREEN_CENTER -
+                     fontRenderer->calculate_size("Resource Packs") / 2,
                  135 - 24 * 2},
                 white, -20);
         } else {
             fontRenderer->add_text(
                 "Resource Packs",
-                {241 - fontRenderer->calculate_size("Resource Packs") / 2,
+                {SCREEN_CENTER + 1 -
+                     fontRenderer->calculate_size("Resource Packs") / 2,
                  134 - 24 * 2},
                 CC_TEXT_COLOR_SELECT_BACK, -19);
             fontRenderer->add_text(
                 "Resource Packs",
-                {240 - fontRenderer->calculate_size("Resource Packs") / 2,
+                {SCREEN_CENTER -
+                     fontRenderer->calculate_size("Resource Packs") / 2,
                  135 - 24 * 2},
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
@@ -268,42 +298,48 @@ void MenuState::on_draw(Core::Application *app, double dt) {
         if (selIdx != 3) {
             fontRenderer->add_text(
                 "Quit Game",
-                {241 - fontRenderer->calculate_size("Quit Game") / 2,
+                {SCREEN_CENTER + 1 -
+                     fontRenderer->calculate_size("Quit Game") / 2,
                  134 - 24 * 3},
                 shadow, -19);
             fontRenderer->add_text(
                 "Quit Game",
-                {240 - fontRenderer->calculate_size("Quit Game") / 2,
+                {SCREEN_CENTER - fontRenderer->calculate_size("Quit Game") / 2,
                  135 - 24 * 3},
                 white, -20);
         } else {
             fontRenderer->add_text(
                 "Quit Game",
-                {241 - fontRenderer->calculate_size("Quit Game") / 2,
+                {SCREEN_CENTER + 1 -
+                     fontRenderer->calculate_size("Quit Game") / 2,
                  134 - 24 * 3},
                 CC_TEXT_COLOR_SELECT_BACK, -19);
             fontRenderer->add_text(
                 "Quit Game",
-                {240 - fontRenderer->calculate_size("Quit Game") / 2,
+                {SCREEN_CENTER - fontRenderer->calculate_size("Quit Game") / 2,
                  135 - 24 * 3},
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
 
-        fontRenderer->add_text("CrossCraft Survival Test (0.28)", {3, 272 - 11},
+        fontRenderer->add_text("CrossCraft Survival Test (0.28)",
+                               {3, SCREEN_H - 11},
                                Rendering::Color{21, 21, 21, 255}, -19);
-        fontRenderer->add_text("CrossCraft Survival Test (0.28)", {2, 272 - 10},
+        fontRenderer->add_text("CrossCraft Survival Test (0.28)",
+                               {2, SCREEN_H - 10},
                                Rendering::Color{85, 85, 85, 255}, -20);
 
         fontRenderer->add_text(
             "Copyleft CrossCraft Team. Made with <3!",
-            {478 - fontRenderer->calculate_size(
-                       "Copyleft CrossCraft Team. Made with <3!"),
+            {SCREEN_W - 2 -
+                 fontRenderer->calculate_size(
+                     "Copyleft CrossCraft Team. Made with <3!"),
              2},
             Rendering::Color{63, 63, 63, 255}, -19);
         fontRenderer->add_text(
             "Copyleft CrossCraft Team. Made with <3!",
-            {477 - fontRenderer->calculate_size(
-                       "Copyleft CrossCraft Team. Made with <3!"),
+            {SCREEN_W - 3 -
+                 fontRenderer->calculate_size(
+                     "Copyleft CrossCraft Team. Made with <3!"),
              3},
             Rendering::Color{255, 255, 255, 255}, -19);
 
@@ -341,12 +377,16 @@ void MenuState::on_draw(Core::Application *app, double dt) {
 
         fontRenderer->add_text(
             "Resource Packs:",
-            {241 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
+            {SCREEN_CENTER + 1 -
+                 fontRenderer->calculate_size("Resource Packs:") / 2,
+             240},
             shadow, -19);
 
         fontRenderer->add_text(
             "Resource Packs:",
-            {240 - fontRenderer->calculate_size("Resource Packs:") / 2, 240},
+            {SCREEN_CENTER -
+                 fontRenderer->calculate_size("Resource Packs:") / 2,
+             240},
             white, -20);
 
         for (size_t i = 0; i < 6; i++) {
@@ -377,23 +417,25 @@ void MenuState::on_draw(Core::Application *app, double dt) {
                 if (selIdx != (int)(i + 1) || do_not_select == true) {
                     fontRenderer->add_text(
                         name,
-                        {241 - fontRenderer->calculate_size(name) / 2,
+                        {SCREEN_CENTER + 1 -
+                             fontRenderer->calculate_size(name) / 2,
                          200 - i * 24},
                         shadow, -19);
                     fontRenderer->add_text(
                         name,
-                        {240 - fontRenderer->calculate_size(name) / 2,
+                        {SCREEN_CENTER - fontRenderer->calculate_size(name) / 2,
                          200 - i * 24},
                         white, -20);
                 } else {
                     fontRenderer->add_text(
                         name,
-                        {241 - fontRenderer->calculate_size(name) / 2,
+                        {SCREEN_CENTER + 1 -
+                             fontRenderer->calculate_size(name) / 2,
                          200 - i * 24},
                         CC_TEXT_COLOR_SELECT_BACK, -19);
                     fontRenderer->add_text(
                         name,
-                        {240 - fontRenderer->calculate_size(name) / 2,
+                        {SCREEN_CENTER - fontRenderer->calculate_size(name) / 2,
                          200 - i * 24},
                         CC_TEXT_COLOR_SELECT_FRONT, -20);
                 }
@@ -403,23 +445,23 @@ void MenuState::on_draw(Core::Application *app, double dt) {
         if (selIdx != 0) {
             fontRenderer->add_text(
                 "Back",
-                {241 - fontRenderer->calculate_size("Back") / 2,
+                {SCREEN_CENTER + 1 - fontRenderer->calculate_size("Back") / 2,
                  136 - 128 + 14},
                 shadow, -19);
             fontRenderer->add_text(
                 "Back",
-                {240 - fontRenderer->calculate_size("Back") / 2,
+                {SCREEN_CENTER - fontRenderer->calculate_size("Back") / 2,
                  136 - 128 + 14},
                 white, -20);
         } else {
             fontRenderer->add_text(
                 "Back",
-                {241 - fontRenderer->calculate_size("Back") / 2,
+                {SCREEN_CENTER + 1 - fontRenderer->calculate_size("Back") / 2,
                  136 - 128 + 14},
                 CC_TEXT_COLOR_SELECT_BACK, -19);
             fontRenderer->add_text(
                 "Back",
-                {240 - fontRenderer->calculate_size("Back") / 2,
+                {SCREEN_CENTER - fontRenderer->calculate_size("Back") / 2,
                  136 - 128 + 14},
                 CC_TEXT_COLOR_SELECT_FRONT, -20);
         }
@@ -431,7 +473,8 @@ void MenuState::on_draw(Core::Application *app, double dt) {
 
     if (!textureMenu) {
         Rendering::RenderContext::get().matrix_rotate({0, 0, 22.0f});
-        Rendering::RenderContext::get().matrix_translate({360, 50, 0});
+        Rendering::RenderContext::get().matrix_translate(
+            {SCREEN_CENTER + 120, 40, 0});
         Rendering::RenderContext::get().matrix_scale(
             {scaleFactor, scaleFactor, 1.75f});
         splashRenderer->draw();
@@ -547,6 +590,14 @@ void MenuState::bind_controls() {
     psp_controller->add_command({(int)Input::PSPButtons::Down, KeyFlag::Press},
                                 {MenuState::down, this});
 
+    n3ds_controller->add_command({(int)Input::N3DSButtons::A, KeyFlag::Press},
+                                 {MenuState::trigger, this});
+    n3ds_controller->add_command({(int)Input::N3DSButtons::Dup, KeyFlag::Press},
+                                 {MenuState::up, this});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::Ddown, KeyFlag::Press},
+        {MenuState::down, this});
+
     vita_controller->add_command(
         {(int)Input::VitaButtons::Cross, KeyFlag::Press},
         {MenuState::trigger, this});
@@ -564,5 +615,6 @@ void MenuState::bind_controls() {
     Input::add_controller(vita_controller);
     Input::add_controller(key_controller);
     Input::add_controller(mouse_controller);
+    Input::add_controller(n3ds_controller);
 }
 } // namespace CrossCraft
