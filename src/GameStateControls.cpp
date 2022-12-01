@@ -15,6 +15,7 @@ void GameState::bind_controls() {
     key_controller->clear_command();
     mouse_controller->clear_command();
     vita_controller->clear_command();
+    n3ds_controller->clear_command();
 
     //
     // PSP Face Buttons: Release
