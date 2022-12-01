@@ -190,6 +190,15 @@ auto BlockRep::trigger_swing() -> void {
     }
 }
 
+#if BUILD_PLAT == BUILD_3DS
+#define SCREEN_W 400
+#define SCREEN_H 240
+#else
+#define SCREEN_W 480
+#define SCREEN_H 272
+#endif
+#define SCREEN_CENTER (SCREEN_W / 2)
+
 auto BlockRep::drawBlk(int8_t type, int x, int y, int y_offset, float scale)
     -> void {
     if (type < 0)
@@ -197,7 +206,7 @@ auto BlockRep::drawBlk(int8_t type, int x, int y, int y_offset, float scale)
     Rendering::RenderContext::get().matrix_view(glm::mat4(1));
 
     Rendering::RenderContext::get().matrix_translate(
-        {153.5f + x * 20, (8 + y * 24) + y_offset, -20});
+        {SCREEN_CENTER - 87.5f + x * 20, (8 + y * 24) + y_offset, -20});
 
     if (type == 6 || type == 37 || type == 38 || type == 39 || type == 40)
         Rendering::RenderContext::get().matrix_rotate({0.0f, 45.0f, 0});

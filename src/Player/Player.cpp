@@ -24,6 +24,15 @@ extern char list[0x100000] __attribute__((aligned(64)));
 
 #define BUILD_PC (BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX)
 
+#if BUILD_PLAT == BUILD_3DS
+#define SCREEN_W 400
+#define SCREEN_H 240
+#else
+#define SCREEN_W 480
+#define SCREEN_H 272
+#endif
+#define SCREEN_CENTER (SCREEN_W / 2)
+
 #if BUILD_PC
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -116,19 +125,21 @@ Player::Player()
         Rendering::Rectangle{{0, 0}, {480, 272}},
         Rendering::Color{127, 0, 0, 128}, 2);
 
+    auto posX = SCREEN_CENTER - 91;
+
     item_box = create_scopeptr<Graphics::G2D::Sprite>(
-        gui_texture, Rendering::Rectangle{{149, 1}, {182, 22}},
+        gui_texture, Rendering::Rectangle{{posX, 1}, {182, 22}},
         Rendering::Rectangle{{0, (256.0f - 22.0f) / 256.0f},
                              {182.0f / 256.0f, 22.0f / 256.0f}});
-    item_box->set_position({149, 5});
+    item_box->set_position({posX, 5});
     item_box->set_layer(-1);
 
     selector = create_scopeptr<Graphics::G2D::Sprite>(
-        gui_texture, Rendering::Rectangle{{148, 0}, {24, 24}},
+        gui_texture, Rendering::Rectangle{{posX - 1, 0}, {24, 24}},
         Rendering::Rectangle{{0, (256.0f - 22.0f - 24.0f) / 256.0f},
                              {24.0f / 256.0f, 24.0f / 256.0f}});
 
-    selector->set_position({148, 4});
+    selector->set_position({posX - 1, 4});
     selector->set_layer(-2);
 
     crosshair = create_scopeptr<Graphics::G2D::Sprite>(
@@ -139,38 +150,38 @@ Player::Player()
     crosshair->set_layer(-1);
 
     heartBG = create_scopeptr<Graphics::G2D::Sprite>(
-        icons_texture, Rendering::Rectangle{{148, 28}, {9, 9}},
+        icons_texture, Rendering::Rectangle{{posX - 1, 28}, {9, 9}},
         Rendering::Rectangle{{16.0f / 256.0f, (256.0f - 9.0f) / 256.0f},
                              {9.0f / 256.0f, 9.0f / 256.0f}});
     heartBG->set_layer(-1);
 
     heartFull = create_scopeptr<Graphics::G2D::Sprite>(
-        icons_texture, Rendering::Rectangle{{149, 29}, {7, 7}},
+        icons_texture, Rendering::Rectangle{{posX, 29}, {7, 7}},
         Rendering::Rectangle{{53.0f / 256.0f, (256.0f - 8.0f) / 256.0f},
                              {7.0f / 256.0f, 7.0f / 256.0f}});
     heartFull->set_layer(-2);
 
     airContainer = create_scopeptr<Graphics::G2D::Sprite>(
-        icons_texture, Rendering::Rectangle{{148, 38}, {9, 9}},
+        icons_texture, Rendering::Rectangle{{posX - 1, 38}, {9, 9}},
         Rendering::Rectangle{{16.0f / 256.0f, (256.0f - 27.0f) / 256.0f},
                              {9.0f / 256.0f, 9.0f / 256.0f}});
     airContainer->set_layer(-2);
 
     airContainerPop = create_scopeptr<Graphics::G2D::Sprite>(
-        icons_texture, Rendering::Rectangle{{148, 38}, {9, 9}},
+        icons_texture, Rendering::Rectangle{{posX - 1, 38}, {9, 9}},
         Rendering::Rectangle{
             {(16.0f + 9.0f) / 256.0f, (256.0f - 27.0f) / 256.0f},
             {9.0f / 256.0f, 9.0f / 256.0f}});
     airContainerPop->set_layer(-2);
 
     heartHalf = create_scopeptr<Graphics::G2D::Sprite>(
-        icons_texture, Rendering::Rectangle{{147, 29}, {7, 7}},
+        icons_texture, Rendering::Rectangle{{posX - 2, 29}, {7, 7}},
         Rendering::Rectangle{{60.0f / 256.0f, (256.0f - 8.0f) / 256.0f},
                              {7.0f / 256.0f, 7.0f / 256.0f}});
     heartHalf->set_layer(-2);
 
     water = create_scopeptr<Graphics::G2D::Sprite>(
-        water_texture, Rendering::Rectangle{{0, 0}, {480, 272}});
+        water_texture, Rendering::Rectangle{{0, 0}, {SCREEN_W, SCREEN_H}});
     water->set_position({0, 0});
     water->set_layer(1);
 
@@ -537,10 +548,15 @@ auto Player::draw(World *wrld) -> void {
                                  CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
                                  CC_TEXT_ALIGN_TOP, 5, 0, false);
         }
-
+#if BUILD_PLAT == BUILD_3DS
+        playerHUD->draw_text("Arrows: " + std::to_string(arrows),
+                             CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
+                             CC_TEXT_ALIGN_CENTER, -21, -9, false);
+#else
         playerHUD->draw_text("Arrows: " + std::to_string(arrows),
                              CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_RIGHT,
                              CC_TEXT_ALIGN_CENTER, -29, -10, false);
+#endif
 
         int i = 9;
         for (int x = chat->data.size() - 1; x >= 0; x--) {
@@ -569,9 +585,16 @@ auto Player::draw(World *wrld) -> void {
             blockRep->drawBlk(itemSelections[i].type, i, 0, 3, 10);
 
             if (count > 1) {
+#if BUILD_PLAT == BUILD_3DS
+                playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
+                                     CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
+                                     0, 0, false, -77 + i * 20,
+                                     -124 * 240 / 272);
+#else
                 playerHUD->draw_text(std::to_string(count), CC_TEXT_COLOR_WHITE,
                                      CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER,
                                      0, 0, false, -77 + i * 20, -124);
+#endif
             }
         }
 
