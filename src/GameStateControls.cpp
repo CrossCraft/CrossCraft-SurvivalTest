@@ -32,6 +32,15 @@ void GameState::bind_controls() {
         {(int)Input::PSPButtons::Circle, KeyFlag::Release},
         {Player::move_reset, world->player.get()});
 
+    n3ds_controller->add_command({(int)Input::N3DSButtons::Y, KeyFlag::Release},
+                                 {Player::move_reset, world->player.get()});
+    n3ds_controller->add_command({(int)Input::N3DSButtons::A, KeyFlag::Release},
+                                 {Player::move_reset, world->player.get()});
+    n3ds_controller->add_command({(int)Input::N3DSButtons::X, KeyFlag::Release},
+                                 {Player::move_reset, world->player.get()});
+    n3ds_controller->add_command({(int)Input::N3DSButtons::B, KeyFlag::Release},
+                                 {Player::move_reset, world->player.get()});
+
     //
     // PSP Face Buttons: Press/Hold
     //
@@ -52,6 +61,19 @@ void GameState::bind_controls() {
         {(int)Input::VitaButtons::Cross, KeyFlag::Press | KeyFlag::Held},
         {Player::move_backward, world->player.get()});
 
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::X, KeyFlag::Press | KeyFlag::Held},
+        {Player::move_forward, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::B, KeyFlag::Press | KeyFlag::Held},
+        {Player::move_backward, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::Y, KeyFlag::Press | KeyFlag::Held},
+        {Player::move_left, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::A, KeyFlag::Press | KeyFlag::Held},
+        {Player::move_right, world->player.get()});
+
     //
     // PSP Directional Buttons: Press/Hold
     //
@@ -66,6 +88,21 @@ void GameState::bind_controls() {
                                 {Player::press_left, world->player.get()});
     psp_controller->add_command({(int)Input::PSPButtons::Right, KeyFlag::Press},
                                 {Player::press_right, world->player.get()});
+
+    n3ds_controller->add_command(
+        {(int)Controls::get().buttonJump, KeyFlag::Held},
+        {Player::move_up, world->player.get()});
+    n3ds_controller->add_command({(int)Input::N3DSButtons::Dup, KeyFlag::Press},
+                                 {Player::press_up, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::Ddown, KeyFlag::Press},
+        {Player::press_down, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::Dleft, KeyFlag::Press},
+        {Player::press_left, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::Dright, KeyFlag::Press},
+        {Player::press_right, world->player.get()});
 
     vita_controller->add_command(
         {(int)Controls::get().buttonJump, KeyFlag::Held},
@@ -98,6 +135,13 @@ void GameState::bind_controls() {
         {(int)Input::VitaButtons::Start, KeyFlag::Press},
         {Player::pause, world->player.get()});
 
+    n3ds_controller->add_command(
+        {(int)Controls::get().buttonMenu, KeyFlag::Press},
+        {Player::tab_start, world->player.get()});
+    n3ds_controller->add_command(
+        {(int)Input::N3DSButtons::Start, KeyFlag::Press},
+        {Player::pause, world->player.get()});
+
     //
     // PSP Triggers: Press/Hold
     //
@@ -108,6 +152,13 @@ void GameState::bind_controls() {
         {(int)Controls::get().buttonBreak, KeyFlag::Press | KeyFlag::Held},
         {DigAction::dig, world.get()});
     psp_controller->add_command(
+        {(int)Controls::get().buttonPlace, KeyFlag::Press | KeyFlag::Held},
+        {PlaceAction::place, world.get()});
+
+    n3ds_controller->add_command(
+        {(int)Controls::get().buttonBreak, KeyFlag::Press | KeyFlag::Held},
+        {DigAction::dig, world.get()});
+    n3ds_controller->add_command(
         {(int)Controls::get().buttonPlace, KeyFlag::Press | KeyFlag::Held},
         {PlaceAction::place, world.get()});
 

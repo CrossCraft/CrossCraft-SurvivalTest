@@ -590,7 +590,7 @@ void MenuState::bind_controls() {
     psp_controller->add_command({(int)Input::PSPButtons::Down, KeyFlag::Press},
                                 {MenuState::down, this});
 
-    n3ds_controller->add_command({(int)Input::N3DSButtons::A, KeyFlag::Press},
+    n3ds_controller->add_command({(int)Input::N3DSButtons::B, KeyFlag::Press},
                                  {MenuState::trigger, this});
     n3ds_controller->add_command({(int)Input::N3DSButtons::Dup, KeyFlag::Press},
                                  {MenuState::up, this});

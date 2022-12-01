@@ -144,9 +144,9 @@ World::~World() {
     chunks.clear();
 }
 
-#if PSP
+#if PSP || BUILD_PLAT == BUILD_3DS
 const auto CHUNKS_PER_SECOND = 2.0f;
-#elif BUILD_PLAT == BUILD_VITA || BUILD_PLAT == BUILD_3DS
+#elif BUILD_PLAT == BUILD_VITA
 const auto CHUNKS_PER_SECOND = 4.0f;
 #else
 const auto CHUNKS_PER_SECOND = 96.0f;
