@@ -4,9 +4,10 @@ namespace CrossCraft::Chunk {
 
 void MeshBuilder::add_slab_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
                                    uint8_t blk, glm::vec3 pos,
-                                   SurroundPos surround) {
-    try_add_face(chunkMesh, wrld, bottomFace, blk, {pos.x, pos.y, pos.z},
-                 surround.down, LIGHT_BOT);
+                                   SurroundPos &surround) {
+
+    try_add_face(chunkMesh, wrld, bottomFace, blk, {pos}, surround.down,
+                 LIGHT_BOT);
 
     // FIXME: have to duplicate and pass world to do a light check.. sigh..
     add_face_to_mesh_wrld(chunkMesh, wrld, topFace, getTexCoord(blk, LIGHT_TOP),
@@ -25,8 +26,8 @@ void MeshBuilder::add_slab_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
 }
 
 void MeshBuilder::add_block_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
-                                    uint8_t blk, glm::vec3 pos,
-                                    SurroundPos surround) {
+                                    uint8_t blk, const glm::vec3 &pos,
+                                    SurroundPos &surround) {
 
     try_add_face(chunkMesh, wrld, bottomFace, blk, pos, surround.down,
                  LIGHT_BOT);
@@ -44,30 +45,54 @@ void MeshBuilder::add_block_to_mesh(ChunkMesh *chunkMesh, const World *wrld,
 }
 
 void MeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
-                               std::array<float, 12> data, uint8_t blk,
-                               glm::vec3 pos, glm::vec3 posCheck,
+                               const std::array<float, 12> &data, uint8_t blk,
+                               const glm::vec3 &pos, const glm::vec3 &posCheck,
                                uint32_t lightVal) {
 
-    // Bounds check
-    if (!((posCheck.x == -1 && chunkMesh->cX == 0) ||
-          (posCheck.x == 16 &&
-           chunkMesh->cX == (wrld->world_size.x / 16 - 1)) ||
-          (posCheck.y == -1 && chunkMesh->cY == 0) ||
-          (posCheck.y == 16 &&
-           chunkMesh->cY == (wrld->world_size.y / 16 - 1)) ||
-          (posCheck.z == -1 && chunkMesh->cZ == 0) ||
-          (posCheck.z == 16 &&
-           chunkMesh->cZ == (wrld->world_size.z / 16 - 1)))) {
+    auto worldSize = wrld->world_size;
 
-        int idxl = ((World *)wrld)
-                       ->getIdxl(posCheck.x + chunkMesh->cX * 16,
-                                 posCheck.y + chunkMesh->cY * 16,
-                                 posCheck.z + chunkMesh->cZ * 16);
+    auto px = posCheck.x + chunkMesh->cX * 16;
+    auto py = posCheck.y + chunkMesh->cY * 16;
+    auto pz = posCheck.z + chunkMesh->cZ * 16;
+
+    // Bounds check
+    auto pos_check_x_min = (posCheck.x == -1 && chunkMesh->cX == 0);
+    auto pos_check_x_max =
+        (posCheck.x == 16 && chunkMesh->cX == (worldSize.x / 16 - 1));
+    if (pos_check_x_min || pos_check_x_max)
+        return;
+
+    auto pos_check_y_min = (posCheck.y == -1 && chunkMesh->cY == 0);
+    auto pos_check_y_max =
+        (posCheck.y == 16 && chunkMesh->cY == (worldSize.y / 16 - 1));
+    if (pos_check_y_min || pos_check_y_max)
+        return;
+
+    auto pos_check_z_min = (posCheck.z == -1 && chunkMesh->cZ == 0);
+    auto pos_check_z_max =
+        (posCheck.z == 16 && chunkMesh->cZ == (worldSize.z / 16 - 1));
+    if (pos_check_z_min || pos_check_z_max)
+        return;
+
+    // Calculate block index to peek
+    u32 idx = (py * worldSize.z * worldSize.x) + (pz * worldSize.x) + px;
+
+    auto blkz = wrld->worldData[idx];
+
+    // Add face to mesh
+    if (blkz == Block::Air || blkz == Block::Water ||
+        blkz == Block::Still_Water ||
+#ifndef PSP
+        blkz == Block::Leaves ||
+#endif
+        blkz == Block::Flower1 || blkz == Block::Flower2 ||
+        blkz == Block::Mushroom1 || blkz == Block::Mushroom2 ||
+        blkz == Block::Sapling || blkz == Block::Glass || blkz == Block::Slab) {
+
+        uint32_t idxl = ((World *)wrld)->getIdxl(px, py, pz);
 
         auto lv = lightVal;
-
-        if (idxl >= 0 && posCheck.y >= 0 &&
-            !((wrld->lightData[idxl] >> ((int)posCheck.y % 16)) & 1)) {
+        if (!((wrld->lightData[idxl] >> ((int)posCheck.y % 16)) & 1)) {
             switch (lv) {
             case LIGHT_TOP:
                 lv = LIGHT_TOP_DARK;
@@ -87,53 +112,27 @@ void MeshBuilder::try_add_face(ChunkMesh *chunkMesh, const World *wrld,
             }
         }
 
-        // Calculate block index to peek
-        int idx = ((World *)wrld)
-                      ->getIdx(posCheck.x + chunkMesh->cX * 16,
-                               posCheck.y + chunkMesh->cY * 16,
-                               posCheck.z + chunkMesh->cZ * 16);
+        if (blk == Block::Water && blkz != Block::Water) {
+            std::array<float, 12> data2 = data;
+            if (data == topFace) {
+                data2[1] *= 0.9f;
+                data2[4] *= 0.9f;
+                data2[7] *= 0.9f;
+                data2[10] *= 0.9f;
+            }
+            add_face_to_mesh(chunkMesh, data2, getTexCoord(blk, lightVal), pos,
+                             lv, MeshSelection::Transparent);
 
-        // Add face to mesh
-        if (idx >= 0 &&
-            idx < (wrld->world_size.x * wrld->world_size.y *
-                   wrld->world_size.z) &&
-            (wrld->worldData[idx] == Block::Air ||
-             wrld->worldData[idx] == Block::Water ||
-             wrld->worldData[idx] == Block::Still_Water ||
-#ifndef PSP
-             wrld->worldData[idx] == Block::Leaves ||
-#endif
-             wrld->worldData[idx] == Block::Flower1 ||
-             wrld->worldData[idx] == Block::Flower2 ||
-             wrld->worldData[idx] == Block::Mushroom1 ||
-             wrld->worldData[idx] == Block::Mushroom2 ||
-             wrld->worldData[idx] == Block::Sapling ||
-             wrld->worldData[idx] == Block::Glass ||
-             wrld->worldData[idx] == Block::Slab)) {
-            if (blk == Block::Water && wrld->worldData[idx] != Block::Water) {
-                std::array<float, 12> data2 = data;
-                if (data == topFace) {
-                    data2[1] *= 0.9f;
-                    data2[4] *= 0.9f;
-                    data2[7] *= 0.9f;
-                    data2[10] *= 0.9f;
-                }
-                add_face_to_mesh(chunkMesh, data2, getTexCoord(blk, lightVal),
-                                 pos, lv, MeshSelection::Transparent);
-
-            } else if (blk == Block::Leaves) {
+        } else if (blk == Block::Leaves) {
+            add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal), pos,
+                             lv, MeshSelection::Opaque);
+        } else if (blk == Block::Glass && blkz != Block::Glass) {
+            add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal), pos,
+                             lv, MeshSelection::Transparent);
+        } else {
+            if (blk != Block::Water && blk != Block::Glass)
                 add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal),
                                  pos, lv, MeshSelection::Opaque);
-            } else if (blk == Block::Glass &&
-                       wrld->worldData[idx] != Block::Glass) {
-                add_face_to_mesh(chunkMesh, data, getTexCoord(blk, lightVal),
-                                 pos, lv, MeshSelection::Transparent);
-            } else {
-                if (blk != Block::Water && blk != Block::Glass)
-                    add_face_to_mesh(chunkMesh, data,
-                                     getTexCoord(blk, lightVal), pos, lv,
-                                     MeshSelection::Opaque);
-            }
         }
     }
 }
@@ -274,7 +273,7 @@ void MeshBuilder::add_xface_to_mesh(ChunkMesh *chunkMesh,
 
 // TODO: REMOVE ME
 void MeshBuilder::add_face_to_mesh_wrld(ChunkMesh *chunkMesh, const World *wrld,
-                                        std::array<float, 12> data,
+                                        const std::array<float, 12> &data,
                                         std::array<float, 8> uv, glm::vec3 pos,
                                         uint32_t lightVal,
                                         MeshSelection meshSel) {
@@ -338,7 +337,7 @@ void MeshBuilder::add_face_to_mesh_wrld(ChunkMesh *chunkMesh, const World *wrld,
 }
 
 void MeshBuilder::add_face_to_mesh(ChunkMesh *chunkMesh,
-                                   std::array<float, 12> data,
+                                   const std::array<float, 12> &data,
                                    std::array<float, 8> uv, glm::vec3 pos,
                                    uint32_t lightVal, MeshSelection meshSel) {
 
@@ -365,13 +364,10 @@ void MeshBuilder::add_face_to_mesh(ChunkMesh *chunkMesh,
         });
     }
 
+    uint16_t idz = *idc;
     // Push Back Indices
-    mi->push_back((*idc));
-    mi->push_back((*idc) + 1);
-    mi->push_back((*idc) + 2);
-    mi->push_back((*idc) + 2);
-    mi->push_back((*idc) + 3);
-    mi->push_back((*idc) + 0);
+    mi->insert(mi->begin(), {idz, uint16_t(idz + 1), uint16_t(idz + 2),
+                             uint16_t(idz + 2), uint16_t(idz + 3), idz});
     (*idc) += 4;
 }
 

@@ -1,17 +1,14 @@
 #include "ChunkMesh.hpp"
 #include "../World/Generation/WorldGenUtil.hpp"
-#include "../World/World.hpp"
 #include "ChunkMeshBuilder.hpp"
-#include <gtc/matrix_transform.hpp>
 
-namespace CrossCraft::Chunk {
+namespace CrossCraft {
+
+namespace Chunk {
 
 ChunkMesh::ChunkMesh(int x, int y, int z)
-    : needsRegen(0), cX(x), cY(y), cZ(z), rtcounter(0) {
+    : cX(x), cY(y), cZ(z), rtcounter(0), needsRegen(0) {
     blank = false;
-
-    transformationMatrix =
-        glm::translate(glm::mat4(1.0f), glm::vec3(cX * 16, cY * 16, cZ * 16));
 }
 
 ChunkMesh::~ChunkMesh() {}
@@ -25,6 +22,10 @@ void ChunkMesh::reset_allocate() {
 void ChunkMesh::finalize_mesh() {
     meshCollection.transparent.finalize();
     meshCollection.opaque.finalize();
+
+#if PSP
+    sceKernelDcacheWritebackInvalidateAll();
+#endif
 }
 
 void ChunkMesh::rtick(World *wrld) {
@@ -51,10 +52,12 @@ void ChunkMesh::rtick(World *wrld) {
 
     auto idx2 = wrld->getIdx(x, y, z);
     auto blk2 = Block::Air;
-    blk2 = wrld->worldData[idx2];
+    if (idx2 >= 0)
+        blk2 = wrld->worldData[idx2];
 
     auto blk = Block::Air;
-    blk = wrld->worldData[idx];
+    if (idx >= 0)
+        blk = wrld->worldData[idx];
 
     auto blk2_is_valid_grass =
         (blk2 == Block::Air || blk2 == Block::Sapling ||
@@ -127,8 +130,9 @@ void ChunkMesh::layer_check(World *wrld, int y) {
                 SurroundPos surround;
                 surround.update(x, y, z);
 
-                MeshBuilder::try_add_face(this, wrld, bottomFace, blk,
-                                          {x, y, z}, surround.down, LIGHT_BOT);
+                glm::vec3 v = {x, y, z};
+                MeshBuilder::try_add_face(this, wrld, bottomFace, blk, v,
+                                          surround.down, LIGHT_BOT);
             }
         }
     }
@@ -149,8 +153,9 @@ void ChunkMesh::layer_check(World *wrld, int y) {
                 SurroundPos surround;
                 surround.update(x, y, z);
 
-                MeshBuilder::try_add_face(this, wrld, bottomFace, blk,
-                                          {x, y, z}, surround.down, LIGHT_BOT);
+                glm::vec3 v = {x, y, z};
+                MeshBuilder::try_add_face(this, wrld, bottomFace, blk, v,
+                                          surround.down, LIGHT_BOT);
             }
         }
     }
@@ -170,8 +175,9 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                  surround.left, LIGHT_SIDE_X);
+        glm::vec3 v = {x, y, z};
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, v, surround.left,
+                                  LIGHT_SIDE_X);
     }
 
     // Right check
@@ -189,8 +195,9 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                  surround.right, LIGHT_SIDE_X);
+        glm::vec3 v = {x, y, z};
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, v, surround.right,
+                                  LIGHT_SIDE_X);
     }
 
     // Back check
@@ -208,8 +215,9 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                  surround.back, LIGHT_SIDE_Z);
+        glm::vec3 v = {x, y, z};
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, v, surround.back,
+                                  LIGHT_SIDE_Z);
     }
 
     // Front check
@@ -227,8 +235,9 @@ void ChunkMesh::layer_check(World *wrld, int y) {
         SurroundPos surround;
         surround.update(x, y, z);
 
-        MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
-                                  surround.front, LIGHT_SIDE_Z);
+        glm::vec3 v = {x, y, z};
+        MeshBuilder::try_add_face(this, wrld, leftFace, blk, v, surround.front,
+                                  LIGHT_SIDE_Z);
     }
 }
 
@@ -253,7 +262,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            MeshBuilder::try_add_face(this, wrld, bottomFace, blk, {x, y, z},
+            glm::vec3 v = {x, y, z};
+            MeshBuilder::try_add_face(this, wrld, bottomFace, blk, v,
                                       surround.down, LIGHT_BOT);
         }
     }
@@ -274,8 +284,9 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            MeshBuilder::try_add_face(this, wrld, topFace, blk, {x, y, z},
-                                      surround.up, LIGHT_TOP);
+            glm::vec3 v = {x, y, z};
+            MeshBuilder::try_add_face(this, wrld, topFace, blk, v, surround.up,
+                                      LIGHT_TOP);
         }
     }
 
@@ -295,7 +306,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            MeshBuilder::try_add_face(this, wrld, leftFace, blk, {x, y, z},
+            glm::vec3 v = {x, y, z};
+            MeshBuilder::try_add_face(this, wrld, leftFace, blk, v,
                                       surround.left, LIGHT_SIDE_X);
         }
     }
@@ -316,7 +328,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            MeshBuilder::try_add_face(this, wrld, rightFace, blk, {x, y, z},
+            glm::vec3 v = {x, y, z};
+            MeshBuilder::try_add_face(this, wrld, rightFace, blk, v,
                                       surround.right, LIGHT_SIDE_X);
         }
     }
@@ -338,7 +351,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            MeshBuilder::try_add_face(this, wrld, backFace, blk, {x, y, z},
+            glm::vec3 v = {x, y, z};
+            MeshBuilder::try_add_face(this, wrld, backFace, blk, v,
                                       surround.back, LIGHT_SIDE_Z);
         }
     }
@@ -360,7 +374,8 @@ void ChunkMesh::full_check(World *wrld) {
             SurroundPos surround;
             surround.update(x, y, z);
 
-            MeshBuilder::try_add_face(this, wrld, frontFace, blk, {x, y, z},
+            glm::vec3 v = {x, y, z};
+            MeshBuilder::try_add_face(this, wrld, frontFace, blk, v,
                                       surround.front, LIGHT_SIDE_Z);
         }
     }
@@ -382,8 +397,13 @@ void ChunkMesh::generate(const World *wrld) {
         full_check((World *)wrld);
     } else {
 
+        SurroundPos surround;
+        u32 idx = 0;
+        block_t blk = 0;
+        glm::vec3 v = {0, 0, 0};
+
         // Loop over the mesh
-        for (int y = 0; y < 16; y++) {
+        for (u32 y = 0; y < 16; y++) {
 
             if (meta.layers[y].is_empty)
                 continue;
@@ -393,18 +413,14 @@ void ChunkMesh::generate(const World *wrld) {
                 continue;
             }
 
-            for (int z = 0; z < 16; z++) {
-                for (int x = 0; x < 16; x++) {
-
-                    int idx =
-                        ((World *)wrld)
-                            ->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
+            for (u32 z = 0; z < 16; z++) {
+                for (u32 x = 0; x < 16; x++) {
+                    // Calculate Index
+                    idx = ((y + cY * 16) * worldSize.z * worldSize.x) +
+                          ((z + cZ * 16) * worldSize.x) + (x + cX * 16);
 
                     // Get block
-                    block_t blk = Block::Air;
-
-                    if (idx >= 0)
-                        blk = wrld->worldData[idx];
+                    blk = wrld->worldData[idx];
 
                     // Skip air
                     if (blk == 0)
@@ -420,18 +436,18 @@ void ChunkMesh::generate(const World *wrld) {
                     }
 
                     // Update surrounding positions
-                    SurroundPos surround;
                     surround.update(x, y, z);
 
                     // Add 6 faces
+                    v = {x, y, z};
 
                     if (blk == Block::Slab) {
-                        MeshBuilder::add_slab_to_mesh(this, wrld, blk,
-                                                      {x, y, z}, surround);
+                        MeshBuilder::add_slab_to_mesh(this, wrld, blk, v,
+                                                      surround);
                         continue;
                     }
 
-                    MeshBuilder::add_block_to_mesh(this, wrld, blk, {x, y, z},
+                    MeshBuilder::add_block_to_mesh(this, wrld, blk, v,
                                                    surround);
                 }
             }
@@ -542,14 +558,9 @@ void ChunkMesh::draw(MeshSelection meshSel) {
     if (blank)
         return;
 
-#ifndef PSP
     // Set matrix
-    Rendering::RenderContext::get().matrix_model(transformationMatrix);
-
-#else
     Rendering::RenderContext::get().matrix_translate(
-        glm::vec3(cX * 16, cY * 16, cZ * 16));
-#endif
+        {cX * 16, cY * 16, cZ * 16});
 
     // Draw
     meshCollection.select(meshSel)->draw();
@@ -557,4 +568,5 @@ void ChunkMesh::draw(MeshSelection meshSel) {
     Rendering::RenderContext::get().matrix_clear();
 }
 
-} // namespace CrossCraft::Chunk
+} // namespace Chunk
+} // namespace CrossCraft

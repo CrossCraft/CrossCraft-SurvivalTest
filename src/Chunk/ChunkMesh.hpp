@@ -20,7 +20,6 @@ namespace CrossCraft {
 class World;
 
 namespace Chunk {
-
 /**
  * @brief Chunk mesh object.
  */
@@ -72,7 +71,6 @@ class ChunkMesh {
     bool needsRegen;
 
   private:
-    glm::mat4 transformationMatrix;
     void full_check(World *wrld);
     void layer_check(World *wrld, int y);
     /**
