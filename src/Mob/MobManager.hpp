@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "../Model/ArmorModel.hpp"
 #include "../Model/CreeperModel.hpp"
 #include "../Model/PigModel.hpp"
@@ -8,26 +9,25 @@
 #include "../Model/SteveModel.hpp"
 #include "../Model/ZombieModel.hpp"
 #include "MobData.hpp"
-#include <vector>
 
 namespace CrossCraft {
-class Player;
+    class Player;
 }
 
 namespace CrossCraft::Mob {
 
-class MobManager {
-  public:
-    MobManager();
-    ~MobManager();
+    class MobManager {
+    public:
+        MobManager();
+        ~MobManager();
 
-    void add_mob(MobData *mobData);
+        void add_mob(MobData *mobData);
 
-    void update(float dt, Player *p, World *w);
-    void draw();
+        void update(float dt, Player *p, World *w);
+        void draw();
 
-    std::vector<MobData *> mobs;
+        std::vector<MobData *> mobs;
 
-  private:
-};
-} // namespace CrossCraft::Mob
+    private:
+    };
+}// namespace CrossCraft::Mob

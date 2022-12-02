@@ -1,12 +1,12 @@
 #pragma once
-#include "../Mob/PassiveMob.hpp"
 #include <glm.hpp>
+#include "../Mob/PassiveMob.hpp"
 
 namespace CrossCraft::Mob {
-class SteveData : public PassiveMob {
-  public:
-    SteveData() = default;
-    ~SteveData() = default;
-};
+    class SteveData : public PassiveMob {
+    public:
+        SteveData() = default;
+        ~SteveData() = default;
+    };
 
-} // namespace CrossCraft::Mob
+}// namespace CrossCraft::Mob

@@ -1,11 +1,11 @@
-#include "Menu/Menustate.hpp"
 #include <Stardust-Celeste.hpp>
+#include "Menu/Menustate.hpp"
 
 #ifdef _WIN32
 #include <windows.h>
 extern "C" __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 extern "C" __declspec(dllexport) DWORD AmdPowerXpressRequestHighPerformance =
-    0x00000001;
+        0x00000001;
 #endif
 
 using namespace Stardust_Celeste;
@@ -15,7 +15,7 @@ using namespace Stardust_Celeste;
  *
  */
 class GameApplication : public Core::Application {
-  public:
+public:
     /**
      * @brief On Start override
      */

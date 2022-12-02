@@ -1,13 +1,13 @@
 #pragma once
+#include <glm.hpp>
 #include "../Entity/Entity.hpp"
 #include "../Mob/AggressiveMob.hpp"
-#include <glm.hpp>
 
 namespace CrossCraft::Mob {
-class SpiderData : public AggressiveMob {
-  public:
-    SpiderData() = default;
-    ~SpiderData() = default;
-};
+    class SpiderData : public AggressiveMob {
+    public:
+        SpiderData() = default;
+        ~SpiderData() = default;
+    };
 
-} // namespace CrossCraft::Mob
+}// namespace CrossCraft::Mob

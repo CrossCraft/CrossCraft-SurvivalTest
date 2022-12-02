@@ -7,32 +7,31 @@
 
 namespace CrossCraft {
 
-class ResourcePackManager {
-  public:
-    ResourcePackManager();
-    ~ResourcePackManager();
+    class ResourcePackManager {
+    public:
+        ResourcePackManager();
+        ~ResourcePackManager();
 
-    auto write_config() -> void;
+        auto write_config() -> void;
 
-    auto scan_folder(std::string path) -> void;
-    auto get_path() -> std::string;
-    auto load_texture(std::string filename, u32 magFilter, u32 minFilter,
-                      bool repeat, bool flip = false, bool vram = false) -> u32;
-    auto get_file(std::string filename) -> std::string;
-    auto add_layer(std::string name) -> void;
+        auto scan_folder(std::string path) -> void;
+        auto get_path() -> std::string;
+        auto load_texture(std::string filename, u32 magFilter, u32 minFilter, bool repeat, bool flip = false, bool vram = false) -> u32;
+        auto get_file(std::string filename) -> std::string;
+        auto add_layer(std::string name) -> void;
 
-    auto convert_old_resourcepacks() -> void;
+        auto convert_old_resourcepacks() -> void;
 
-    inline static auto get() -> ResourcePackManager & {
-        static ResourcePackManager txm;
-        return txm;
-    }
+        inline static auto get() -> ResourcePackManager & {
+            static ResourcePackManager txm;
+            return txm;
+        }
 
-    std::vector<std::string> pack_names;
-    std::vector<std::string> layers;
+        std::vector<std::string> pack_names;
+        std::vector<std::string> layers;
 
-  private:
-    auto extract_zip(std::string path) -> int;
-};
+    private:
+        auto extract_zip(std::string path) -> int;
+    };
 
-} // namespace CrossCraft
+}// namespace CrossCraft

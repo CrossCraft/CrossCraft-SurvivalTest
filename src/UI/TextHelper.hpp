@@ -9,10 +9,14 @@
 
 // because classic likes being inconsistent and uses non-colorcodes
 // for menu/ui stuff..
-#define CC_TEXT_COLOR_SELECT_FRONT {255, 255, 160, 255}
-#define CC_TEXT_COLOR_SELECT_BACK {63, 63, 40, 255}
-#define CC_TEXT_COLOR_SPLASH_FRONT {63, 63, 0, 255}
-#define CC_TEXT_COLOR_SPLASH_BACK {255, 255, 0, 255}
+#define CC_TEXT_COLOR_SELECT_FRONT \
+    { 255, 255, 160, 255 }
+#define CC_TEXT_COLOR_SELECT_BACK \
+    { 63, 63, 40, 255 }
+#define CC_TEXT_COLOR_SPLASH_FRONT \
+    { 63, 63, 0, 255 }
+#define CC_TEXT_COLOR_SPLASH_BACK \
+    { 255, 255, 0, 255 }
 
 // creds to https://minecraft.fandom.com/wiki/Formatting_codes
 #define CC_TEXT_COLOR_BLACK 0
@@ -41,29 +45,29 @@ using namespace Stardust_Celeste;
 
 namespace CrossCraft {
 
-class TextHelper {
+    class TextHelper {
 
-  public:
-    /**
+    public:
+        /**
      * @brief Construct a new TextHelper object
      *
      */
-    TextHelper();
+        TextHelper();
 
-    /**
+        /**
      * @brief Destroy the TextHelper object
      *
      */
-    ~TextHelper() = default;
+        ~TextHelper() = default;
 
-    /*
+        /*
      * @breif Wrapper for FontRenderer::calculate_size
      *
      * @param text Text to get the pixel size of
      */
-    auto get_width(std::string text) -> float;
+        auto get_width(std::string text) -> float;
 
-    /**
+        /**
      * @brief Enhanced wrapper for FontRenderer
      *
      * @param text Text to draw.
@@ -72,19 +76,18 @@ class TextHelper {
      * @param alpha Opacity in alpha8 for the text element.
      * @param draw_bg Draw a rectangle under the text to improve legibility.
      */
-    auto draw_text(std::string text, glm::vec2 pos, unsigned char col, u8 alpha,
-                   short bg_mode) -> void;
-    auto clear() -> void;
-    auto draw() -> void;
+        auto draw_text(std::string text, glm::vec2 pos, unsigned char col, u8 alpha, short bg_mode) -> void;
+        auto clear() -> void;
+        auto draw() -> void;
 
-    auto rebuild() -> void;
+        auto rebuild() -> void;
 
-  private:
-    uint32_t font_texture;
-    ScopePtr<Graphics::G2D::FixedFontRenderer<256>> fontRenderer;
-    std::vector<glm::vec3> posBox;
-    ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;
+    private:
+        uint32_t font_texture;
+        ScopePtr<Graphics::G2D::FixedFontRenderer<256>> fontRenderer;
+        std::vector<glm::vec3> posBox;
+        ScopePtr<Rendering::Primitive::Rectangle> background_rectangle;
 
-}; // class TextHelper
+    };// class TextHelper
 
-} // namespace CrossCraft
+}// namespace CrossCraft

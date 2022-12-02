@@ -1,32 +1,32 @@
 #pragma once
+#include <glm.hpp>
 #include "../Entity/Entity.hpp"
 #include "../Mob/AggressiveMob.hpp"
 #include "Model.hpp"
-#include <glm.hpp>
 
 #include "../Mob/SkeletonData.hpp"
 
 namespace CrossCraft::Model {
-using namespace Stardust_Celeste;
+    using namespace Stardust_Celeste;
 
-class Skeleton {
-  public:
-    Skeleton();
-    ~Skeleton();
+    class Skeleton {
+    public:
+        Skeleton();
+        ~Skeleton();
 
-    void draw(Mob::SkeletonData *sd);
+        void draw(Mob::SkeletonData *sd);
 
-    inline static auto get() -> Skeleton & {
-        static Skeleton skeleton;
-        return skeleton;
-    }
+        inline static auto get() -> Skeleton & {
+            static Skeleton skeleton;
+            return skeleton;
+        }
 
-  private:
-    uint32_t tex;
+    private:
+        uint32_t tex;
 
-    Model arm;
-    Model leg;
-    Model torso;
-    Model head;
-};
-} // namespace CrossCraft::Model
+        Model arm;
+        Model leg;
+        Model torso;
+        Model head;
+    };
+}// namespace CrossCraft::Model

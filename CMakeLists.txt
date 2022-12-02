@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(CrossCraft-SurvivalTest)
 
+add_compile_options(-march=native -flto -O2 -Wno-deprecated-non-prototype)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 
@@ -43,7 +45,9 @@ target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/e
 target_link_libraries(CrossCraft-SurvivalTest Stardust-Celeste yaml-cpp)
 
 if(WIN32)
-    target_link_libraries(CrossCraft-SurvivalTest ws2_32.lib)
+    add_library(ZLib ${ZLIB_SRCS})
+    target_link_libraries(CrossCraft-SurvivalTest ws2_32 stdc++ ZLib)
+    target_compile_options(CrossCraft-SurvivalTest PUBLIC -Wall -Wextra)
 endif()
 
 if(PSP)

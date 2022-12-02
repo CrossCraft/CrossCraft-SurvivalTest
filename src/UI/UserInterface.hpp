@@ -13,35 +13,33 @@ using namespace Stardust_Celeste;
 
 namespace CrossCraft {
 
-class UserInterface {
+    class UserInterface {
 
-  public:
-    /**
+    public:
+        /**
      * @brief Construct a new UserInterface object
      *
      */
-    UserInterface();
+        UserInterface();
 
-    /**
+        /**
      * @brief Destroy the UserInterface object
      *
      */
-    ~UserInterface() = default;
+        ~UserInterface() = default;
 
-    auto draw_text(std::string text, unsigned char color, unsigned char x_align,
-                   unsigned char y_align, short x_line, short y_line,
-                   short bg_mode, int pXoff = 0, int pYoff = 0) -> void;
+        auto draw_text(std::string text, unsigned char color, unsigned char x_align, unsigned char y_align, short x_line, short y_line, short bg_mode, int pXoff = 0, int pYoff = 0) -> void;
 
-    auto get_block_name(uint8_t id) -> std::string;
+        auto get_block_name(uint8_t id) -> std::string;
 
-    auto clear() -> void;
-    auto begin2D() -> void;
-    auto end2D() -> void;
-    auto rebuild() -> void;
+        auto clear() -> void;
+        auto begin2D() -> void;
+        auto end2D() -> void;
+        auto rebuild() -> void;
 
-  private:
-    ScopePtr<TextHelper> textHelper;
+    private:
+        ScopePtr<TextHelper> textHelper;
 
-}; // class UserInterface
+    };// class UserInterface
 
-} // namespace CrossCraft
+}// namespace CrossCraft

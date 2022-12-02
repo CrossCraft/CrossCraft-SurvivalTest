@@ -9,90 +9,90 @@
  *
  */
 #pragma once
+#include <Rendering/Rendering.hpp>
 #include "../World/World.hpp"
 #include "ChunkUtil.hpp"
-#include <Rendering/Rendering.hpp>
 
 using namespace Stardust_Celeste;
 
 namespace CrossCraft {
 
-class World;
+    class World;
 
-namespace Chunk {
-/**
+    namespace Chunk {
+        /**
  * @brief Chunk mesh object.
  */
-class ChunkMesh {
-  public:
-    /**
+        class ChunkMesh {
+        public:
+            /**
      * @brief Construct a new Chunk Mesh object at a location
      *
      * @param x Chunk X position
      * @param y Chunk Y position
      * @param z Chunk Z position
      */
-    ChunkMesh(int x, int y, int z);
+            ChunkMesh(int x, int y, int z);
 
-    /**
+            /**
      * @brief Destroy the Chunk Mesh object
      */
-    ~ChunkMesh();
+            ~ChunkMesh();
 
-    /**
+            /**
      * @brief Generate a brand new mesh
      *
      * @param wrld - World to reference
      */
-    void generate(const World *wrld);
+            void generate(const World *wrld);
 
-    /**
+            /**
      * @brief Generate a brand new mesh
      *
      * @param wrld - World to reference
      */
-    void generate_border();
+            void generate_border();
 
-    void generate_blank();
+            void generate_blank();
 
-    /**
+            /**
      * @brief Draw the chunk mesh
      *
      */
-    void draw(MeshSelection meshSel);
+            void draw(MeshSelection meshSel);
 
-    /**
+            /**
      * @brief Random Ticks the section
      *
      * @param wrld
      */
-    void rtick(World *wrld);
+            void rtick(World *wrld);
 
-    bool needsRegen;
+            bool needsRegen;
 
-  private:
-    void full_check(World *wrld);
-    void layer_check(World *wrld, int y);
-    /**
+        private:
+            void full_check(World *wrld);
+            void layer_check(World *wrld, int y);
+            /**
      * @brief Reset a mesh and allocate space
      *
      */
-    void reset_allocate();
+            void reset_allocate();
 
-    /**
+            /**
      * @brief Finalize a mesh - cleanup memory use
      *
      */
-    void finalize_mesh();
+            void finalize_mesh();
 
-    int cX, cY, cZ;
-    int rtcounter;
+            int cX, cY, cZ;
+            int rtcounter;
 
-    MeshCollection meshCollection;
+            MeshCollection meshCollection;
 
-    friend class MeshBuilder;
-    bool blank;
-};
+            friend class MeshBuilder;
+            bool blank;
+        };
 
-} // namespace Chunk
-} // namespace CrossCraft
+    }// namespace Chunk
+}// namespace CrossCraft

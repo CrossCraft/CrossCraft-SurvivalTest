@@ -8,10 +8,10 @@
 #include <Utilities/Controllers/PSPController.hpp>
 #include <Utilities/Controllers/VitaController.hpp>
 
+#include <stdio.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
 
 #include "Config.hpp"
 #include "World/World.hpp"
@@ -20,79 +20,81 @@ using namespace Stardust_Celeste;
 
 namespace CrossCraft {
 
-/**
+    /**
  * @brief Main Game State
  *
  */
-class GameState : public Core::ApplicationState {
-  public:
-    /**
+    class GameState : public Core::ApplicationState {
+    public:
+        /**
      * @brief Construct a new Game State object
      *
      * @param forceMP Forced Multiplayer (MP Connect)
      */
-    GameState()
-        : psp_controller(nullptr), vita_controller(nullptr),
-          key_controller(nullptr), mouse_controller(nullptr){};
+        GameState()
+            : psp_controller(nullptr),
+              vita_controller(nullptr),
+              key_controller(nullptr),
+              mouse_controller(nullptr){};
 
-    /**
+        /**
      * @brief Destroy the Game State object
      *
      */
-    ~GameState();
+        ~GameState();
 
-    static void apply_controls();
+        static void apply_controls();
 
-    /**
+        /**
      * @brief On Start initialization
      *
      */
-    void on_start();
+        void on_start();
 
-    /**
+        /**
      * @brief On Cleanup deinitialization
      *
      */
-    void on_cleanup();
+        void on_cleanup();
 
-    /**
+        /**
      * @brief Bind Controls
      *
      */
-    void bind_controls();
+        void bind_controls();
 
-    /**
+        /**
      * @brief On Update Events
      *
      * @param app Reference to our Application
      * @param dt Delta Time
      */
-    void on_update(Core::Application *app, double dt);
-    void on_draw(Core::Application *app, double dt);
+        void on_update(Core::Application *app, double dt);
+        void on_draw(Core::Application *app, double dt);
 
-  private:
-    /**
+    private:
+        /**
      * @brief Quit Command to Bind
      *
      * @param d
      */
-    static void quit(std::any d);
+        static void quit(std::any d);
 
-    /**
+        /**
      * @brief Game World
      *
      */
-    ScopePtr<World> world;
+        ScopePtr<World> world;
 
-    /**
+        /**
      * @brief Game Controllers
      *
      */
-    Utilities::Controller *psp_controller;
-    Utilities::Controller *vita_controller;
-    Utilities::Controller *key_controller;
-    Utilities::Controller *mouse_controller;
-    Utilities::Controller *n3ds_controller;
-};
+        Utilities::Controller *psp_controller;
+        Utilities::Controller *vita_controller;
+        Utilities::Controller *key_controller;
+        Utilities::Controller *mouse_controller;
+        Utilities::Controller *n3ds_controller;
+    };
 
-} // namespace CrossCraft
+}// namespace CrossCraft

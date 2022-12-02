@@ -1,87 +1,87 @@
 #pragma once
-#include "Utils.hpp"
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "Utils.hpp"
 
 namespace CrossCraft {
 
-struct Config {
-    float sense;
-    bool compat;
-    std::string ip;
-    std::string username;
-    u16 port;
-    std::string key;
-    bool oldSky;
+    struct Config {
+        float sense;
+        bool compat;
+        std::string ip;
+        std::string username;
+        u16 port;
+        std::string key;
+        bool oldSky;
 
-    inline static auto loadConfig() -> Config { // Store default values
-        Config config;
-        config.sense = 1.50f;
-        config.compat = 1;
-        config.ip = "classic.crosscraft.wtf";
-        config.port = 25565;
-        config.username = "TestName2";
-        config.oldSky = false;
+        inline static auto loadConfig() -> Config {// Store default values
+            Config config;
+            config.sense = 1.50f;
+            config.compat = 1;
+            config.ip = "classic.crosscraft.wtf";
+            config.port = 25565;
+            config.username = "TestName2";
+            config.oldSky = false;
 
-        std::ifstream file(PLATFORM_FILE_PREFIX + "config.cfg");
+            std::ifstream file(PLATFORM_FILE_PREFIX + "config.cfg");
 
-        if (file.is_open()) {
-            std::string line;
+            if (file.is_open()) {
+                std::string line;
 
-            while (std::getline(file, line, ':')) {
+                while (std::getline(file, line, ':')) {
 
-                if (line == "sense") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                    if (line == "sense") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.sense;
-                } else if (line == "compat") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                        str >> config.sense;
+                    } else if (line == "compat") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.compat;
-                } else if (line == "ip") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                        str >> config.compat;
+                    } else if (line == "ip") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.ip;
-                } else if (line == "username") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                        str >> config.ip;
+                    } else if (line == "username") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.username;
-                } else if (line == "port") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                        str >> config.username;
+                    } else if (line == "port") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.port;
-                } else if (line == "key") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                        str >> config.port;
+                    } else if (line == "key") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.key;
-                } else if (line == "oldSky") {
-                    std::getline(file, line);
-                    std::stringstream str(line);
+                        str >> config.key;
+                    } else if (line == "oldSky") {
+                        std::getline(file, line);
+                        std::stringstream str(line);
 
-                    str >> config.oldSky;
+                        str >> config.oldSky;
+                    }
                 }
+            } else {
+                std::ofstream file2(PLATFORM_FILE_PREFIX + "config.cfg");
+
+                file2 << "sense:1.50" << std::endl;
+                file2 << "compat:1" << std::endl;
+                file2 << "ip:classic.crosscraft.wtf" << std::endl;
+                file2 << "port:25565" << std::endl;
+                file2 << "username:CC-User" << std::endl;
+                file2 << "oldSky:0" << std::endl;
+                file2.close();
             }
-        } else {
-            std::ofstream file2(PLATFORM_FILE_PREFIX + "config.cfg");
 
-            file2 << "sense:1.50" << std::endl;
-            file2 << "compat:1" << std::endl;
-            file2 << "ip:classic.crosscraft.wtf" << std::endl;
-            file2 << "port:25565" << std::endl;
-            file2 << "username:CC-User" << std::endl;
-            file2 << "oldSky:0" << std::endl;
-            file2.close();
+            return config;
         }
+    };
 
-        return config;
-    }
-};
-
-} // namespace CrossCraft
+}// namespace CrossCraft
