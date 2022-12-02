@@ -143,7 +143,8 @@ Player::Player()
     selector->set_layer(-2);
 
     crosshair = create_scopeptr<Graphics::G2D::Sprite>(
-        gui_texture, Rendering::Rectangle{{240 - 8, 136 - 8}, {16, 16}},
+        gui_texture,
+        Rendering::Rectangle{{SCREEN_CENTER - 8, SCREEN_H / 2 - 8}, {16, 16}},
         Rendering::Rectangle{
             {(256.0f - 16.0f) / 256.0f, (256.0f - 16.0f) / 256.0f},
             {16.0f / 256.0f, 16.0f / 256.0f}});
@@ -662,10 +663,15 @@ auto Player::draw(World *wrld) -> void {
         playerHUD->draw_text("Score: " + std::to_string(score),
                              CC_TEXT_COLOR_WHITE, CC_TEXT_ALIGN_CENTER,
                              CC_TEXT_ALIGN_CENTER, 0, -1, 0, 0, 0);
-
+#if BUILD_PLAT == BUILD_3DS
+        playerHUD->draw_text("Respawn", CC_TEXT_COLOR_WHITE,
+                             CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, -2,
+                             0, 0, -6);
+#else
         playerHUD->draw_text("Respawn", CC_TEXT_COLOR_WHITE,
                              CC_TEXT_ALIGN_CENTER, CC_TEXT_ALIGN_CENTER, 0, -4,
                              0, 0, -6);
+#endif
 
         playerHUD->rebuild();
 

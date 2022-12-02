@@ -356,7 +356,9 @@ void World::draw() {
             val->draw_transparent();
     }
 
+#if !(BUILD_PLAT == BUILD_3DS)
     clouds->draw();
+#endif
     tnt->draw();
 
     ParticleManager::get().draw(glm::vec3(player->rot.x, player->rot.y, 0.0f));
