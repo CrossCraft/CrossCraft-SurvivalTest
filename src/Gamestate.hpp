@@ -64,6 +64,16 @@ namespace CrossCraft {
         void bind_controls();
 
         /**
+         * @brief Bind all controllers
+         */
+        void bind_controllers();
+
+        /**
+         * @brief Setup the Fog Shaders
+         */
+        void set_fog();
+
+        /**
      * @brief On Update Events
      *
      * @param app Reference to our Application

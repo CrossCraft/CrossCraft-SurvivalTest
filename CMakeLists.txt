@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 project(CrossCraft-SurvivalTest)
 
-add_compile_options(-march=native -flto -O2 -Wno-deprecated-non-prototype)
+add_compile_options(-march=native -O2 -Wno-deprecated-non-prototype)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -24,6 +24,7 @@ endif()
 
 # Add Stardust & Yaml-CPP
 add_subdirectory(ext/Stardust-Celeste Stardust)
+add_subdirectory(CrossCraft-Core Core)
 add_compile_definitions(YAML_CPP_STATIC_DEFINE)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
@@ -41,8 +42,8 @@ endif()
 
 add_executable(CrossCraft-SurvivalTest ${ZLIB_SRCS} ${LUA_SRC} ${MINIZIP_SRC} ${SRC_FILES} ${INC_FILES})
 target_compile_definitions(CrossCraft-SurvivalTest PUBLIC MAKE_LIB)
-target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/yaml/include ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/ ext/lua/ ext/Stardust-Celeste/ext)
-target_link_libraries(CrossCraft-SurvivalTest Stardust-Celeste yaml-cpp)
+target_include_directories(CrossCraft-SurvivalTest PUBLIC ext/Stardust-Celeste/ext/yaml/include ext/Stardust-Celeste/ext/glm/glm/ ext/FNL/Cpp ext/zlib/ ext/lua/ ext/Stardust-Celeste/ext CrossCraft-Core/include)
+target_link_libraries(CrossCraft-SurvivalTest Stardust-Celeste yaml-cpp CCCore)
 
 if(WIN32)
     add_library(ZLib ${ZLIB_SRCS})

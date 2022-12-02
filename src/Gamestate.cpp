@@ -8,6 +8,7 @@
 #include "World/Generation/ClassicGenerator.hpp"
 #include "World/Generation/CrossCraftGenerator.hpp"
 #include "World/SaveData.hpp"
+#include <CrossCraft/core.h>
 
 namespace CrossCraft {
     using namespace Stardust_Celeste::Utilities;
@@ -127,27 +128,26 @@ namespace CrossCraft {
 )";
 #endif
 
-    void GameState::on_start() {
-        SC_APP_INFO("STARTING GAME STATE");
+    void GameState::bind_controllers() {
+        Input::add_controller(psp_controller);
+        Input::add_controller(key_controller);
+        Input::add_controller(mouse_controller);
+        Input::add_controller(vita_controller);
+        Input::add_controller(n3ds_controller);
 
+        Input::set_differential_mode("Mouse", true);
+        Input::set_differential_mode("PSP", true);
+        Input::set_differential_mode("Vita", true);
+        Input::set_differential_mode("3DS", true);
+    }
+
+    void GameState::set_fog() {
 #if BUILD_PLAT == BUILD_WINDOWS || BUILD_PLAT == BUILD_POSIX || \
         BUILD_PLAT == BUILD_VITA
         auto shad =
                 Rendering::ShaderManager::get().load_shader(vert_source, frag_source);
         Rendering::ShaderManager::get().bind_shader(shad);
 #endif
-
-        int num_mods = Modding::ModManager::get().get_num_mods();
-        SC_APP_INFO("Loaded {} mods!", num_mods);
-        instanced_gamestate = this;
-
-        Rendering::RenderContext::get().vsync = Option::get().vsync;
-
-        // Make a world and generate it
-        world = create_scopeptr<World>(create_refptr<Player>());
-
-        // Read config
-        world->cfg = Config::loadConfig();
 
         if (world->cfg.oldSky) {
             Rendering::RenderContext::get().set_color(
@@ -163,7 +163,7 @@ namespace CrossCraft {
 #endif
         } else {
             Rendering::RenderContext::get().set_color(
-                    Rendering::Color{0xFF, 0xFF, 0xFF, 0xFF});
+                    Rendering::Color{{0xFF, 0xFF, 0xFF, 0xFF}});
             auto fc = glm::vec3(1.0f, 1.0f, 1.0f);
 #if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
             auto progID =
@@ -172,6 +172,21 @@ namespace CrossCraft {
             glUniform3f(location, fc.x, fc.y, fc.z);
 #endif
         }
+    }
+
+    void GameState::on_start() {
+        CrossCraft_Core_Init();
+
+        Rendering::RenderContext::get().vsync = Option::get().vsync;
+
+        // Make a world and generate it
+        world = create_scopeptr<World>(create_refptr<Player>());
+
+        // Read config
+        world->cfg = Config::loadConfig();
+
+        // Setup fog shaders
+        set_fog();
 
         {
             // Try Load Save -- if fails, do generation
@@ -197,28 +212,27 @@ namespace CrossCraft {
         mouse_controller = new Input::MouseController();
         n3ds_controller = new Input::N3DSController();
 
-        // Bind our controllers
+        // Bind our controls
         bind_controls();
 
-        Input::add_controller(psp_controller);
-        Input::add_controller(key_controller);
-        Input::add_controller(mouse_controller);
-        Input::add_controller(vita_controller);
-        Input::add_controller(n3ds_controller);
-
-        Input::set_differential_mode("Mouse", true);
-        Input::set_differential_mode("PSP", true);
-        Input::set_differential_mode("Vita", true);
-        Input::set_differential_mode("3DS", true);
+        // Bind our controls
+        bind_controllers();
 
         // Request 3D Mode
         Rendering::RenderContext::get().set_mode_3D();
+
+        // Start Mods
+        int num_mods = Modding::ModManager::get().get_num_mods();
+        SC_APP_INFO("Loaded {} mods!", num_mods);
+        instanced_gamestate = this;
 
         Modding::ModManager::set_ptr(world.get());
         Modding::ModManager::get().onStart();
     }
 
     void GameState::on_cleanup() {
+        CrossCraft_Core_Deinit();
+
         delete psp_controller;
         delete vita_controller;
         delete key_controller;

@@ -2,20 +2,19 @@
 #include "../World/Generation/WorldGenUtil.hpp"
 #include "ChunkMeshBuilder.hpp"
 
-namespace CrossCraft {
-
-    namespace Chunk {
+namespace CrossCraft::Chunk {
 
         ChunkMesh::ChunkMesh(int x, int y, int z)
-            : cX(x),
+            : needsRegen(0),
+              cX(x),
               cY(y),
               cZ(z),
-              rtcounter(0),
-              needsRegen(0) {
+              rtcounter(0)
+        {
             blank = false;
         }
 
-        ChunkMesh::~ChunkMesh() {}
+        ChunkMesh::~ChunkMesh() = default;
 
         void ChunkMesh::reset_allocate() {
             meshCollection.transparent.delete_data();
@@ -56,12 +55,10 @@ namespace CrossCraft {
 
             auto idx2 = wrld->getIdx(x, y, z);
             auto blk2 = Block::Air;
-            if (idx2 >= 0)
-                blk2 = wrld->worldData[idx2];
+            blk2 = wrld->worldData[idx2];
 
             auto blk = Block::Air;
-            if (idx >= 0)
-                blk = wrld->worldData[idx];
+            blk = wrld->worldData[idx];
 
             auto blk2_is_valid_grass =
                     (blk2 == Block::Air || blk2 == Block::Sapling ||
@@ -122,7 +119,7 @@ namespace CrossCraft {
             if (y == 0 || (y > 0 && !meta.layers[y - 1].is_full)) {
                 for (x = 0; x < 16; x++) {
                     for (z = 0; z < 16; z++) {
-                        int idx = ((World *) wrld)
+                        uint32_t idx = ((World *) wrld)
                                           ->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                         // Get block
@@ -131,7 +128,7 @@ namespace CrossCraft {
                         if (idx >= 0)
                             blk = wrld->worldData[idx];
 
-                        SurroundPos surround;
+                        SurroundPos surround{};
                         surround.update(x, y, z);
 
                         glm::vec3 v = {x, y, z};
@@ -145,7 +142,7 @@ namespace CrossCraft {
             if (y == 15 || (y < 15 && !meta.layers[y + 1].is_full)) {
                 for (x = 0; x < 16; x++) {
                     for (z = 0; z < 16; z++) {
-                        int idx = ((World *) wrld)
+                        uint32_t idx = ((World *) wrld)
                                           ->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                         // Get block
@@ -154,7 +151,7 @@ namespace CrossCraft {
                         if (idx >= 0)
                             blk = wrld->worldData[idx];
 
-                        SurroundPos surround;
+                        SurroundPos surround{};
                         surround.update(x, y, z);
 
                         glm::vec3 v = {x, y, z};
@@ -167,7 +164,7 @@ namespace CrossCraft {
             // Left check
             x = 0;
             for (z = 0; z < 16; z++) {
-                int idx =
+                uint32_t idx =
                         ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                 // Get block
@@ -176,7 +173,7 @@ namespace CrossCraft {
                 if (idx >= 0)
                     blk = wrld->worldData[idx];
 
-                SurroundPos surround;
+                SurroundPos surround{};
                 surround.update(x, y, z);
 
                 glm::vec3 v = {x, y, z};
@@ -187,7 +184,7 @@ namespace CrossCraft {
             // Right check
             x = 15;
             for (z = 0; z < 16; z++) {
-                int idx =
+                uint32_t idx =
                         ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                 // Get block
@@ -196,7 +193,7 @@ namespace CrossCraft {
                 if (idx >= 0)
                     blk = wrld->worldData[idx];
 
-                SurroundPos surround;
+                SurroundPos surround{};
                 surround.update(x, y, z);
 
                 glm::vec3 v = {x, y, z};
@@ -207,7 +204,7 @@ namespace CrossCraft {
             // Back check
             z = 0;
             for (x = 0; x < 16; x++) {
-                int idx =
+                uint32_t idx =
                         ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                 // Get block
@@ -216,7 +213,7 @@ namespace CrossCraft {
                 if (idx >= 0)
                     blk = wrld->worldData[idx];
 
-                SurroundPos surround;
+                SurroundPos surround{};
                 surround.update(x, y, z);
 
                 glm::vec3 v = {x, y, z};
@@ -227,7 +224,7 @@ namespace CrossCraft {
             // Front check
             z = 15;
             for (x = 0; x < 16; x++) {
-                int idx =
+                uint32_t idx =
                         ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                 // Get block
@@ -236,7 +233,7 @@ namespace CrossCraft {
                 if (idx >= 0)
                     blk = wrld->worldData[idx];
 
-                SurroundPos surround;
+                SurroundPos surround{};
                 surround.update(x, y, z);
 
                 glm::vec3 v = {x, y, z};
@@ -254,7 +251,7 @@ namespace CrossCraft {
             y = 0;
             for (x = 0; x < 16; x++) {
                 for (z = 0; z < 16; z++) {
-                    int idx =
+                    uint32_t idx =
                             ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                     // Get block
@@ -263,7 +260,7 @@ namespace CrossCraft {
                     if (idx >= 0)
                         blk = wrld->worldData[idx];
 
-                    SurroundPos surround;
+                    SurroundPos surround{};
                     surround.update(x, y, z);
 
                     glm::vec3 v = {x, y, z};
@@ -276,7 +273,7 @@ namespace CrossCraft {
             y = 15;
             for (x = 0; x < 16; x++) {
                 for (z = 0; z < 16; z++) {
-                    int idx =
+                    uint32_t idx =
                             ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                     // Get block
@@ -285,7 +282,7 @@ namespace CrossCraft {
                     if (idx >= 0)
                         blk = wrld->worldData[idx];
 
-                    SurroundPos surround;
+                    SurroundPos surround{};
                     surround.update(x, y, z);
 
                     glm::vec3 v = {x, y, z};
@@ -298,7 +295,7 @@ namespace CrossCraft {
             x = 0;
             for (z = 0; z < 16; z++) {
                 for (y = 0; y < 16; y++) {
-                    int idx =
+                    uint32_t idx =
                             ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                     // Get block
@@ -307,7 +304,7 @@ namespace CrossCraft {
                     if (idx >= 0)
                         blk = wrld->worldData[idx];
 
-                    SurroundPos surround;
+                    SurroundPos surround{};
                     surround.update(x, y, z);
 
                     glm::vec3 v = {x, y, z};
@@ -320,7 +317,7 @@ namespace CrossCraft {
             x = 15;
             for (z = 0; z < 16; z++) {
                 for (y = 0; y < 16; y++) {
-                    int idx =
+                    uint32_t idx =
                             ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                     // Get block
@@ -329,7 +326,7 @@ namespace CrossCraft {
                     if (idx >= 0)
                         blk = wrld->worldData[idx];
 
-                    SurroundPos surround;
+                    SurroundPos surround{};
                     surround.update(x, y, z);
 
                     glm::vec3 v = {x, y, z};
@@ -343,7 +340,7 @@ namespace CrossCraft {
             for (x = 0; x < 16; x++) {
                 for (y = 0; y < 16; y++) {
 
-                    int idx =
+                    uint32_t idx =
                             ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                     // Get block
@@ -352,7 +349,7 @@ namespace CrossCraft {
                     if (idx >= 0)
                         blk = wrld->worldData[idx];
 
-                    SurroundPos surround;
+                    SurroundPos surround{};
                     surround.update(x, y, z);
 
                     glm::vec3 v = {x, y, z};
@@ -366,7 +363,7 @@ namespace CrossCraft {
             for (x = 0; x < 16; x++) {
                 for (y = 0; y < 16; y++) {
 
-                    int idx =
+                    uint32_t idx =
                             ((World *) wrld)->getIdx(x + cX * 16, y + cY * 16, z + cZ * 16);
 
                     // Get block
@@ -375,7 +372,7 @@ namespace CrossCraft {
                     if (idx >= 0)
                         blk = wrld->worldData[idx];
 
-                    SurroundPos surround;
+                    SurroundPos surround{};
                     surround.update(x, y, z);
 
                     glm::vec3 v = {x, y, z};
@@ -488,7 +485,7 @@ namespace CrossCraft {
                             blk = Block::Water;
 
                         // Update surrounding positions
-                        SurroundPos surround;
+                        SurroundPos surround{};
                         surround.update(x, y, z);
 
                         // Add 6 faces
@@ -523,7 +520,7 @@ namespace CrossCraft {
                             if (h == 31) {
                                 MeshBuilder::add_face_to_mesh(
                                         this, topFace, getTexCoord(blk, LIGHT_TOP),
-                                        {x, y - 0.1f, z}, LIGHT_TOP,
+                                        {x, (float)y - 0.1f, z}, LIGHT_TOP,
                                         MeshSelection::Transparent);
                             }
 
@@ -572,5 +569,4 @@ namespace CrossCraft {
             Rendering::RenderContext::get().matrix_clear();
         }
 
-    }// namespace Chunk
-}// namespace CrossCraft
+    }// namespace CrossCraft

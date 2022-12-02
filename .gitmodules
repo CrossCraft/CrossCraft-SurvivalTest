@@ -10,3 +10,6 @@
 [submodule "ext/lua"]
 	path = ext/lua
 	url = https://github.com/lua/lua.git
+[submodule "CrossCraft-Core"]
+	path = CrossCraft-Core
+	url = https://github.com/CrossCraft/CrossCraft-Core

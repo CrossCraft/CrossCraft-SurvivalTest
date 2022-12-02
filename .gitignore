@@ -358,3 +358,5 @@ build
 build-psp
 build-vita
 build-3ds
+cmake-*
+.idea
