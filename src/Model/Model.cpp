@@ -136,19 +136,11 @@ namespace CrossCraft::Model {
         Rendering::RenderContext::get().matrix_rotate(rotation);
         Rendering::RenderContext::get().matrix_scale(scale);
 
-#if BUILD_PLAT != BUILD_PSP
-        glDisable(GL_CULL_FACE);
-#else
-        sceGuDisable(GU_CULL_FACE);
-#endif
+        GI::set_culling_mode(false, false);
 
         blockMesh.draw();
 
-#if BUILD_PLAT != BUILD_PSP
-        glEnable(GL_CULL_FACE);
-#else
-        sceGuEnable(GU_CULL_FACE);
-#endif
+        GI::set_culling_mode(true, true);
 
         Rendering::RenderContext::get().matrix_pop();
     }

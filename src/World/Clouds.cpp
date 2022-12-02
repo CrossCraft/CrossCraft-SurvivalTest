@@ -172,7 +172,7 @@ namespace CrossCraft {
         mesh.bind();
 #elif BUILD_PLAT == BUILD_PSP
         sceGuTexOffset(scroll / 4096.0f, 0.0f);
-        sceGuDisable(GU_TEXTURE_2D);
+        GI::disable(GI_TEXTURE_2D);
         mesh2.bind();
 #endif
 
@@ -187,7 +187,7 @@ namespace CrossCraft {
 #if BUILD_PLAT != BUILD_PSP && BUILD_PLAT != BUILD_3DS
         glUniform1i(location2, 0);
 #elif BUILD_PLAT == BUILD_PSP
-        sceGuEnable(GU_TEXTURE_2D);
+        GI::enable(GI_TEXTURE_2D)
 #endif
 
         Rendering::RenderContext::get().matrix_clear();

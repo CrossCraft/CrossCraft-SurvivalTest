@@ -331,15 +331,18 @@ namespace CrossCraft {
         // Set up texture
         Rendering::TextureManager::get().bind_texture(terrain_atlas);
 
+#if BUILD_PLAT == BUILD_PSP || BUILD_PLAT == BUILD_3DS
+        GI::disable(GI_BLEND);
+        GI::disable(GI_ALPHA_TEST);
+        GI::enable(GI_FOG);
+
 #if BUILD_PLAT == BUILD_PSP
-        sceGuDisable(GU_BLEND);
-        sceGuDisable(GU_ALPHA_TEST);
-        sceGuEnable(GU_FOG);
         if (!cfg.oldSky) {
             sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 4.5f * 16.0f, 0x00FFFFFF);
         } else {
             sceGuFog(0.2f * 3.0f * 16.0f, 0.8f * 4.5f * 16.0f, 0x00FFCC99);
         }
+#endif
 #endif
         GI::enable(GI_DEPTH_TEST);
         GI::set_culling_mode(true, true);
@@ -352,7 +355,7 @@ namespace CrossCraft {
 
         GI::enable(GI_BLEND);
 #if PSP
-        sceGuEnable(GU_ALPHA_TEST);
+        GI::enable(GI_ALPHA_TEST);
 #endif
         drops->draw();
         arrow->draw();
