@@ -36,7 +36,6 @@ jobs:
           copy ext/zconf.h ext/zlib/zconf.h
           cmake --build . --config Release
           move Release\CrossCraft-SurvivalTest.exe CrossCraft-SurvivalTest.exe
-          move ZLib\Release\zlib.dll zlib.dll
           move Stardust\ext\openal\Release\OpenAL32.dll OpenAL32.dll
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
