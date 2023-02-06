@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build
         run: |
-          git submodule update --init --recursive --remote
+          git submodule update --init --recursive
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -A x64 .
           copy ext/zconf.h ext/zlib/zconf.h
           cmake --build . --config Release
