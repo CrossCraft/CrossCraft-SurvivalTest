@@ -42,7 +42,7 @@ All standard lua libraries should be available. In addition, CrossCraft-Survival
 
 World contains `World.setBlock(x, y, z, blk)` and `World.getBlock(x, y, z)`. 
 
-`World.setBlock(x, y, z, blk)`: Will immediately set a block in the world and rebuild the chunk. BLK is the block ID to be set. These follow the classic ID scheme.
+`World.setBlk(x, y, z, blk)`: Will immediately set a block in the world and rebuild the chunk. BLK is the block ID to be set. These follow the classic ID scheme.
 
 `World.getBlock(x, y, z)`: Will return a value of what block is at a given position in the world.
 
